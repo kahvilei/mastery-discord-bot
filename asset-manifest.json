@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/cloud-gamers/static/css/main.073c9b0a.css",
-    "main.js": "/cloud-gamers/static/js/main.f79b3c57.js",
+    "main.js": "/cloud-gamers/static/js/main.53b98117.js",
     "static/js/787.4361aae2.chunk.js": "/cloud-gamers/static/js/787.4361aae2.chunk.js",
     "static/media/logo.svg": "/cloud-gamers/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/cloud-gamers/index.html",
     "main.073c9b0a.css.map": "/cloud-gamers/static/css/main.073c9b0a.css.map",
-    "main.f79b3c57.js.map": "/cloud-gamers/static/js/main.f79b3c57.js.map",
+    "main.53b98117.js.map": "/cloud-gamers/static/js/main.53b98117.js.map",
     "787.4361aae2.chunk.js.map": "/cloud-gamers/static/js/787.4361aae2.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.073c9b0a.css",
-    "static/js/main.f79b3c57.js"
+    "static/js/main.53b98117.js"
   ]
 }
