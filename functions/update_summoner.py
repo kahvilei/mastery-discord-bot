@@ -45,7 +45,7 @@ def update_user_data(datastore_client, user, region):
 
 def record_match(datastore_client, puuid, region, match):
     # TODO get this from env var
-    auth_key = "RGAPI-fcee87a8-8684-4cbb-98dc-3fa64d3678c3"
+    auth_key = "<no commit>"
 
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)',
@@ -86,7 +86,7 @@ def get_summoner_field(datastore_client, puuid, field):
 
 def get_user_matches(puuid, region, last_ts):
     # TODO get this from env var
-    auth_key = "RGAPI-fcee87a8-8684-4cbb-98dc-3fa64d3678c3"
+    auth_key = "<no commit>"
 
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)',
