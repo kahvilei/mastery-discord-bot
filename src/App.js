@@ -3,9 +3,9 @@ import './css/App.css';
 
 function App() {
   return (
-    <div className="Summoner-watcher-wrapper">
-      <header className="Summoner-watcher-header">
-        wow!
+    <div className="summoner-watcher-wrapper">
+      <header className="summoner-watcher-header">
+        <h1>Summoner Watch</h1>
       </header>
       <body>
 

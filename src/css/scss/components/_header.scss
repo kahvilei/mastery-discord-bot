@@ -1,0 +1,15 @@
+@import "variables";
+
+.summoner-watcher-wrapper{
+    width: 100vw;
+    background-color: $dark-blue;
+    height: 30vh;
+    margin: 0;
+    max-height: 300px;
+    min-height: 200px;
+    padding: 50px;
+}
+
+h1{
+    color: $white;
+}
