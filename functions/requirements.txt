@@ -1,0 +1,8 @@
+google-api-core==2.8.1
+google-auth==2.6.6
+google-cloud-core==2.3.0
+google-cloud-datastore==2.6.1
+google-cloud-logging==3.1.1
+googleapis-common-protos==1.56.2
+requests==2.27.1
+urllib3==1.26.9
