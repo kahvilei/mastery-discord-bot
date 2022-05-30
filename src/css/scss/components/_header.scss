@@ -1,15 +1,24 @@
 @import "variables";
 
-.summoner-watcher-wrapper{
-    width: 100vw;
+.summoner-watcher-header{
+    width: calc(100vw - 100px);
     background-color: $dark-blue;
     height: 30vh;
     margin: 0;
-    max-height: 300px;
-    min-height: 200px;
+    max-height: 200px;
+    min-height: 100px;
     padding: 50px;
+    display: flex;
+    
+    .header-content{
+        width: $main-site-width;
+        margin: auto;
+    }
+
+    h1{
+        color: $white;
+    }
+
+    
 }
 
-h1{
-    color: $white;
-}
