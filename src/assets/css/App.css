@@ -52,5 +52,16 @@ h2 {
     .summoner-watcher-header nav a:first-child {
       padding: 10px 20px 10px 0px; }
 
-#live-matches h2 {
-  color: #fff; }
+#live-matches {
+  width: 70%; }
+  #live-matches h2 {
+    color: #fff; }
+
+#summoner-previews {
+  width: 30%; }
+  #summoner-previews h2 {
+    color: #fff; }
+
+#home-page {
+  display: flex;
+  flex-wrap: wrap; }

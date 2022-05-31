@@ -1,8 +1,12 @@
 import LiveMatches from '../components/LiveMatches.js'
+import Summoners from '../components/Summoners.js'
 
 function Home() {
     return (
-      <LiveMatches />
+      <section id="home-page">
+          <LiveMatches />
+          <Summoners />
+      </section>  
     );
   }
 
