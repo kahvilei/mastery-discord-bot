@@ -6,31 +6,32 @@ import {
   Routes,
   Route,
   Link,
+  withRouter,
   BrowserRouter
 } from "react-router-dom";
 
 function App() {
   return (
 
-      <Router className="summoner-watcher-wrapper">
+      <Router basename = "/cloud-gamers" className="summoner-watcher-wrapper">
         <header className="summoner-watcher-header">
           <div id="header-content">
             <h1>Summoner Watch</h1>
             <nav>
-                <Link to="/cloud-gamers/">Home</Link>
-                <Link to="/cloud-gamers/leaderboards">Leaderboards</Link>
-                <Link to="/cloud-gamers/summoners">Summoners</Link>
-                <Link to="/cloud-gamers/experiments">Experiments</Link>
+                <Link to="/">Home</Link>
+                <Link to="/leaderboards">Leaderboards</Link>
+                <Link to="/summoners">Summoners</Link>
+                <Link to="/experiments">Experiments</Link>
             </nav>
           </div>
         </header>
         <section id="main-content">
           <div id="main-content-wrap">
             <Routes>
-                <Route path='/cloud-gamers/' element={<Home/>}/>
-                <Route path='/cloud-gamers/leaderboards' element={<Leaderboards/>}/>
-                <Route path='/cloud-gamers/summoners' element={<Summoners/>}/>
-                <Route path='/cloud-gamers/experiments' element={<Experiments/>}/>
+                <Route path='/' element={<Home/>}/>
+                <Route path='/leaderboards' element={<Leaderboards/>}/>
+                <Route path='/summoners' element={<Summoners/>}/>
+                <Route path='/experiments' element={<Experiments/>}/>
             </Routes>
           </div>
         </section>
