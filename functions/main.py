@@ -77,7 +77,6 @@ def entrypoint(request):
 
 
 # if __name__ == "__main__":
-#     flask.request()
 #     print(entrypoint({
 #         # "matches": "true",
 #         "operation": "get_all_summoners",

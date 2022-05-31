@@ -35,5 +35,5 @@ def get_all_summoners(datastore_client):
     query = datastore_client.query(kind="summoner")
     query_result = list(query.fetch())
     summoner_list = json.loads(json.dumps(query_result), parse_int=str)
-
-    return summoner_list 
+    summoner_dict = {summoner['puuid']: summoner for summoner in summoner_list} 
+    return summoner_dict
