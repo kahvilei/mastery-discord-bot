@@ -56,10 +56,10 @@ def entrypoint(request):
     client = google.cloud.logging.Client()
     client.setup_logging()
 
-    if "operation" in request:
-        request_args = request
-    else:
-        request_args = request.args
+    # if "operation" in request:
+    #     request_args = request
+    # else:
+    #     request_args = request.args
 
     if "operation" not in request_args:
         return "Could not handle request. Please specify operation"
@@ -76,12 +76,13 @@ def entrypoint(request):
         return "Please provide a valid operation"
 
 
-if __name__ == "__main__":
-    print(entrypoint({
-        # "matches": "true",
-        "operation": "get_all_summoners",
-        "summoner": "SGgzKdfdknkpFHGQBcb4s_CjxAb83E2K_YyAIQkM0gbOlo8UDUWbgCQcKcBY18VVM9wW7rjS_oB_GA"
-    }))
+# if __name__ == "__main__":
+#     flask.request()
+#     print(entrypoint({
+#         # "matches": "true",
+#         "operation": "get_all_summoners",
+#         "summoner": "SGgzKdfdknkpFHGQBcb4s_CjxAb83E2K_YyAIQkM0gbOlo8UDUWbgCQcKcBY18VVM9wW7rjS_oB_GA"
+#     }))
 #
 # if __name__ == "__main__":
 #     entrypoint({ "summoner": "snam"})
