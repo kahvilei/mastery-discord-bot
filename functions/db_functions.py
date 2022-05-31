@@ -1,5 +1,5 @@
 from google.cloud import datastore
-
+import json
 
 def write_dict_to_datastore(datastore_client, primary_key, fields, kind):
     # The Cloud Datastore key for the new entity
@@ -33,4 +33,7 @@ def get_summoner_field(datastore_client, puuid, field):
 
 def get_all_summoners(datastore_client):
     query = datastore_client.query(kind="summoner")
-    return list(query.fetch())
+    query_result = list(query.fetch())
+    summoner_list = json.loads(json.dumps(query_result), parse_int=str)
+
+    return summoner_list 
