@@ -30,6 +30,8 @@
             padding: 10px 20px 10px 20px;
             user-select: none;
             transition: .1s;
+            color: $white;
+            text-decoration: none;
         }
         a:hover{
             border-top: 1px solid $orange;
