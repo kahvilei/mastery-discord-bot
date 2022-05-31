@@ -17,20 +17,20 @@ function App() {
           <div id="header-content">
             <h1>Summoner Watch</h1>
             <nav>
-                <Link to="/">Home</Link>
-                <Link to="/leaderboards">Leaderboards</Link>
-                <Link to="/summoners">Summoners</Link>
-                <Link to="/experiments">Experiments</Link>
+                <Link to="/cloud-gamers/">Home</Link>
+                <Link to="/cloud-gamers/leaderboards">Leaderboards</Link>
+                <Link to="/cloud-gamers/summoners">Summoners</Link>
+                <Link to="/cloud-gamers/experiments">Experiments</Link>
             </nav>
           </div>
         </header>
         <section id="main-content">
           <div id="main-content-wrap">
             <Routes>
-                <Route path='/' element={<Home/>}/>
-                <Route path='/leaderboards' element={<Leaderboards/>}/>
-                <Route path='/summoners' element={<Summoners/>}/>
-                <Route path='/experiments' element={<Experiments/>}/>
+                <Route path='/cloud-gamers/' element={<Home/>}/>
+                <Route path='/cloud-gamers/leaderboards' element={<Leaderboards/>}/>
+                <Route path='/cloud-gamers/summoners' element={<Summoners/>}/>
+                <Route path='/cloud-gamers/experiments' element={<Experiments/>}/>
             </Routes>
           </div>
         </section>
