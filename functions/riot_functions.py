@@ -2,7 +2,7 @@ import json
 import os
 import requests
 
-auth_key = os.eviron['Riot_API_Key']
+auth_key = os.environ['Riot_API_Key']
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)',
