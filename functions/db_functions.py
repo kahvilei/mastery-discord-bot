@@ -39,4 +39,5 @@ def get_all_summoners(datastore_client):
     summoner_dict = {summoner['puuid']: summoner for summoner in summoner_list} 
     resp = flask.make_response(summoner_dict)
     resp.headers['Access-Control-Allow-Origin'] = '*'
+    resp.headers['Access-Control-Allow-Credentials'] = 'true'
     return resp
