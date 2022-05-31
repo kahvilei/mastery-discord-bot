@@ -20,7 +20,7 @@ h2 {
 
 .summoner-watcher-header {
   width: calc(100vw - 100px);
-  background-color: #2E314D;
+  background-color: #272841;
   height: 30vh;
   margin: 0;
   max-height: 200px;
@@ -53,14 +53,36 @@ h2 {
       padding: 10px 20px 10px 0px; }
 
 #live-matches {
-  width: 70%; }
+  width: 75%; }
   #live-matches h2 {
     color: #fff; }
 
 #summoner-previews {
-  width: 30%; }
+  width: 25%; }
   #summoner-previews h2 {
     color: #fff; }
+
+#summoner-previews .summoner-container {
+  display: flex;
+  background-color: #272841;
+  padding: 30px;
+  margin-bottom: 20px;
+  color: #fff; }
+  #summoner-previews .summoner-container .summoner-icon img {
+    max-width: 90px;
+    border-radius: 50%; }
+  #summoner-previews .summoner-container .summoner-info {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    padding: 5px 15px; }
+  #summoner-previews .summoner-container .summoner-level {
+    border-top: 1px solid #43497C;
+    padding: 15px 0px 0px 0px; }
+  #summoner-previews .summoner-container h3 {
+    margin: 0px 0px 15px 0px; }
 
 #home-page {
   display: flex;
