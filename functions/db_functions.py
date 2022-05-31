@@ -1,5 +1,6 @@
 from google.cloud import datastore
 import json
+import flask
 
 def write_dict_to_datastore(datastore_client, primary_key, fields, kind):
     # The Cloud Datastore key for the new entity
@@ -36,4 +37,6 @@ def get_all_summoners(datastore_client):
     query_result = list(query.fetch())
     summoner_list = json.loads(json.dumps(query_result), parse_int=str)
     summoner_dict = {summoner['puuid']: summoner for summoner in summoner_list} 
-    return summoner_dict
+    resp = flask.Response(summoner_dict)
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    return resp
