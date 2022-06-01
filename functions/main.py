@@ -50,33 +50,35 @@ def add_user(datastore_client, request_args):
 
 
 def entrypoint(request):
-    # Instantiates a global client
-    datastore_client = datastore.Client()
+    try:
+        # Instantiates a global client
+        datastore_client = datastore.Client()
 
-    client = google.cloud.logging.Client()
-    client.setup_logging()
+        client = google.cloud.logging.Client()
+        client.setup_logging()
 
-    # if "operation" in request:
-    #     request_args = request
-    # else:
-    request_args = request.args
+        # if "operation" in request:
+        #     request_args = request
+        # else:
+        request_args = request.args
 
-    if "operation" not in request_args:
-        return "Could not handle request. Please specify operation"
+        if "operation" not in request_args:
+            return "Could not handle request. Please specify operation"
 
-    operation = request_args["operation"]
+        operation = request_args["operation"]
 
-    if operation == "get_all_summoners":
-        return get_all_summoners(datastore_client)
-    elif operation == "update_user_matches":
-        return update_user_matches(datastore_client, request_args)
-    elif operation == "add_user":
-        return add_user(datastore_client, request_args)
-    elif operation == "get_live_matches":
-        return get_live_matches(datastore_client)
-    else:
-        return "Please provide a valid operation"
-
+        if operation == "get_all_summoners":
+            return get_all_summoners(datastore_client)
+        elif operation == "update_user_matches":
+            return update_user_matches(datastore_client, request_args)
+        elif operation == "add_user":
+            return add_user(datastore_client, request_args)
+        elif operation == "get_live_matches":
+            return get_live_matches(datastore_client)
+        else:
+            return "Please provide a valid operation"
+    except Exception as err:
+        return str(err)
 
 # if __name__ == "__main__":
 #     print(entrypoint({
