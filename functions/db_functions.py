@@ -37,7 +37,8 @@ def get_all_summoners(datastore_client):
     query_result = list(query.fetch())
     summoner_list = json.loads(json.dumps(query_result), parse_int=str)
     summoner_dict = [summoner for summoner in summoner_list]
-    resp = flask.Response(summoner_dict)
+    summoner_json = json.dumps(summoner_dict, indent = 4) 
+    resp = flask.Response(summoner_json)
     resp.headers['Access-Control-Allow-Origin'] = '*'
     resp.headers['Access-Control-Allow-Credentials'] = 'true'
     return resp

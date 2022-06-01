@@ -59,7 +59,7 @@ def entrypoint(request):
     # if "operation" in request:
     #     request_args = request
     # else:
-    request_args = request.args
+    #     request_args = request.args
 
     if "operation" not in request_args:
         return "Could not handle request. Please specify operation"
