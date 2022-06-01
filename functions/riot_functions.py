@@ -89,9 +89,9 @@ def get_live_matches(datastore_client):
         id = summoner['id']
         path = f'https://{region}.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/{id}'
         response = requests.get(path, headers=headers)
-        if response.status_code != 404:
+        if response.status_code != 404 and hasattr(response, 'data'):
             match_json = json.loads(response.text)
-            if match_json["gameId"] not in match_list:
+            if "gameId" in match_json and match_json["gameId"] not in match_list:
                 match_list[match_json["gameId"]] = match_json
             # Mark our summoners as isKey
             for participant_index in range(0,len(match_list[match_json["gameId"]]['participants'])):
