@@ -1,7 +1,5 @@
-import { summonerList } from '../assets/js/summonerData.js'
-import React, { Component, Fragment } from 'react';
-import ReactDOM from "react-dom";
-
+import React, { Component } from 'react';
+import {summonerList} from '../assets/js/summonerData.js'
 
 class Summoners extends Component{
       
@@ -12,12 +10,8 @@ class Summoners extends Component{
     
 
     async componentDidMount() {
-        const response = await fetch("https://us-central1-summon-cloud.cloudfunctions.net/get_summoner_details?operation=get_all_summoners")
-                               .then(response => response.json());
-
-        const json = response;
-        console.log(response);
-        this.setState({ summoners: json });
+        var response = await summonerList();
+        this.setState({ summoners: response });
 
     }
 

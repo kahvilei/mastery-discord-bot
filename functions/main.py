@@ -2,7 +2,7 @@ from google.cloud import datastore
 import google.cloud.logging
 
 from db_functions import write_dict_to_datastore, get_summoner_field, update_summoner_field, get_all_summoners
-from riot_functions import get_user_matches, get_match_data, update_user_data
+from riot_functions import get_user_matches, get_match_data, update_user_data, get_live_matches
 
 ###
 #
@@ -56,10 +56,10 @@ def entrypoint(request):
     client = google.cloud.logging.Client()
     client.setup_logging()
 
-    # if "operation" in request:
-    #     request_args = request
-    # else:
-    request_args = request.args
+    if "operation" in request:
+        request_args = request
+    else:
+        request_args = request.args
 
     if "operation" not in request_args:
         return "Could not handle request. Please specify operation"
@@ -72,16 +72,18 @@ def entrypoint(request):
         return update_user_matches(datastore_client, request_args)
     elif operation == "add_user":
         return add_user(datastore_client, request_args)
+    elif operation == "get_live_matches":
+        return get_live_matches(datastore_client)
     else:
         return "Please provide a valid operation"
 
 
-# if __name__ == "__main__":
-#     print(entrypoint({
-#         # "matches": "true",
-#         "operation": "get_all_summoners",
-#         "summoner": "SGgzKdfdknkpFHGQBcb4s_CjxAb83E2K_YyAIQkM0gbOlo8UDUWbgCQcKcBY18VVM9wW7rjS_oB_GA"
-#     }))
-#
+if __name__ == "__main__":
+    print(entrypoint({
+        # "matches": "true",
+        "operation": "get_live_matches",
+        "summoner": "kadie"
+    }))
+
 # if __name__ == "__main__":
 #     entrypoint({ "summoner": "snam"})

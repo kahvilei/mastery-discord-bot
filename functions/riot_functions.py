@@ -1,6 +1,10 @@
 import json
+import logging
 import os
 import requests
+from db_functions import get_all_summoners
+import google.cloud.logging
+import flask
 
 auth_key = os.environ['Riot_API_Key']
 
@@ -74,3 +78,24 @@ def get_user_matches(puuid, region, last_ts):
     matches = json.loads(response.text)
 
     return matches
+
+# Gets the list of live matches for every user in the system
+def get_live_matches(datastore_client):
+    summoner_list = json.loads(get_all_summoners(datastore_client).data)
+    summoner_dict = [summoner for summoner in summoner_list]
+    match_list = []
+    for summoner in summoner_dict:
+        region = summoner['region']
+        id = summoner['id']
+        path = f'https://{region}.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/{id}'
+        response = requests.get(path, headers=headers)
+        if response.status_code != 404:
+            match_list.append(response)
+        else:
+            logging.info(f'no match going on for {id}')
+
+    match_json = json.dumps(match_list, indent = 4) 
+    resp = flask.Response(match_json)
+    resp.headers['Access-Control-Allow-Origin'] = '*'    
+    resp.headers['Access-Control-Allow-Credentials'] = 'true'
+    return match_list
