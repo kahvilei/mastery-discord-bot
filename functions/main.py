@@ -56,10 +56,10 @@ def entrypoint(request):
     client = google.cloud.logging.Client()
     client.setup_logging()
 
-    if "operation" in request:
-        request_args = request
-    else:
-        request_args = request.args
+    # if "operation" in request:
+    #     request_args = request
+    # else:
+    request_args = request.args
 
     if "operation" not in request_args:
         return "Could not handle request. Please specify operation"
@@ -78,12 +78,12 @@ def entrypoint(request):
         return "Please provide a valid operation"
 
 
-if __name__ == "__main__":
-    print(entrypoint({
-        # "matches": "true",
-        "operation": "get_live_matches",
-        "summoner": "kadie"
-    }))
+# if __name__ == "__main__":
+#     print(entrypoint({
+#         # "matches": "true",
+#         "operation": "get_live_matches",
+#         "summoner": "kadie"
+#     }))
 
 # if __name__ == "__main__":
 #     entrypoint({ "summoner": "snam"})

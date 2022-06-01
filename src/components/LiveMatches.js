@@ -1,4 +1,4 @@
-import {liveData} from '../assets/js/liveData.js'
+import { liveData } from '../assets/js/liveData.js'
 import {liveParticipantData} from '../assets/js/liveData.js'
 
 function LiveMatches() {
