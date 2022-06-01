@@ -1,8 +1,7 @@
 #main-content{
     background: linear-gradient( $faded-blue 100%, $faded-blue 100%), url(http://localhost:3000/cloud-gamers/media/default-background.png);
-    height: 100%;
+    height: auto;
     min-height: calc(100vh - 300px);
-    max-height: calc(100vh - 100px);
     padding: 20px;
     background-size: 130%;
 

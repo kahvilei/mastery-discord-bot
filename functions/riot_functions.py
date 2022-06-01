@@ -83,18 +83,27 @@ def get_user_matches(puuid, region, last_ts):
 def get_live_matches(datastore_client):
     summoner_list = json.loads(get_all_summoners(datastore_client).data)
     summoner_dict = [summoner for summoner in summoner_list]
-    match_list = []
+    match_list = {}
     for summoner in summoner_dict:
         region = summoner['region']
         id = summoner['id']
         path = f'https://{region}.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/{id}'
         response = requests.get(path, headers=headers)
         if response.status_code != 404:
-            match_list.append(response)
+            match_json = json.loads(response.text)
+            if match_json["gameId"] not in match_list:
+                match_list[match_json["gameId"]] = match_json
+            # Mark our summoners as isKey
+            for participant_index in range(0,len(match_list[match_json["gameId"]]['participants'])):
+                if match_list[match_json["gameId"]]['participants'][participant_index]["summonerId"] == id:
+                    match_list[match_json["gameId"]]['participants'][participant_index]["isKey"] = "true"
+
         else:
             logging.info(f'no match going on for {id}')
 
-    match_json = json.dumps(match_list, indent = 4) 
+    match_array = [match for match in match_list.values()]
+
+    match_json = json.dumps(match_array, indent = 4) 
     resp = flask.Response(match_json)
     resp.headers['Access-Control-Allow-Origin'] = '*'    
     resp.headers['Access-Control-Allow-Credentials'] = 'true'

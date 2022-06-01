@@ -1,6 +1,48 @@
 #live-matches{
-    width: 75%;
+    width: calc(75% - 30px);
+    padding-right: 30px;
     h2{
         color: $white;
     }
+    .live-match-container{
+        background-color: white;
+        width: calc(100% - 80px);
+        margin-bottom: 30px;
+        padding: 40px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .key-summoners{
+        .summoner-icon img{
+            max-width: 80px;
+            border-radius: 50%;
+            padding: 15px;
+            }
+        .summoner-info{
+            display: flex;
+            justify-content: left;
+            align-items: center;
+        }
+    }
+    .all-participants{
+        display: flex;
+        .summoner-icon img{
+            max-width: 35px;
+            border-radius: 50%;
+            padding: 5px;
+            }
+        .summoner-info{
+            display: flex;
+            justify-content: left;
+            align-items: center;
+        }
+        .team1{
+            .summoner-info{
+                justify-content: flex-start;
+                align-items: center;
+                flex-direction: row-reverse;
+            }
+        }
+    }
+
 }

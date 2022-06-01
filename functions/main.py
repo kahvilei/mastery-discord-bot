@@ -81,8 +81,14 @@ def entrypoint(request):
 # if __name__ == "__main__":
 #     print(entrypoint({
 #         # "matches": "true",
-#         "operation": "get_live_matches",
-#         "summoner": "kadie"
+#         "operation": "get_live_matches"
+#     }))
+
+# if __name__ == "__main__":
+#     print(entrypoint({
+#         # "matches": "true",
+#         "operation": "add_user",
+#         "summoner": "Chords"
 #     }))
 
 # if __name__ == "__main__":

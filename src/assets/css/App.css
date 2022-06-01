@@ -10,9 +10,8 @@ h2 {
 
 #main-content {
   background: linear-gradient(#2e314de1 100%, #2e314de1 100%), url(http://localhost:3000/cloud-gamers/media/default-background.png);
-  height: 100%;
+  height: auto;
   min-height: calc(100vh - 300px);
-  max-height: calc(100vh - 100px);
   padding: 20px;
   background-size: 130%; }
   #main-content #main-content-wrap {
@@ -54,9 +53,39 @@ h2 {
       padding: 10px 20px 10px 0px; }
 
 #live-matches {
-  width: 75%; }
+  width: calc(75% - 30px);
+  padding-right: 30px; }
   #live-matches h2 {
     color: #fff; }
+  #live-matches .live-match-container {
+    background-color: white;
+    width: calc(100% - 80px);
+    margin-bottom: 30px;
+    padding: 40px;
+    display: flex;
+    justify-content: space-between; }
+  #live-matches .key-summoners .summoner-icon img {
+    max-width: 80px;
+    border-radius: 50%;
+    padding: 15px; }
+  #live-matches .key-summoners .summoner-info {
+    display: flex;
+    justify-content: left;
+    align-items: center; }
+  #live-matches .all-participants {
+    display: flex; }
+    #live-matches .all-participants .summoner-icon img {
+      max-width: 35px;
+      border-radius: 50%;
+      padding: 5px; }
+    #live-matches .all-participants .summoner-info {
+      display: flex;
+      justify-content: left;
+      align-items: center; }
+    #live-matches .all-participants .team1 .summoner-info {
+      justify-content: flex-start;
+      align-items: center;
+      flex-direction: row-reverse; }
 
 #summoner-previews {
   width: 25%; }
