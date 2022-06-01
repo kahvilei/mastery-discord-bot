@@ -14,7 +14,9 @@ class Summoners extends Component{
     async componentDidMount() {
         const response = await fetch("https://us-central1-summon-cloud.cloudfunctions.net/get_summoner_details?operation=get_all_summoners")
                                .then(response => response.json());
-        const json = await response;
+
+        const json = response;
+        console.log(response);
         this.setState({ summoners: json });
 
     }
