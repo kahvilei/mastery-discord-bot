@@ -8,22 +8,6 @@
     {"name":"Python: Current File","type":"python","request":"launch","program":"${file}","console":"integratedTerminal","justMyCode":true},
 
         {
-            "name": "Python: main.py",
-            "type": "python",
-            "request": "launch",
-            "program": "functions/main.py",
-            "console": "integratedTerminal",
-            "justMyCode": true
-        },
-        {
-            "name": "Python: testing.py",
-            "type": "python",
-            "request": "launch",
-            "program": "functions/testing.py",
-            "console": "integratedTerminal",
-            "justMyCode": true
-        },
-        {
             "name": "Get all summoners",
             "type": "python",
             "request": "launch",

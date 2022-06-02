@@ -79,7 +79,7 @@ def get_user_matches(puuid, region, last_ts):
 
     return matches
 
-# Gets the list of live matches for every user in the system
+# Gets the list of live matches for every user in the system, does not store data
 def get_live_matches(datastore_client):
     summoner_list = json.loads(get_all_summoners(datastore_client).data)
     summoner_dict = [summoner for summoner in summoner_list]
