@@ -7,16 +7,16 @@ steps:
   # Docker Build
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'build', '-t',
-            'us-central1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}myimage:${SHORT_SHA}', './functions' ]
+            'us-central1-docker.pkg.dev/${PROJECT_ID}/myimage:${SHORT_SHA}', './functions' ]
 
   # Docker push to Google Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push',  'us-central1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}myimage:${SHORT_SHA}']
+    args: ['push',  'us-central1-docker.pkg.dev/${PROJECT_ID}/myimage:${SHORT_SHA}']
 
   # Deploy to Cloud Run
   - name: google/cloud-sdk
     args: ['gcloud', 'run', 'deploy', 'cloud-gamers-${SHORT_SHA}',
-           '--image=us-central1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}myimage:${SHORT_SHA}',
+           '--image=us-central1-docker.pkg.dev/${PROJECT_ID}/myimage:${SHORT_SHA}',
            '--region', 'us-central1', '--platform', 'managed',
            '--allow-unauthenticated']
 
