@@ -7,8 +7,7 @@ steps:
   - summoners_orchestration
   - --region=us-central1
   - --source=./functions
-  - --trigger-http
-  - --runtime=python39
+  - --trigger-httpasdfa sdf adfasdf ad ffa f d
   - --allow-unauthenticated
   - --entry-point=entrypoint
-  - --set-secrets=[Riot_API_Key=projects/451871121938/secrets/Riot_API_Key:latest]
+  - --set-secrets=[Riot_API_Key=projects/451871121938/secrets/Riot_API_Keydasdf :latest]
