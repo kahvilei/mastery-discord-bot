@@ -11,4 +11,4 @@ steps:
   - --runtime=python39
   - --allow-unauthenticated
   - --entry-point=entrypoint
-  - --set-secrets=[Riot_API_Key=projects/summon-cloud/secrets/Riot_API_Key:latest]
+  - --set-secrets=[Riot_API_Key=projects/451871121938/secrets/Riot_API_Key:latest]
