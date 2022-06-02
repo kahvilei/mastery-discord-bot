@@ -11,4 +11,4 @@ steps:
   - --runtime=python39
   - --allow-unauthenticated
   - --entry-point=entrypoint
-  - --set-secrets=[Riot_API_Key=Riot_API_Key]
+  - --set-secrets=[Riot_API_Key=Riot_API_Key:latest]
