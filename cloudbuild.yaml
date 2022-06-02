@@ -1,0 +1,13 @@
+steps:
+- name: 'summoners orchestration'
+  args:
+  - gcloud
+  - functions
+  - deploy
+  - orchestration
+  - --region=us-central1
+  - --source=./functions/
+  - --trigger-http
+  - --runtime=python3.9
+  options:
+    secretEnv: Riot_API_Key
