@@ -9,5 +9,3 @@ steps:
   - --source=.
   - --trigger-http
   - --runtime=python3.9
-  options:
-    secretEnv: Riot_API_Key
