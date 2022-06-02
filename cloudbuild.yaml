@@ -22,4 +22,4 @@ steps:
 
 # Store images in Google Artifact Registry
 images:
-  - us-central1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/myimage:${SHORT_SHA}
+  - us-docker.pkg.dev/${PROJECT_ID}/us.gcr.io/myimage:${SHORT_SHA}
