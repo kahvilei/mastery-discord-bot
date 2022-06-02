@@ -13,7 +13,8 @@ h2 {
   height: auto;
   min-height: calc(100vh - 300px);
   padding: 20px;
-  background-size: 130%; }
+  background-position: top center;
+  background-size: 300%; }
   #main-content #main-content-wrap {
     max-width: 1300px;
     margin: auto; }
@@ -82,6 +83,8 @@ h2 {
       display: flex;
       justify-content: left;
       align-items: center; }
+      #live-matches .all-participants .summoner-info .summoner-name .key-summoner {
+        font-weight: 500; }
     #live-matches .all-participants .team1 .summoner-info {
       justify-content: flex-start;
       align-items: center;

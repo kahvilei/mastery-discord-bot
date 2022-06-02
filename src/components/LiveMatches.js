@@ -26,7 +26,7 @@ class LiveMatches extends Component{
                         <div className="live-match-container" key={data.gameId}>
                             <div className = "key-summoners">
                             {data.participants.map((data, key) => {   
-                                    if (data.isKey == true) {
+                                    if (data.isKey == "true") {
                                             return (                   
                                                 <div className="summoner-info" key={data.summonerName}>
                                                     <div className = "summoner-icon"> 
@@ -52,7 +52,7 @@ class LiveMatches extends Component{
                                                         <img src = {"http://ddragon.leagueoflegends.com/cdn/12.10.1/img/profileicon/" + data.profileIconId + ".png"}></img>
                                                     </div>
                                                     <div className = "summoner-info">
-                                                        <p className = "summoner-name">
+                                                        <p classNames = {`summoner-name ${data.isKey ? 'key-summoner' : ''}`}>
                                                             {data.summonerName}
                                                         </p>
                                                     </div>

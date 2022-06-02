@@ -35,6 +35,11 @@
             display: flex;
             justify-content: left;
             align-items: center;
+            .summoner-name{
+                .key-summoner{
+                    font-weight: 500;
+                }
+            }
         }
         .team1{
             .summoner-info{

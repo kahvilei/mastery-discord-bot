@@ -1,7 +1,7 @@
 from google.cloud import datastore
 import google.cloud.logging
 
-from db_functions import write_dict_to_datastore, get_summoner_field, update_summoner_field, get_all_summoners
+from db_functions import write_dict_to_datastore, get_summoner_field, update_summoner_field, get_all_summoners, delete_user
 from riot_functions import get_user_matches, get_match_data, update_user_data, get_live_matches
 
 ###
@@ -75,10 +75,18 @@ def entrypoint(request):
             return add_user(datastore_client, request_args)
         elif operation == "get_live_matches":
             return get_live_matches(datastore_client)
+        elif operation == "delete_user":
+            return delete_user(datastore_client, request_args)
         else:
             return "Please provide a valid operation"
     except Exception as err:
         return str(err)
+
+# if __name__ == "__main__":
+#     print(entrypoint({
+#         # "matches": "true",
+#         "operation": "get_live_matches"
+#     }))
 
 # if __name__ == "__main__":
 #     print(entrypoint({
