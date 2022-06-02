@@ -106,5 +106,5 @@ def get_live_matches(datastore_client):
     match_json = json.dumps(match_array, indent = 4) 
     resp = flask.Response(match_json)
     resp.headers['Access-Control-Allow-Origin'] = '*'    
-    resp.headers['Access-Control-Allow-Credentials'] = 'true'
-    return match_list
+    resp.headers['Access-Control-Allow-Credentials'] = True
+    return resp

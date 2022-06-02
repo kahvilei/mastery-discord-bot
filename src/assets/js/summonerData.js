@@ -1,10 +1,18 @@
 
 export async function summonerList() {
-        const response = await fetch("https://us-central1-summon-cloud.cloudfunctions.net/get_summoner_details?operation=get_all_summoners")
-                               .then(response => response.json());
+    const response = await fetch("https://us-central1-summon-cloud.cloudfunctions.net/get_summoner_details?operation=get_all_summoners")
+                            .then(response => response.json());
 
-        console.log(response);
-        return response;
+    console.log(response);
+    return response;
+}
+
+export async function liveMatches() {
+    const response = await fetch("https://us-central1-summon-cloud.cloudfunctions.net/get_summoner_details?operation=get_live_matches")
+                           .then(response => response.json());
+
+    console.log(response);
+    return response;
 }
 
 export const liveData = [
