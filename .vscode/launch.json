@@ -3,7 +3,9 @@
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
-    "configurations": [
+    "configurations": [      
+
+    {"name":"Python: Current File","type":"python","request":"launch","program":"${file}","console":"integratedTerminal","justMyCode":true},
 
         {
             "name": "Python: main.py",
@@ -11,6 +13,32 @@
             "request": "launch",
             "program": "functions/main.py",
             "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: testing.py",
+            "type": "python",
+            "request": "launch",
+            "program": "functions/testing.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Get all summoners",
+            "type": "python",
+            "request": "launch",
+            "program": "functions/testing.py",
+            "console": "integratedTerminal",
+            "args": ["get_all_summoners"],
+            "justMyCode": true
+        },
+        {
+            "name": "Get live matches",
+            "type": "python",
+            "request": "launch",
+            "program": "functions/testing.py",
+            "console": "integratedTerminal",
+            "args": ["get_live_matches"],
             "justMyCode": true
         }
     ]

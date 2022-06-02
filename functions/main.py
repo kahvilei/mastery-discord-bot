@@ -6,9 +6,7 @@ from riot_functions import get_user_matches, get_match_data, update_user_data, g
 
 ###
 #
-# This file does all the orchestration for now. Should likely eventually be split up into load-balanced gcp functions,
-# but that's for later
-#
+# This file does all the orchestration.
 ###
 
 
@@ -57,9 +55,6 @@ def entrypoint(request):
         client = google.cloud.logging.Client()
         client.setup_logging()
 
-        # if "operation" in request:
-        #     request_args = request
-        # else:
         request_args = request.args
 
         if "operation" not in request_args:
@@ -82,24 +77,3 @@ def entrypoint(request):
     except Exception as err:
         return str(err)
 
-# if __name__ == "__main__":
-#     print(entrypoint({
-#         # "matches": "true",
-#         "operation": "get_live_matches"
-#     }))
-
-# if __name__ == "__main__":
-#     print(entrypoint({
-#         # "matches": "true",
-#         "operation": "get_live_matches"
-#     }))
-
-# if __name__ == "__main__":
-#     print(entrypoint({
-#         # "matches": "true",
-#         "operation": "add_user",
-#         "summoner": "Chords"
-#     }))
-
-# if __name__ == "__main__":
-#     entrypoint({ "summoner": "snam"})

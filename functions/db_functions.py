@@ -15,13 +15,11 @@ def write_dict_to_datastore(datastore_client, primary_key, fields, kind):
     # Saves the entity
     datastore_client.put(entity)
 
-
 def update_summoner_field(datastore_client, puuid, field, value):
     db_key = datastore_client.key("summoner", puuid)
     summoner = datastore_client.get(key=db_key)
     summoner[field] = value
     datastore_client.put(summoner)
-
 
 def get_summoner_field(datastore_client, puuid, field):
     try:
@@ -30,7 +28,6 @@ def get_summoner_field(datastore_client, puuid, field):
         return summoner[field]
     except KeyError:
         return None
-
 
 def get_all_summoners(datastore_client):
     query = datastore_client.query(kind="summoner")
@@ -52,7 +49,7 @@ def delete_user(datastore_client, request_args):
     try:
         db_key = datastore_client.key("summoner", puuid)
         summoner = datastore_client.get(key=db_key)
-        summoner.delete()
+        summoner.key.delete()
         return "summoner sucessfully deleted"
     except KeyError:
         return None
