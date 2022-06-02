@@ -1,5 +1,5 @@
 steps:
-- name: 'summoners orchestration'
+- name: 'summoners_orchestration'
   args:
   - gcloud
   - functions
