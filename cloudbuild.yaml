@@ -1,25 +1,11 @@
 steps:
-  # Install dependencies
-  - name: python
-    entrypoint: pip
-    args: ["install", "-r", "functions/requirements.txt", "--user"]
-
-  # Docker Build
-  - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'build', '-t',
-            'us-docker.pkg.dev/${PROJECT_ID}/us.gcr.io/myimage:${SHORT_SHA}', './functions' ]
-
-  # Docker push to Google Artifact Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push',  'us-docker.pkg.dev/${PROJECT_ID}/us.gcr.io/myimage:${SHORT_SHA}']
-
-  # Deploy to Cloud Run
-  - name: google/cloud-sdk
-    args: ['gcloud', 'run', 'deploy', 'cloud-gamers-${SHORT_SHA}',
-           '--image=us-docker.pkg.dev/${PROJECT_ID}/us.gcr.io/myimage:${SHORT_SHA}',
-           '--region', 'us-central1', '--platform', 'managed',
-           '--allow-unauthenticated']
-
-# Store images in Google Artifact Registry
-images:
-  - us-docker.pkg.dev/${PROJECT_ID}/us.gcr.io/myimage:${SHORT_SHA}
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  args:
+  - gcloud
+  - functions
+  - deploy
+  - summoners_orchestration
+  - --region=us-central1
+  - --source=./functions
+  - --trigger-http
+  - --runtime=python3.9
