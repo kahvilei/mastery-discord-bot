@@ -8,4 +8,4 @@ steps:
   - --region=us-central1
   - --source=./functions
   - --trigger-http
-  - --runtime=python3.9
+  - --runtime=python39
