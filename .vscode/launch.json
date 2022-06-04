@@ -24,6 +24,24 @@
             "console": "integratedTerminal",
             "args": ["get_live_matches"],
             "justMyCode": true
+        },
+        {
+            "name": "Delete User",
+            "type": "python",
+            "request": "launch",
+            "program": "functions/testing.py",
+            "console": "integratedTerminal",
+            "args": ["delete_user"],
+            "justMyCode": true
+        }
+        {
+            "name": "Add User",
+            "type": "python",
+            "request": "launch",
+            "program": "functions/testing.py",
+            "console": "integratedTerminal",
+            "args": ["add_user"],
+            "justMyCode": true
         }
     ]
 }

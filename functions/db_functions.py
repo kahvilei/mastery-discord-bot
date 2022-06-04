@@ -49,7 +49,7 @@ def delete_user(datastore_client, request_args):
     try:
         db_key = datastore_client.key("summoner", puuid)
         summoner = datastore_client.get(key=db_key)
-        summoner.key.delete()
+        datastore_client.delete(summoner)
         return "summoner sucessfully deleted"
     except KeyError:
         return None
