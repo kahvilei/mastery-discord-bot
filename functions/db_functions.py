@@ -68,23 +68,48 @@ def update_user_winrate(datastore_client, request_args):
         return "puuid required for updating user matches"
     puuid = request_args["puuid"]
 
-    last_updated = time()
+    last_updated = "0"
+    total_played = 0
+    total_wins = 0
     query = datastore_client.query(kind="user_winrate")
     query.add_filter("puuid", "=", puuid)
     query_result = list(query.fetch())
     user_winrate = json.loads(json.dumps(query_result), parse_int=str)
     if len(user_winrate) > 0:
-        # TODO this is probably wrong
-        last_updated = user_winrate[0]["last_added"]
+        last_updated = user_winrate[0]["last_updated"]
+        total_played = int(user_winrate[0]["total_played"])
+        total_wins = int(user_winrate[0]["total_wins"])
 
     query = datastore_client.query(kind="summoner_match")
-    query.add_filter("gameStartTimestamp", ">", last_updated)
-    query_result = list(query.fetch())
-    new_matches = json.loads(json.dumps(query_result), parse_int=str)
+    query.add_filter("puuid", "=", puuid)
+    query.add_filter("gameStartTimestamp", ">", int(last_updated))
+    query.order = ["gameStartTimestamp"]
+    matches_query_result = list(query.fetch())
+    new_matches = json.loads(json.dumps(matches_query_result), parse_int=str)
 
+    if len(new_matches) == 0:
+        return "No new data to record"
+
+    most_recent_ts = new_matches[-1]['gameStartTimestamp']
     wins = len([match for match in new_matches if match["win"]])
     new_match_count = len(new_matches)
 
-    # TODO update the user_winrate table
+    total_played += new_match_count
+    total_wins += wins
+    new_winrate = float(total_wins)/total_played
+    print(f"new winrate: {new_winrate}")
 
-    # TODO update the summoner table
+    db_key = datastore_client.key("user_winrate", puuid)
+    winrate_data = datastore_client.get(key=db_key)
+    if winrate_data is None:
+        winrate_data = datastore.Entity(key=db_key)
+    winrate_data["total_played"] = total_played
+    winrate_data["total_wins"] = total_wins
+    winrate_data["last_updated"] = most_recent_ts
+    winrate_data["puuid"] = puuid
+    datastore_client.put(winrate_data)
+
+    # TODO make this below method generic so you don't have to do the above work
+    update_summoner_field(datastore_client, puuid, "win_rate", new_winrate)
+
+    return "Winrate updated"
