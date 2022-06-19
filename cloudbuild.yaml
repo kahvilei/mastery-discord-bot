@@ -12,3 +12,17 @@ steps:
   - --allow-unauthenticated
   - --entry-point=entrypoint
   - --set-secrets=Riot_API_Key=projects/451871121938/secrets/Riot_API_Key/versions/latest
+
+  steps:
+- name: 'gcr.io/google.com/cloudsdktool/cloud-schedule'
+  args:
+  - gcloud
+  - functions
+  - deploy
+  - summoners_scheduled_updates
+  - --region=us-central1
+  - --source=./functions
+  - --runtime=python39
+  - --allow-unauthenticated
+  - --entry-point=entrypoint
+  - --set-secrets=Riot_API_Key=projects/451871121938/secrets/Riot_API_Key/versions/latest
