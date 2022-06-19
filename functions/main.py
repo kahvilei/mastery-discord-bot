@@ -2,7 +2,7 @@ from google.cloud import datastore
 import google.cloud.logging
 
 from db_functions import write_dict_to_datastore, get_summoner_field, update_summoner_field, get_all_summoners, delete_user, get_summoner_dict
-from riot_functions import get_user_matches, get_match_data, update_user_data, get_live_matches
+from riot_functions import get_user_matches, get_match_data, lookup_summoner, get_live_matches
 
 ###
 #
@@ -39,6 +39,22 @@ def update_user_matches(puuid, region, last_match, datastore_client):
     print(f"Logged {len(recorded_matches)} matches")
     return f"Logged {len(recorded_matches)} matches"
 
+def add_tracked_user(datastore_client, request_args):
+    if "summoner" not in request_args:
+        return "\"summoner\" required to get user info"
+
+    region = request_args["region"] if "region" in request_args else "na1"
+
+    summoner = request_args["summoner"]
+    summoner = summoner.replace(" ", "%20")
+
+    user_data = lookup_summoner(summoner, region)
+    add_user(datastore_client, request_args)
+    update_user_matches(user_data["puuid"], region, None, datastore_client)
+
+
+    return f"{user_data}"
+
 def add_user(datastore_client, request_args):
     if "summoner" not in request_args:
         return "\"summoner\" required to get user info"
@@ -48,9 +64,10 @@ def add_user(datastore_client, request_args):
     summoner = request_args["summoner"]
     summoner = summoner.replace(" ", "%20")
 
-    user_data = update_user_data(summoner, region)
+    user_data = lookup_summoner(summoner, region)
 
     write_dict_to_datastore(datastore_client, user_data["puuid"], user_data, "summoner")
+
 
     return f"{user_data}"
 
@@ -75,7 +92,7 @@ def entrypoint(request):
         elif operation == "summoner_match_refresh":
             return summoner_match_refresh(datastore_client, request_args)
         elif operation == "add_user":
-            return add_user(datastore_client, request_args)
+            return add_tracked_user(datastore_client, request_args)
         elif operation == "get_live_matches":
             return get_live_matches(datastore_client)
         elif operation == "delete_user":

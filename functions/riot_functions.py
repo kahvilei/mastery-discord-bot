@@ -33,7 +33,7 @@ def _match_region_correction(region):
 
 
 # Makes the call to get summoner puuids by name
-def update_user_data(user, region):
+def lookup_summoner(user, region):
 
     path = f'https://{region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/{user}'
     response = requests.get(path, headers=headers)
