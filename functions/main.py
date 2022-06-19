@@ -1,7 +1,7 @@
 from google.cloud import datastore
 import google.cloud.logging
 
-from db_functions import write_dict_to_datastore, get_summoner_field, update_summoner_field, get_all_summoners, delete_user
+from db_functions import write_dict_to_datastore, get_summoner_field, update_summoner_field, get_all_summoners, delete_user, get_summoner_dict
 from riot_functions import get_user_matches, get_match_data, update_user_data, get_live_matches
 
 ###
@@ -10,14 +10,22 @@ from riot_functions import get_user_matches, get_match_data, update_user_data, g
 ###
 
 
-def update_user_matches(datastore_client, request_args):
+def summoner_match_refresh(datastore_client, request_args):
     if "puuid" not in request_args:
         return "puuid required for updating user matches"
     else:
         puuid = request_args["puuid"]
     region = request_args["region"] if "region" in request_args else "na1"
     last_match_start_ts = get_summoner_field(datastore_client, puuid, "last_match_start_ts")
-    user_matches = get_user_matches(request_args["summoner"], region, last_match_start_ts)
+    summoner_match_refresh(puuid, region, last_match_start_ts, datastore_client)
+
+def mass_match_refresh(datastore_client):
+    summoner_dict = get_summoner_dict(datastore_client)
+    for summoner in summoner_dict:
+        summoner_match_refresh(summoner["puuid"], summoner["region"], summoner["last_match_start_ts"], datastore_client)
+
+def update_user_matches(puuid, region, last_match, datastore_client):
+    user_matches = get_user_matches(puuid, region, last_match)
     recorded_matches = []
     for match in user_matches:
         recorded_match = get_match_data(puuid, region, match)
@@ -29,7 +37,6 @@ def update_user_matches(datastore_client, request_args):
 
     print(f"Logged {len(recorded_matches)} matches")
     return f"Logged {len(recorded_matches)} matches"
-
 
 def add_user(datastore_client, request_args):
     if "summoner" not in request_args:
@@ -64,8 +71,8 @@ def entrypoint(request):
 
         if operation == "get_all_summoners":
             return get_all_summoners(datastore_client)
-        elif operation == "update_user_matches":
-            return update_user_matches(datastore_client, request_args)
+        elif operation == "summoner_match_refresh":
+            return summoner_match_refresh(datastore_client, request_args)
         elif operation == "add_user":
             return add_user(datastore_client, request_args)
         elif operation == "get_live_matches":
@@ -73,7 +80,7 @@ def entrypoint(request):
         elif operation == "delete_user":
             return delete_user(datastore_client, request_args)
         elif operation == "mass_match_refresh":
-            return mass_match_refresh(datastore_client, request_args)
+            return mass_match_refresh(datastore_client)
         else:
             return "Please provide a valid operation"
     except Exception as err:

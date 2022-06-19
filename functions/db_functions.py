@@ -1,7 +1,6 @@
 from google.cloud import datastore
 import json
 import flask
-from riot_functions import get_user_matches
 
 def write_dict_to_datastore(datastore_client, primary_key, fields, kind):
     # The Cloud Datastore key for the new entity
@@ -30,11 +29,6 @@ def update_summoner_field(datastore_client, puuid, field, value):
     summoner[field] = value
     datastore_client.put(summoner)
 
-def mass_match_refresh(datastore_client):
-    summoner_dict = get_summoner_dict
-    for summoner in summoner_dict:
-        get_user_matches(summoner["puuid"], summoner["region"], summoner["last_match_start_ts"])
-
 def get_summoner_field(datastore_client, puuid, field):
     try:
         db_key = datastore_client.key("summoner", puuid)
@@ -44,7 +38,7 @@ def get_summoner_field(datastore_client, puuid, field):
         return None
 
 def get_all_summoners(datastore_client):
-    summoner_dict = get_summoner_dict
+    summoner_dict = get_summoner_dict(datastore_client)
     summoner_json = json.dumps(summoner_dict, indent = 4) 
     resp = flask.Response(summoner_json)
     resp.headers['Access-Control-Allow-Origin'] = '*'
