@@ -72,6 +72,8 @@ def entrypoint(request):
             return get_live_matches(datastore_client)
         elif operation == "delete_user":
             return delete_user(datastore_client, request_args)
+        elif operation == "mass_match_refresh":
+            return mass_match_refresh(datastore_client, request_args)
         else:
             return "Please provide a valid operation"
     except Exception as err:

@@ -1,6 +1,7 @@
 from google.cloud import datastore
 import json
 import flask
+from riot_functions import get_user_matches
 
 def write_dict_to_datastore(datastore_client, primary_key, fields, kind):
     # The Cloud Datastore key for the new entity
@@ -15,11 +16,24 @@ def write_dict_to_datastore(datastore_client, primary_key, fields, kind):
     # Saves the entity
     datastore_client.put(entity)
 
+def get_summoner_dict(datastore_client):
+    query = datastore_client.query(kind="summoner")
+    query_result = list(query.fetch())
+    summoner_list = json.loads(json.dumps(query_result), parse_int=str)
+    summoner_dict = [summoner for summoner in summoner_list]
+    return summoner_dict
+
+
 def update_summoner_field(datastore_client, puuid, field, value):
     db_key = datastore_client.key("summoner", puuid)
     summoner = datastore_client.get(key=db_key)
     summoner[field] = value
     datastore_client.put(summoner)
+
+def mass_match_refresh(datastore_client):
+    summoner_dict = get_summoner_dict
+    for summoner in summoner_dict:
+        get_user_matches(summoner["puuid"], summoner["region"], summoner["last_match_start_ts"])
 
 def get_summoner_field(datastore_client, puuid, field):
     try:
@@ -30,10 +44,7 @@ def get_summoner_field(datastore_client, puuid, field):
         return None
 
 def get_all_summoners(datastore_client):
-    query = datastore_client.query(kind="summoner")
-    query_result = list(query.fetch())
-    summoner_list = json.loads(json.dumps(query_result), parse_int=str)
-    summoner_dict = [summoner for summoner in summoner_list]
+    summoner_dict = get_summoner_dict
     summoner_json = json.dumps(summoner_dict, indent = 4) 
     resp = flask.Response(summoner_json)
     resp.headers['Access-Control-Allow-Origin'] = '*'

@@ -33,7 +33,7 @@
             "console": "integratedTerminal",
             "args": ["delete_user"],
             "justMyCode": true
-        }
+        },
         {
             "name": "Add User",
             "type": "python",
