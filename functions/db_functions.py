@@ -1,3 +1,5 @@
+from time import time
+
 from google.cloud import datastore
 import json
 import flask
@@ -55,6 +57,34 @@ def delete_user(datastore_client, request_args):
         db_key = datastore_client.key("summoner", puuid)
         summoner = datastore_client.get(key=db_key)
         datastore_client.delete(summoner)
-        return "summoner sucessfully deleted"
+        return "summoner successfully deleted"
     except KeyError:
         return None
+
+
+def update_user_winrate(datastore_client, request_args):
+
+    if "puuid" not in request_args:
+        return "puuid required for updating user matches"
+    puuid = request_args["puuid"]
+
+    last_updated = time()
+    query = datastore_client.query(kind="user_winrate")
+    query.add_filter("puuid", "=", puuid)
+    query_result = list(query.fetch())
+    user_winrate = json.loads(json.dumps(query_result), parse_int=str)
+    if len(user_winrate) > 0:
+        # TODO this is probably wrong
+        last_updated = user_winrate[0]["last_added"]
+
+    query = datastore_client.query(kind="summoner_match")
+    query.add_filter("gameStartTimestamp", ">", last_updated)
+    query_result = list(query.fetch())
+    new_matches = json.loads(json.dumps(query_result), parse_int=str)
+
+    wins = len([match for match in new_matches if match["win"]])
+    new_match_count = len(new_matches)
+
+    # TODO update the user_winrate table
+
+    # TODO update the summoner table
