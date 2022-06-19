@@ -22,7 +22,8 @@ def summoner_match_refresh(datastore_client, request_args):
 def mass_match_refresh(datastore_client):
     summoner_dict = get_summoner_dict(datastore_client)
     for summoner in summoner_dict:
-        summoner_match_refresh(summoner["puuid"], summoner["region"], summoner["last_match_start_ts"], datastore_client)
+        last_match_start_ts = get_summoner_field(datastore_client, summoner["puuid"], "last_match_start_ts")
+        update_user_matches(summoner["puuid"], summoner["region"], last_match_start_ts, datastore_client)
 
 def update_user_matches(puuid, region, last_match, datastore_client):
     user_matches = get_user_matches(puuid, region, last_match)

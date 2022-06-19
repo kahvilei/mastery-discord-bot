@@ -42,6 +42,15 @@
             "console": "integratedTerminal",
             "args": ["add_user"],
             "justMyCode": true
+        },
+        {
+            "name": "Mass Match Refresh",
+            "type": "python",
+            "request": "launch",
+            "program": "functions/testing.py",
+            "console": "integratedTerminal",
+            "args": ["mass_match_refresh"],
+            "justMyCode": true
         }
     ]
 }
