@@ -12,3 +12,5 @@
 
 # TODO calculate per-champ win rates
 
+def update_user_winrate(puuid):
+    print("later")

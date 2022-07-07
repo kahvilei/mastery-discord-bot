@@ -1,7 +1,8 @@
 from google.cloud import datastore
 import google.cloud.logging
 
-from db_functions import write_dict_to_datastore, get_summoner_field, update_summoner_field, get_all_summoners, delete_user, get_summoner_dict
+from db_functions import write_dict_to_datastore, get_summoner_field, update_summoner_field, get_all_summoners, \
+    delete_user, get_summoner_dict, update_user_winrate
 from riot_functions import get_user_matches, get_match_data, lookup_summoner, get_live_matches
 
 ###
@@ -96,6 +97,8 @@ def entrypoint(request):
             return delete_user(datastore_client, puuid)
         elif operation[1] == "mass-match-refresh":
             return mass_match_refresh(datastore_client)
+        elif operation == "update_user_winrate":
+            return update_user_winrate(datastore_client, request_args)
         else:
             return "Please provide a valid operation"
     except Exception as err:
