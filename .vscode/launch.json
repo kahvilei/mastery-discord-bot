@@ -4,7 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [      
-    
+
 
     {"name":"Python: Current File","type":"python","request":"launch","program":"${file}","console":"integratedTerminal","justMyCode":true},
 
@@ -14,7 +14,7 @@
             "request": "launch",
             "program": "functions/testing.py",
             "console": "integratedTerminal",
-            "args": ["get_all_summoners"],
+            "args": ["get-all-summoners"],
             "justMyCode": true
         },
         {
@@ -23,7 +23,7 @@
             "request": "launch",
             "program": "functions/testing.py",
             "console": "integratedTerminal",
-            "args": ["get_live_matches"],
+            "args": ["get-live-matches"],
             "justMyCode": true
         },
         {
@@ -32,7 +32,7 @@
             "request": "launch",
             "program": "functions/testing.py",
             "console": "integratedTerminal",
-            "args": ["delete_user"],
+            "args": ["delete-user"],
             "justMyCode": true
         },
         {
@@ -41,7 +41,7 @@
             "request": "launch",
             "program": "functions/testing.py",
             "console": "integratedTerminal",
-            "args": ["add_user"],
+            "args": ["add-user"],
             "justMyCode": true
         },
         {
@@ -50,7 +50,7 @@
             "request": "launch",
             "program": "functions/testing.py",
             "console": "integratedTerminal",
-            "args": ["mass_match_refresh"],
+            "args": ["mass-match-refresh"],
             "justMyCode": true
         }
     ]

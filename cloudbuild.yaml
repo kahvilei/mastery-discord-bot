@@ -19,7 +19,7 @@ steps:
 #   - gcloud
 #   - functions
 #   - deploy
-#   - summoners_scheduled_updates
+#   - summoners_orchestration
 #   - --region=us-central1
 #   - --source=./functions
 #   - --runtime=python39

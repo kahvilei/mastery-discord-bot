@@ -29,7 +29,7 @@ def update_user_matches(puuid, region, last_match, datastore_client):
         write_dict_to_datastore(datastore_client, f"{puuid}_{match}", recorded_match, "summoner_match")
         recorded_matches.append(recorded_match)
     if len(recorded_matches) > 0:
-        last_match_start_ts = str(recorded_matches[0]["info"]["gameStartTimestamp"])[:-3]
+        last_match_start_ts = str(recorded_matches[0]["gameStartTimestamp"])[:-3]
         update_summoner_field(datastore_client, puuid, "last_match_start_ts", last_match_start_ts)
 
     print(f"Logged {len(recorded_matches)} matches")
