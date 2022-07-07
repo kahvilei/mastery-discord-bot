@@ -1,7 +1,7 @@
 from google.cloud import datastore
 import google.cloud.logging
 
-from db_functions import write_dict_to_datastore, get_summoner_field, update_summoner_field, get_all_summoners, \
+from db_functions import write_dict_to_datastore, get_summoner_field, get_summoner, update_summoner_field, get_all_summoners, \
     delete_user, get_summoner_dict, update_user_winrate
 from riot_functions import get_user_matches, get_match_data, lookup_summoner, get_live_matches
 
@@ -11,12 +11,7 @@ from riot_functions import get_user_matches, get_match_data, lookup_summoner, ge
 ###
 
 
-def summoner_match_refresh(datastore_client, request_args):
-    if "puuid" not in request_args:
-        return "puuid required for updating user matches"
-    else:
-        puuid = request_args["puuid"]
-    region = request_args["region"] if "region" in request_args else "na1"
+def summoner_match_refresh(datastore_client, puuid, region):
     last_match_start_ts = get_summoner_field(datastore_client, puuid, "last_match_start_ts")
     summoner_match_refresh(puuid, region, last_match_start_ts, datastore_client)
 
@@ -88,6 +83,11 @@ def entrypoint(request):
                 return "A valid name is required for account addition"
             summoner = operation[3]
             return add_tracked_user(datastore_client, region, summoner)
+        elif operation[1] == "get-summoner":
+            if operation[2] == None or len(operation[2]) < 78:
+                return "A valid puuid is required for deletion"
+            puuid = operation[2]
+            return get_summoner(datastore_client, puuid)
         elif operation[1] == "get-live-matches":
             return get_live_matches(datastore_client)
         elif operation[1] == 'delete-user':
@@ -101,7 +101,7 @@ def entrypoint(request):
             if operation[2] == None or len(operation[2]) < 78:
                 return "A valid puuid is required for deletion"
             puuid = operation[2]
-            return update_user_winrate(datastore_client, )
+            return update_user_winrate(datastore_client, puuid)
         else:
             return "Please provide a valid operation"
     except Exception as err:

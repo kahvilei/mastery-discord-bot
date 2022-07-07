@@ -39,6 +39,14 @@ def get_summoner_field(datastore_client, puuid, field):
     except KeyError:
         return None
 
+def get_summoner(datastore_client, puuid):
+    try:
+        db_key = datastore_client.key("summoner", puuid)
+        summoner = json.dumps(datastore_client.get(key=db_key), indent = 4)
+        return summoner
+    except KeyError:
+        return None
+
 def get_all_summoners(datastore_client):
     summoner_dict = get_summoner_dict(datastore_client)
     summoner_json = json.dumps(summoner_dict, indent = 4) 
