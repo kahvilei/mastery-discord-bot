@@ -31,9 +31,11 @@ def update_user_matches(puuid, region, last_match, datastore_client):
     if len(recorded_matches) > 0:
         last_match_start_ts = str(recorded_matches[0]["gameStartTimestamp"])[:-3]
         update_summoner_field(datastore_client, puuid, "last_match_start_ts", last_match_start_ts)
+        print(f"Logged {len(recorded_matches)} matches")
+        return f"Logged {len(recorded_matches)} matches"
 
-    print(f"Logged {len(recorded_matches)} matches")
-    return f"Logged {len(recorded_matches)} matches"
+    print("no updates required")
+    return "no updates required"
 
 def add_tracked_user(datastore_client, region, summoner):
 
