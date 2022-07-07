@@ -39,37 +39,19 @@ def update_user_matches(puuid, region, last_match, datastore_client):
     print(f"Logged {len(recorded_matches)} matches")
     return f"Logged {len(recorded_matches)} matches"
 
-def add_tracked_user(datastore_client, request_args):
-    if "summoner" not in request_args:
-        return "\"summoner\" required to get user info"
+def add_tracked_user(datastore_client, region, summoner):
 
-    region = request_args["region"] if "region" in request_args else "na1"
-
-    summoner = request_args["summoner"]
     summoner = summoner.replace(" ", "%20")
 
     user_data = lookup_summoner(summoner, region)
-    add_user(datastore_client, request_args)
+    add_user(datastore_client, user_data)
     update_user_matches(user_data["puuid"], region, None, datastore_client)
 
+    return f"succesfully added user {summoner}"
 
-    return f"{user_data}"
-
-def add_user(datastore_client, request_args):
-    if "summoner" not in request_args:
-        return "\"summoner\" required to get user info"
-
-    region = request_args["region"] if "region" in request_args else "na1"
-
-    summoner = request_args["summoner"]
-    summoner = summoner.replace(" ", "%20")
-
-    user_data = lookup_summoner(summoner, region)
-
+def add_user(datastore_client, user_data):
     write_dict_to_datastore(datastore_client, user_data["puuid"], user_data, "summoner")
 
-
-    return f"{user_data}"
 
 
 def entrypoint(request):
@@ -80,24 +62,39 @@ def entrypoint(request):
         client = google.cloud.logging.Client()
         client.setup_logging()
 
-        request_args = request.args
+        request_path = request.path
 
-        if "operation" not in request_args:
+        if len(request_path) < 2:
             return "Could not handle request. Please specify operation"
 
-        operation = request_args["operation"]
+        operation = request_path.split('/')
 
-        if operation == "get_all_summoners":
+        if operation[1] == 'get-all-summoners':
             return get_all_summoners(datastore_client)
-        elif operation == "summoner_match_refresh":
-            return summoner_match_refresh(datastore_client, request_args)
-        elif operation == "add_user":
-            return add_tracked_user(datastore_client, request_args)
-        elif operation == "get_live_matches":
+        elif operation[1] == "summoner-match-refresh":
+            if operation[2] == None or len(operation[2]) < 2:
+                return "A valid region is required"
+            region = operation[2]
+            if operation[3] == None or len(operation[3]) < 2:
+                return "A valid puiid is required for account addition"
+            puuid = operation[3]
+            return summoner_match_refresh(datastore_client, puuid, region)
+        elif operation[1] == "add-user":
+            if operation[2] == None or len(operation[2]) < 2:
+                return "A valid region is required"
+            region = operation[2]
+            if operation[3] == None or len(operation[3]) < 2:
+                return "A valid name is required for account addition"
+            summoner = operation[3]
+            return add_tracked_user(datastore_client, region, summoner)
+        elif operation[1] == "get-live-matches":
             return get_live_matches(datastore_client)
-        elif operation == "delete_user":
-            return delete_user(datastore_client, request_args)
-        elif operation == "mass_match_refresh":
+        elif operation[1] == 'delete-user':
+            if operation[2] == None or len(operation[2]) < 78:
+                return "A valid puuid is required for deletion"
+            puuid = operation[2]
+            return delete_user(datastore_client, puuid)
+        elif operation[1] == "mass-match-refresh":
             return mass_match_refresh(datastore_client)
         else:
             return "Please provide a valid operation"

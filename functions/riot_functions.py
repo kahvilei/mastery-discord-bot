@@ -52,12 +52,12 @@ def get_match_data(puuid, region, match):
 
     match_info = json.loads(response.text)
 
-    filtered_match_info = {"summoner": puuid}
-
     if 'metadata' not in match_info:
         raise Exception("Invalid response from matches API")
 
     summoner_index = match_info['metadata']['participants'].index(puuid)
+
+    filtered_match_info = {}
 
     filtered_match_info["gameStartTimestamp"] = match_info['info']['gameStartTimestamp']
     filtered_match_info["gameMode"] = match_info['info']['gameMode']
