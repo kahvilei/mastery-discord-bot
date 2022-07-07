@@ -1,6 +1,6 @@
 
 export async function summonerList() {
-    const response = await fetch("https://us-central1-summon-cloud.cloudfunctions.net/get_summoner_details?operation=get_all_summoners")
+    const response = await fetch("https://us-central1-summon-cloud.cloudfunctions.net/orchestration/get-all-summoners")
                             .then(response => response.json());
 
     console.log(response);
@@ -8,7 +8,7 @@ export async function summonerList() {
 }
 
 export async function liveMatches() {
-    const response = await fetch("https://us-central1-summon-cloud.cloudfunctions.net/get_summoner_details?operation=get_live_matches")
+    const response = await fetch("https://us-central1-summon-cloud.cloudfunctions.net/orchestration/get-live-matches")
                            .then(response => response.json());
 
     console.log(response);
