@@ -4,6 +4,7 @@ import google.cloud.logging
 from db_functions import write_dict_to_datastore, get_summoner_field, get_summoner, update_summoner_field, get_all_summoners, \
     delete_user, get_summoner_dict, update_user_winrate
 from riot_functions import get_user_matches, get_match_data, lookup_summoner, get_live_matches
+import flask
 
 ###
 #
@@ -32,10 +33,10 @@ def update_user_matches(puuid, region, last_match, datastore_client):
         last_match_start_ts = str(recorded_matches[0]["gameStartTimestamp"])[:-3]
         update_summoner_field(datastore_client, puuid, "last_match_start_ts", last_match_start_ts)
         print(f"Logged {len(recorded_matches)} matches")
-        return f"Logged {len(recorded_matches)} matches"
+        return flask.Response(f"Logged {len(recorded_matches)} matches")
 
     print("no updates required")
-    return "no updates required"
+    return flask.Response("no updates required")
 
 def add_tracked_user(datastore_client, region, summoner):
 
