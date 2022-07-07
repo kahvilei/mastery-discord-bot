@@ -2,7 +2,7 @@ from google.cloud import datastore
 import google.cloud.logging
 
 from db_functions import write_dict_to_datastore, get_summoner_field, get_summoner, update_summoner_field, get_all_summoners, \
-    delete_user, get_summoner_dict, update_user_winrate
+    delete_user, get_summoner_dict, update_user_winrate, get_all_summoner_IDs
 from riot_functions import get_user_matches, get_match_data, lookup_summoner, get_live_matches
 import flask
 
@@ -70,6 +70,8 @@ def entrypoint(request):
 
         if operation[1] == 'get-all-summoners':
             return get_all_summoners(datastore_client)
+        elif operation[1] == 'get-all-summoner-IDs':
+            return get_all_summoner_IDs(datastore_client)
         elif operation[1] == "summoner-match-refresh":
             if operation[2] == None or len(operation[2]) < 2:
                 return "A valid region is required"
@@ -91,6 +93,14 @@ def entrypoint(request):
                 return "A valid puuid is required for deletion"
             puuid = operation[2]
             return get_summoner(datastore_client, puuid)
+        elif operation[1] == "get-summoner-field":
+            if operation[2] == None or len(operation[2]) < 78:
+                return "A valid puuid is required for info grab"
+            puuid = operation[2]
+            if operation[3] == None or len(operation[3]) < 2:
+                return "A valid field is required for info grab"
+            field = operation[3]
+            return get_summoner_field(datastore_client, puuid, field)
         elif operation[1] == "get-live-matches":
             return get_live_matches(datastore_client)
         elif operation[1] == 'delete-user':

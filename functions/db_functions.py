@@ -55,6 +55,16 @@ def get_all_summoners(datastore_client):
     resp.headers['Access-Control-Allow-Credentials'] = 'true'
     return resp
 
+def get_all_summoner_IDs(datastore_client):
+    # summoner_dict = [x[get_summoner_dict(datastore_client)]["puuid"]]
+    summoner_dict = get_summoner_dict(datastore_client)
+    summoner_puuid_array = [_["puuid"] for _ in summoner_dict]
+    summoner_json = json.dumps(summoner_puuid_array, indent = 4) 
+    resp = flask.Response(summoner_json)
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    resp.headers['Access-Control-Allow-Credentials'] = 'true'
+    return resp
+
 def delete_user(datastore_client, puuid):
     try:
         db_key = datastore_client.key("summoner", puuid)

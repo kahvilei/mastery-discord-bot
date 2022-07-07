@@ -6,6 +6,7 @@
     "configurations": [      
 
 
+
     {"name":"Python: Current File","type":"python","request":"launch","program":"${file}","console":"integratedTerminal","justMyCode":true},
 
         {
@@ -51,6 +52,15 @@
             "program": "functions/testing.py",
             "console": "integratedTerminal",
             "args": ["mass-match-refresh"],
+            "justMyCode": true
+        },
+        {
+            "name": "get summoner IDs",
+            "type": "python",
+            "request": "launch",
+            "program": "functions/testing.py",
+            "console": "integratedTerminal",
+            "args": ["get-all-summoner-IDs"],
             "justMyCode": true
         }
     ]
