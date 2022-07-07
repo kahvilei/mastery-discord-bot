@@ -98,7 +98,10 @@ def entrypoint(request):
         elif operation[1] == "mass-match-refresh":
             return mass_match_refresh(datastore_client)
         elif operation == "update_user_winrate":
-            return update_user_winrate(datastore_client, request_args)
+            if operation[2] == None or len(operation[2]) < 78:
+                return "A valid puuid is required for deletion"
+            puuid = operation[2]
+            return update_user_winrate(datastore_client, )
         else:
             return "Please provide a valid operation"
     except Exception as err:

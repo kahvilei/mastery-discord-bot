@@ -47,12 +47,7 @@ def get_all_summoners(datastore_client):
     resp.headers['Access-Control-Allow-Credentials'] = 'true'
     return resp
 
-def delete_user(datastore_client, request_args):
-    if "puuid" not in request_args:
-        return "\"puuid\" required to delete user"
-
-    puuid = request_args["puuid"]
-
+def delete_user(datastore_client, puuid):
     try:
         db_key = datastore_client.key("summoner", puuid)
         summoner = datastore_client.get(key=db_key)
@@ -62,11 +57,7 @@ def delete_user(datastore_client, request_args):
         return None
 
 
-def update_user_winrate(datastore_client, request_args):
-
-    if "puuid" not in request_args:
-        return "puuid required for updating user matches"
-    puuid = request_args["puuid"]
+def update_user_winrate(datastore_client, puuid):
 
     last_updated = "0"
     total_played = 0
