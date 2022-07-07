@@ -14,7 +14,7 @@ import flask
 
 def summoner_match_refresh(datastore_client, puuid, region):
     last_match_start_ts = get_summoner_field(datastore_client, puuid, "last_match_start_ts")
-    summoner_match_refresh(puuid, region, last_match_start_ts, datastore_client)
+    update_user_matches(puuid, region, last_match_start_ts, datastore_client)
 
 def mass_match_refresh(datastore_client):
     summoner_dict = get_summoner_dict(datastore_client)
