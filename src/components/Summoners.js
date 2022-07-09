@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {summonerList} from '../assets/js/summonerData.js'
+import {summonerList} from '../assets/js/summonerData.js';
+import Summoner from '../assets/js/SummonerWrapClass.js';
 
 class Summoners extends Component{
       
@@ -15,7 +16,9 @@ class Summoners extends Component{
 
     }
 
-    render() { 
+    render() {
+        let summoner = new Summoner("FwbehkpR_zjpKu10OsPeJIXKJyy0grKEmdoZd0TvUVmx2ygWJk1056pUD1uEv7kyDsLaHF6EDkLlnw");
+        <div>{summoner.name}</div>
         if(this.state.summoners){
             console.log(this.state.summoners)
             return(

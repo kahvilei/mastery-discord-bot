@@ -39,6 +39,12 @@ def get_summoner_field(datastore_client, puuid, field):
     except KeyError:
         return None
 
+def get_info(datastore_client, puuid, field):
+        resp = flask.Response(get_summoner_field(datastore_client, puuid, field))
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+        resp.headers['Access-Control-Allow-Credentials'] = 'true'
+        return resp
+
 def get_summoner(datastore_client, puuid):
     try:
         db_key = datastore_client.key("summoner", puuid)
