@@ -8,9 +8,8 @@ import flask
 
 ###
 #
-# This file does all the orchestration.
+# This file does all the orchestration and functions that require both database functions and riot API functions
 ###
-
 
 def summoner_match_refresh(datastore_client, puuid, region):
     last_match_start_ts = get_summoner_field(datastore_client, puuid, "last_match_start_ts")
@@ -52,8 +51,6 @@ def add_tracked_user(datastore_client, region, summoner):
 
 def add_user(datastore_client, user_data):
     write_dict_to_datastore(datastore_client, user_data["puuid"], user_data, "summoner")
-
-
 
 def entrypoint(request):
     try:
