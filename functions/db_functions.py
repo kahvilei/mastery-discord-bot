@@ -19,7 +19,7 @@ def write_dict_to_datastore(datastore_client, primary_key, fields, kind):
 
 def get_summoner_dict(datastore_client, sort):
     query = datastore_client.query(kind="summoner")
-    query.order = [sort]
+    query.order = ["-" + sort]
     query_result = list(query.fetch())
     summoner_list = json.loads(json.dumps(query_result), parse_int=str)
     summoner_dict = [summoner for summoner in summoner_list]
