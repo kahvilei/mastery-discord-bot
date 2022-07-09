@@ -17,7 +17,7 @@ def write_dict_to_datastore(datastore_client, primary_key, fields, kind):
     # Saves the entity
     datastore_client.put(entity)
 
-def get_summoner_dict(datastore_client, sort):
+def get_summoner_dict(datastore_client, sort = 'name'):
     query = datastore_client.query(kind="summoner")
     query.order = ["-" + sort]
     query_result = list(query.fetch())
