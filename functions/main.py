@@ -18,9 +18,11 @@ def summoner_match_refresh(datastore_client, puuid, region):
 
 def mass_match_refresh(datastore_client):
     summoner_dict = get_summoner_dict(datastore_client)
+    results = " "
     for summoner in summoner_dict:
         last_match_start_ts = get_summoner_field(datastore_client, summoner["puuid"], "last_match_start_ts")
-        return update_user_matches(summoner["puuid"], summoner["region"], last_match_start_ts, datastore_client)
+        results += " " + update_user_matches(summoner["puuid"], summoner["region"], last_match_start_ts, datastore_client) + " for " + summoner["name"]
+    return flask.Response(results)
 
 def update_user_matches(puuid, region, last_match, datastore_client):
     user_matches = get_user_matches(puuid, region, last_match)
@@ -33,10 +35,10 @@ def update_user_matches(puuid, region, last_match, datastore_client):
         last_match_start_ts = str(recorded_matches[0]["gameStartTimestamp"])[:-3]
         update_summoner_field(datastore_client, puuid, "last_match_start_ts", last_match_start_ts)
         print(f"Logged {len(recorded_matches)} matches")
-        return flask.Response(f"Logged {len(recorded_matches)} matches")
+        return f"Logged {len(recorded_matches)} matches"
 
     print("no updates required")
-    return flask.Response("no updates required")
+    return "no updates required"
 
 def add_tracked_user(datastore_client, region, summoner):
 

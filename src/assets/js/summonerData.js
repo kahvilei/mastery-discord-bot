@@ -7,14 +7,6 @@ export async function summonerList() {
     return response;
 }
 
-export async function summoner(name, region) {
-    const response = await fetch("https://us-central1-summon-cloud.cloudfunctions.net/summoners_orchestration/get-summoner/" + region + "/" + name)
-                            .then(response => response.json());
-
-    console.log(response);
-    return response;
-}
-
 export async function liveMatches() {
     const response = await fetch("https://us-central1-summon-cloud.cloudfunctions.net/summoners_orchestration/get-live-matches")
                            .then(response => response.json());
