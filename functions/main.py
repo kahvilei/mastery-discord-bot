@@ -23,6 +23,13 @@ def mass_match_refresh(datastore_client):
         results += " " + update_user_matches(summoner["puuid"], summoner["region"], last_match_start_ts, datastore_client) + " for " + summoner["name"]
     return flask.Response(results)
 
+def mass_stats_refresh(datastore_client):
+    summoner_dict = get_summoner_dict(datastore_client)
+    results = " "
+    for summoner in summoner_dict:
+        results += " " + update_user_winrate(datastore_client, summoner["puuid"])
+    return flask.Response(results)
+
 def update_user_matches(puuid, region, last_match, datastore_client):
     user_matches = get_user_matches(puuid, region, last_match)
     recorded_matches = []
@@ -113,6 +120,8 @@ def entrypoint(request):
             return delete_user(datastore_client, puuid)
         elif operation[1] == "mass-match-refresh":
             return mass_match_refresh(datastore_client)
+        elif operation[1] == "mass-stats-refresh":
+            return mass_stats_refresh(datastore_client)
         elif operation == "update_user_winrate":
             if operation[2] == None or len(operation[2]) < 78:
                 return "A valid puuid is required for deletion"
