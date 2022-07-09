@@ -1,42 +1,38 @@
 import React, { Component } from 'react';
-import {summonerList} from '../assets/js/summonerData.js';
-import Summoner from '../assets/js/SummonerWrapClass.js';
+import SummonerList from '../assets/js/SummonerListClass.js';
 
 class Summoners extends Component{
       
     constructor() {
         super();
-        this.state = { summoners: [] };
+        this.state = { summoners: []};
     }
     
 
     async componentDidMount() {
-        var response = await summonerList();
-        this.setState({ summoners: response });
-
+        var summonerArray = await SummonerList.build();
+        console.log(summonerArray);
+        this.setState({ summoners: summonerArray});
     }
 
     render() {
-        let summoner = new Summoner("FwbehkpR_zjpKu10OsPeJIXKJyy0grKEmdoZd0TvUVmx2ygWJk1056pUD1uEv7kyDsLaHF6EDkLlnw");
-        <div>{summoner.name}</div>
-        if(this.state.summoners){
-            console.log(this.state.summoners)
+        if(this.state.summoners.list){
             return(
             <section id="summoner-previews">
                 <h2>Summoners</h2> 
                 <div className="summoner-preview-list">
-                    {this.state.summoners.map((data, key) => {
+                    {this.state.summoners.list.map((summoner, key) => {
                     return (
                         <div className="summoner-container" key={key}>
                             <div className = "summoner-icon"> 
-                                <img src = {"http://ddragon.leagueoflegends.com/cdn/12.10.1/img/profileicon/" + data.profileIconId + ".png"}></img>
+                                <img src = {summoner.icon()}></img>
                             </div>
                             <div className = "summoner-info">
                                 <h3 className = "summoner-name">
-                                    {data.name}
+                                    {summoner.name()}
                                 </h3>
                                 <div className = "summoner-level">
-                                    Level {data.summonerLevel}
+                                    Level {summoner.level()}
                                 </div>
                             </div>
                         </div>

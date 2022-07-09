@@ -17,8 +17,9 @@ def write_dict_to_datastore(datastore_client, primary_key, fields, kind):
     # Saves the entity
     datastore_client.put(entity)
 
-def get_summoner_dict(datastore_client):
+def get_summoner_dict(datastore_client, sort):
     query = datastore_client.query(kind="summoner")
+    query.order = [sort]
     query_result = list(query.fetch())
     summoner_list = json.loads(json.dumps(query_result), parse_int=str)
     summoner_dict = [summoner for summoner in summoner_list]
@@ -53,8 +54,8 @@ def get_summoner(datastore_client, puuid):
     except KeyError:
         return None
 
-def get_all_summoners(datastore_client):
-    summoner_dict = get_summoner_dict(datastore_client)
+def get_all_summoners(datastore_client, sort):
+    summoner_dict = get_summoner_dict(datastore_client, sort)
     summoner_json = json.dumps(summoner_dict, indent = 4) 
     resp = flask.Response(summoner_json)
     resp.headers['Access-Control-Allow-Origin'] = '*'

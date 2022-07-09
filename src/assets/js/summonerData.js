@@ -1,20 +1,4 @@
 
-export async function summonerList() {
-    const response = await fetch("https://us-central1-summon-cloud.cloudfunctions.net/summoners_orchestration/get-all-summoners")
-                            .then(response => response.json());
-
-    console.log(response);
-    return response;
-}
-
-export async function liveMatches() {
-    const response = await fetch("https://us-central1-summon-cloud.cloudfunctions.net/summoners_orchestration/get-live-matches")
-                           .then(response => response.json());
-
-    console.log(response);
-    return response;
-}
-
 export const liveData = [
         {
             "gameId": 4326706789,

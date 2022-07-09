@@ -68,7 +68,11 @@ def entrypoint(request):
         operation = request_path.split('/')
 
         if operation[1] == 'get-all-summoners':
-            return get_all_summoners(datastore_client)
+            if len(operation) == 2 or operation[2] != "sort":
+                sort = "name"
+            elif operation[2] == "sort":
+                sort = operation[3]
+            return get_all_summoners(datastore_client, sort)
         elif operation[1] == 'get-all-summoner-IDs':
             return get_all_summoner_IDs(datastore_client)
         elif operation[1] == "summoner-match-refresh":

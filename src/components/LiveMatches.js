@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { liveMatches } from '../assets/js/summonerData.js'
 
 class LiveMatches extends Component{
       
@@ -10,9 +9,15 @@ class LiveMatches extends Component{
     
 
     async componentDidMount() {
-        var response = await liveMatches();
+        var response = await this.liveMatches();
         this.setState({ liveData: response });
 
+    }
+
+    async liveMatches() {
+        const response = await fetch("https://us-central1-summon-cloud.cloudfunctions.net/summoners_orchestration/get-live-matches")
+                               .then(response => response.json());
+        return response;
     }
 
     render() {
