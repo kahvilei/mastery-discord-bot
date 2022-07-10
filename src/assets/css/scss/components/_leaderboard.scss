@@ -1,3 +1,7 @@
+@import "./fontawesome/scss/solid.scss";
+@import "./fontawesome/scss/fontawesome.scss";
+@import "./fontawesome/scss/brands.scss";
+
 .leaderboard{
     display: flex;
     background-color: $dark-blue;
@@ -19,6 +23,13 @@
             font-weight: bold;
             color: $gold;
             font-size: 20px;
+            @extend %fa-icon;
+            @extend .fas;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+            &:before {
+                content: fa-content($fa-var-trophy);
+                padding: 2px;
+            }
         }
         .place1.place{
             font-weight: bold;
@@ -59,8 +70,5 @@
     .summoner-level{
         border-top: 1px solid $medium-blue;
         padding: 15px 0px 0px 0px;
-    }
-    h3{
-        margin: 0px 0px 15px 0px;
     }
 }
