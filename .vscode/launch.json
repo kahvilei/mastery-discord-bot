@@ -7,6 +7,7 @@
 
 
 
+
     {"name":"Python: Current File","type":"python","request":"launch","program":"${file}","console":"integratedTerminal","justMyCode":true},
 
         {
@@ -52,6 +53,15 @@
             "program": "functions/testing.py",
             "console": "integratedTerminal",
             "args": ["mass-match-refresh"],
+            "justMyCode": true
+        },
+        {
+            "name": "Mass Stats Refresh",
+            "type": "python",
+            "request": "launch",
+            "program": "functions/testing.py",
+            "console": "integratedTerminal",
+            "args": ["mass-stats-refresh"],
             "justMyCode": true
         },
         {

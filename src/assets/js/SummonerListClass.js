@@ -9,8 +9,12 @@ class SummonerList{
         this.list = summoners;
     }
 
-    static async build() {
-        var rawList = await this.pullRawSummonerList();
+    static async build(sort = "name", filter = "") {
+        var sortRefined = sort.replace(' ', '_').toLowerCase();
+        if (filter != ""){
+            sortRefined += "_" + filter
+        }
+        var rawList = await this.pullRawSummonerList(sortRefined, filter);
         var summonerArray = []
         var counter = 0;
         rawList.map((summoner) => {
@@ -21,8 +25,8 @@ class SummonerList{
         return new SummonerList(summonerArray);
     }
 
-    static async pullRawSummonerList() {
-        const response = await fetch("https://us-central1-summon-cloud.cloudfunctions.net/summoners_orchestration/get-all-summoners")
+    static async pullRawSummonerList(sort) {
+        const response = await fetch("https://us-central1-summon-cloud.cloudfunctions.net/summoners_orchestration/get-all-summoners/sort/" + sort)
                                 .then(response => response.json());
 
         return response;

@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './assets/css/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import "https://kit.fontawesome.com/35086d2d29.js" 
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 (function(l) {

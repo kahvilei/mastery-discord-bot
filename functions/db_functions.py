@@ -102,6 +102,24 @@ def update_user_winrate(datastore_client, puuid):
     matches_query_result = list(query.fetch())
     new_matches = json.loads(json.dumps(matches_query_result), parse_int=str)
 
+     #winrates for last 10 and 50 games
+    query = datastore_client.query(kind="summoner_match")
+    query.add_filter("puuid", "=", puuid)
+    matches_query_result = list(query.fetch(limit=10))
+    ten_matches = json.loads(json.dumps(matches_query_result), parse_int=str)
+    ten_wins = len([match for match in ten_matches if match["win"]])
+    ten_winrate = ten_wins/10;
+
+    query = datastore_client.query(kind="summoner_match")
+    query.add_filter("puuid", "=", puuid)
+    matches_query_result = list(query.fetch(limit=50))
+    ten_matches = json.loads(json.dumps(matches_query_result), parse_int=str)
+    fifty_wins = len([match for match in ten_matches if match["win"]])
+    fifty_winrate = fifty_wins/50;
+
+    update_summoner_field(datastore_client, puuid, "win_rate_10", ten_winrate)
+    update_summoner_field(datastore_client, puuid, "win_rate_50", fifty_winrate)
+
     if len(new_matches) == 0:
         return "No new data to record"
 
@@ -124,22 +142,7 @@ def update_user_winrate(datastore_client, puuid):
     winrate_data["puuid"] = puuid
     datastore_client.put(winrate_data)
 
-    #winrates for last 10 and 50 games
-    query = datastore_client.query(kind="summoner_match")
-    query.add_filter("puuid", "=", puuid)
-    query.order = ["-gameStartTimestamp"]
-    matches_query_result = list(query.fetch(limit=10))
-    ten_matches = json.loads(json.dumps(matches_query_result), parse_int=str)
-    ten_wins = len([match for match in ten_matches if match["win"]])
-    ten_winrate = ten_wins/10;
-
-    query = datastore_client.query(kind="summoner_match")
-    query.add_filter("puuid", "=", puuid)
-    query.order = ["-gameStartTimestamp"]
-    matches_query_result = list(query.fetch(limit=50))
-    ten_matches = json.loads(json.dumps(matches_query_result), parse_int=str)
-    fifty_wins = len([match for match in ten_matches if match["win"]])
-    fifty_winrate = fifty_wins/50;
+   
 
     # TODO make this below method generic so you don't have to do the above work
     update_summoner_field(datastore_client, puuid, "win_rate", new_winrate)

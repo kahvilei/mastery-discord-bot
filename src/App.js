@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './assets/css/App.css';
 import Home from './pages/Home.js'
+import Leaderboards from './pages/Leaderboards'
 import {
   BrowserRouter as Router,
   Routes,
@@ -41,14 +42,6 @@ function App() {
   );
 }
 
-
-function Leaderboards() {
-  return (
-    <div>
-      <h2>About</h2>
-    </div>
-  );
-}
 
 function Experiments() {
   return (

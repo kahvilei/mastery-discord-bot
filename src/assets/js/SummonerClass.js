@@ -16,6 +16,14 @@ class Summoner{
     level() {
         return parseInt(this.data.summonerLevel);
     }
+
+    stat(type, filter = ""){
+        var typeRefined = type.replace(' ', '_').toLowerCase();
+        if (filter != ""){
+            typeRefined += "_" + filter;
+        }
+        return this.data[typeRefined];
+    }
 }
 
 export default Summoner;
