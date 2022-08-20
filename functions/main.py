@@ -35,7 +35,7 @@ def mass_stats_refresh(datastore_client, args):
     summoner_dict = get_summoner_dict(datastore_client)
     results = " "
     for summoner in summoner_dict:
-        results += " " + update_user_winrate(datastore_client, summoner["puuid"])
+        results += " " + update_user_winrate(datastore_client, puuid=summoner["puuid"])
     return flask.Response(results)
 
 

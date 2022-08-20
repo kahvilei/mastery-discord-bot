@@ -108,10 +108,14 @@ def delete_user(datastore_client, args):
         return None
 
 
-def update_user_winrate(datastore_client, args):
-    if args[2] is None or len(args[2]) < 78:
-        return "A valid puuid is required updating user winrate"
-    puuid = args[2]
+def update_user_winrate(datastore_client, args=None, puuid=None):
+
+    # Use args if being called via post call
+    if puuid is None:
+        if args[2] is None or len(args[2]) < 78:
+            return "A valid puuid is required updating user winrate"
+        puuid = args[2]
+
     last_updated = "0"
     total_played = 0
     total_wins = 0
