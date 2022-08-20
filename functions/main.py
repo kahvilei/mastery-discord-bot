@@ -11,11 +11,17 @@ import flask
 # This file does all the orchestration and functions that require both database functions and riot API functions
 ###
 
-def summoner_match_refresh(datastore_client, puuid, region):
+def summoner_match_refresh(datastore_client, args):
+    if args[2] is None or len(args[2]) < 2:
+        return "A valid region is required"
+    region = args[2]
+    if args[3] is None or len(args[3]) < 2:
+        return "A valid puiid is required for account addition"
+    puuid = args[3]
     last_match_start_ts = get_summoner_field(datastore_client, puuid, "last_match_start_ts")
     update_user_matches(puuid, region, last_match_start_ts, datastore_client)
 
-def mass_match_refresh(datastore_client):
+def mass_match_refresh(datastore_client, args):
     summoner_dict = get_summoner_dict(datastore_client)
     results = " "
     for summoner in summoner_dict:
@@ -23,7 +29,7 @@ def mass_match_refresh(datastore_client):
         results += " " + update_user_matches(summoner["puuid"], summoner["region"], last_match_start_ts, datastore_client) + " for " + summoner["name"]
     return flask.Response(results)
 
-def mass_stats_refresh(datastore_client):
+def mass_stats_refresh(datastore_client, args):
     summoner_dict = get_summoner_dict(datastore_client)
     results = " "
     for summoner in summoner_dict:
@@ -46,8 +52,15 @@ def update_user_matches(puuid, region, last_match, datastore_client):
     print("no updates required")
     return "no updates required"
 
-def add_tracked_user(datastore_client, region, summoner):
+def add_tracked_user(datastore_client, args):
 
+    if args[2] is None or len(args[2]) < 2:
+        return "A valid region is required"
+    region = args[2]
+    if args[3] is None or len(args[3]) < 2:
+        return "A valid name is required for account addition"
+
+    summoner = args[3]
     summoner = summoner.replace(" ", "%20")
 
     user_data = lookup_summoner(summoner, region)
@@ -72,63 +85,26 @@ def entrypoint(request):
         if len(request_path) < 2:
             return "Could not handle request. Please specify operation"
 
-        operation = request_path.split('/')
+        path_segments = request_path.split('/')
 
-        if operation[1] == 'get-all-summoners':
-            if len(operation) == 2 or operation[2] != "sort":
-                sort = "name"
-            elif operation[2] == "sort":
-                sort = operation[3]
-            return get_all_summoners(datastore_client, sort)
-        elif operation[1] == 'get-all-summoner-IDs':
-            return get_all_summoner_IDs(datastore_client)
-        elif operation[1] == "summoner-match-refresh":
-            if operation[2] == None or len(operation[2]) < 2:
-                return "A valid region is required"
-            region = operation[2]
-            if operation[3] == None or len(operation[3]) < 2:
-                return "A valid puiid is required for account addition"
-            puuid = operation[3]
-            return summoner_match_refresh(datastore_client, puuid, region)
-        elif operation[1] == "add-user":
-            if operation[2] == None or len(operation[2]) < 2:
-                return "A valid region is required"
-            region = operation[2]
-            if operation[3] == None or len(operation[3]) < 2:
-                return "A valid name is required for account addition"
-            summoner = operation[3]
-            return add_tracked_user(datastore_client, region, summoner)
-        elif operation[1] == "get-summoner":
-            if operation[2] == None or len(operation[2]) < 78:
-                return "A valid puuid is required for deletion"
-            puuid = operation[2]
-            return get_summoner(datastore_client, puuid)
-        elif operation[1] == "get-info":
-            if operation[2] == None or len(operation[2]) < 78:
-                return "A valid puuid is required for info grab"
-            puuid = operation[2]
-            if operation[3] == None or len(operation[3]) < 2:
-                return "A valid field is required for info grab"
-            field = operation[3]
-            return get_info(datastore_client, puuid, field)
-        elif operation[1] == "get-live-matches":
-            return get_live_matches(datastore_client)
-        elif operation[1] == 'delete-user':
-            if operation[2] == None or len(operation[2]) < 78:
-                return "A valid puuid is required for deletion"
-            puuid = operation[2]
-            return delete_user(datastore_client, puuid)
-        elif operation[1] == "mass-match-refresh":
-            return mass_match_refresh(datastore_client)
-        elif operation[1] == "mass-stats-refresh":
-            return mass_stats_refresh(datastore_client)
-        elif operation == "update_user_winrate":
-            if operation[2] == None or len(operation[2]) < 78:
-                return "A valid puuid is required for deletion"
-            puuid = operation[2]
-            return update_user_winrate(datastore_client, puuid)
+        function_map = {
+            "get-all-summoners": get_all_summoners,
+            "get-all-summoner-IDs": get_all_summoner_IDs,
+            "summoner-match-refresh": summoner_match_refresh,
+            "add-user": add_tracked_user,
+            "get-summoner": get_summoner,
+            "get-info": get_info,
+            "get-live-matches": get_live_matches,
+            'delete-user': delete_user,
+            "mass-match-refresh": mass_match_refresh,
+            "mass-stats-refresh": mass_stats_refresh
+        }
+
+        if path_segments[1] not in function_map:
+            return "invalid operation"
         else:
-            return "Please provide a valid operation"
+            return function_map[path_segments[1]](datastore_client, path_segments)
+
     except Exception as err:
         return str(err)
 

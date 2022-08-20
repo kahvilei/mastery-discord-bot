@@ -1,8 +1,8 @@
-from time import time
-
-from google.cloud import datastore
 import json
+
 import flask
+from google.cloud import datastore
+
 
 def write_dict_to_datastore(datastore_client, primary_key, fields, kind):
     # The Cloud Datastore key for the new entity
@@ -17,7 +17,8 @@ def write_dict_to_datastore(datastore_client, primary_key, fields, kind):
     # Saves the entity
     datastore_client.put(entity)
 
-def get_summoner_dict(datastore_client, sort = 'name'):
+
+def get_summoner_dict(datastore_client, sort='name'):
     query = datastore_client.query(kind="summoner")
     query.order = ["-" + sort]
     query_result = list(query.fetch())
@@ -32,6 +33,7 @@ def update_summoner_field(datastore_client, puuid, field, value):
     summoner[field] = value
     datastore_client.put(summoner)
 
+
 def get_summoner_field(datastore_client, puuid, field):
     try:
         db_key = datastore_client.key("summoner", puuid)
@@ -40,21 +42,40 @@ def get_summoner_field(datastore_client, puuid, field):
     except KeyError:
         return None
 
-def get_info(datastore_client, puuid, field):
-        resp = flask.Response(get_summoner_field(datastore_client, puuid, field))
-        resp.headers['Access-Control-Allow-Origin'] = '*'
-        resp.headers['Access-Control-Allow-Credentials'] = 'true'
-        return resp
 
-def get_summoner(datastore_client, puuid):
+def get_info(datastore_client, args):
+    if args[2] is None or len(args[2]) < 78:
+        return "A valid puuid is required for info grab"
+    puuid = args[2]
+    if args[3] is None or len(args[3]) < 2:
+        return "A valid field is required for info grab"
+    field = args[3]
+    resp = flask.Response(get_summoner_field(datastore_client, puuid, field))
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    resp.headers['Access-Control-Allow-Credentials'] = 'true'
+    return resp
+
+
+def get_summoner(datastore_client, args):
     try:
+        if args[2] is None or len(args[2]) < 78:
+            return "A valid puuid is required for deletion"
+        puuid = args[2]
         db_key = datastore_client.key("summoner", puuid)
         summoner = json.dumps(datastore_client.get(key=db_key), indent = 4)
         return summoner
     except KeyError:
         return None
 
-def get_all_summoners(datastore_client, sort):
+
+def get_all_summoners(datastore_client, args):
+
+    #Some initial request validations
+    if len(args) == 2 or args[2] != "sort":
+        sort = "name"
+    elif args[2] == "sort":
+        sort = args[3]
+
     summoner_dict = get_summoner_dict(datastore_client, sort)
     summoner_json = json.dumps(summoner_dict, indent = 4) 
     resp = flask.Response(summoner_json)
@@ -62,7 +83,8 @@ def get_all_summoners(datastore_client, sort):
     resp.headers['Access-Control-Allow-Credentials'] = 'true'
     return resp
 
-def get_all_summoner_IDs(datastore_client):
+
+def get_all_summoner_IDs(datastore_client, args):
     # summoner_dict = [x[get_summoner_dict(datastore_client)]["puuid"]]
     summoner_dict = get_summoner_dict(datastore_client)
     summoner_puuid_array = [_["puuid"] for _ in summoner_dict]
@@ -72,8 +94,12 @@ def get_all_summoner_IDs(datastore_client):
     resp.headers['Access-Control-Allow-Credentials'] = 'true'
     return resp
 
-def delete_user(datastore_client, puuid):
+
+def delete_user(datastore_client, args):
     try:
+        if args[2] is None or len(args[2]) < 78:
+            return "A valid puuid is required for deletion"
+        puuid = args[2]
         db_key = datastore_client.key("summoner", puuid)
         summoner = datastore_client.get(key=db_key)
         datastore_client.delete(summoner)
@@ -82,7 +108,10 @@ def delete_user(datastore_client, puuid):
         return None
 
 
-def update_user_winrate(datastore_client, puuid):
+def update_user_winrate(datastore_client, args):
+    if args[2] is None or len(args[2]) < 78:
+        return "A valid puuid is required for deletion"
+    puuid = args[2]
     last_updated = "0"
     total_played = 0
     total_wins = 0
