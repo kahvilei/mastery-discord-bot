@@ -156,7 +156,8 @@ def update_user_winrate(datastore_client, args=None, puuid=None):
     if len(new_matches) == 0:
         return "No new data to record"
 
-    most_recent_ts = new_matches[-1]['gameStartTimestamp']
+
+    most_recent_ts = max([int(match['gameStartTimestamp']) for match in new_matches])
     wins = len([match for match in new_matches if match["win"]])
     new_match_count = len(new_matches)
 

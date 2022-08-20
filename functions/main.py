@@ -33,10 +33,12 @@ def mass_match_refresh(datastore_client, args):
 
 def mass_stats_refresh(datastore_client, args):
     summoner_dict = get_summoner_dict(datastore_client)
-    results = " "
+    results = []
     for summoner in summoner_dict:
-        results += " " + update_user_winrate(datastore_client, puuid=summoner["puuid"])
-    return flask.Response(results)
+        puuid = summoner["puuid"]
+        individual_response = update_user_winrate(datastore_client, puuid=puuid)
+        results.append(f"{individual_response} for {puuid}")
+    return flask.Response("\n".join(results))
 
 
 def update_user_matches(puuid, region, last_match, datastore_client):
