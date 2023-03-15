@@ -2,8 +2,6 @@ import json
 import logging
 import os
 import requests
-from db_functions import get_all_summoners
-import google.cloud.logging
 import flask
 
 auth_key = os.environ['Riot_API_Key']
@@ -15,6 +13,7 @@ headers = {
     'Origin': 'https://developer.riotgames.com',
     'X-Riot-Token': auth_key
 }
+
 
 # This guy handles the fact that the api regions doesn't always equal the user region
 def _match_region_correction(region):
@@ -34,7 +33,6 @@ def _match_region_correction(region):
 
 # Makes the call to get summoner puuids by name
 def lookup_summoner(user, region):
-
     path = f'https://{region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/{user}'
     response = requests.get(path, headers=headers)
 
@@ -74,15 +72,20 @@ def get_user_matches(puuid, region, last_ts):
     path = f'https://{region}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids'
 
     response = requests.get(path, headers=headers, params=params)
+    return json.loads(response.text)
 
-    matches = json.loads(response.text)
 
-    return matches
+# Gets the list of recent matches a user has played with a ts to limit getting too old data
+def get_user_mastery(summoner_name, region):
+    path = f'https://{region}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/{summoner_name}'
+
+    response = requests.get(path, headers=headers)
+    return json.loads(response.text)
+
 
 # Gets the list of live matches for every user in the system, does not store data
-def get_live_matches(datastore_client, args):
-    summoner_list = json.loads(get_all_summoners(datastore_client).data)
-    summoner_dict = [summoner for summoner in summoner_list]
+def get_live_matches(datastore_client, summoners, args):
+    summoner_dict = [summoner for summoner in summoners]
     match_list = {}
     for summoner in summoner_dict:
         region = summoner['region']
@@ -94,7 +97,7 @@ def get_live_matches(datastore_client, args):
             if "gameId" in match_json and match_json["gameId"] not in match_list:
                 match_list[match_json["gameId"]] = match_json
             # Mark our summoners as isKey
-            for participant_index in range(0,len(match_list[match_json["gameId"]]['participants'])):
+            for participant_index in range(0, len(match_list[match_json["gameId"]]['participants'])):
                 if match_list[match_json["gameId"]]['participants'][participant_index]["summonerId"] == id:
                     match_list[match_json["gameId"]]['participants'][participant_index]["isKey"] = "true"
 
@@ -103,8 +106,8 @@ def get_live_matches(datastore_client, args):
 
     match_array = [match for match in match_list.values()]
 
-    match_json = json.dumps(match_array, indent = 4) 
+    match_json = json.dumps(match_array, indent=4)
     resp = flask.Response(match_json)
-    resp.headers['Access-Control-Allow-Origin'] = '*'    
+    resp.headers['Access-Control-Allow-Origin'] = '*'
     resp.headers['Access-Control-Allow-Credentials'] = True
     return resp

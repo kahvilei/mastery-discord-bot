@@ -1,7 +1,11 @@
 import json
-
+import os
 import flask
 from google.cloud import datastore
+from google.cloud.datastore import Key
+from requests import get
+
+from functions.riot_functions import get_user_mastery
 
 
 def write_dict_to_datastore(datastore_client, primary_key, fields, kind):
@@ -77,7 +81,7 @@ def get_all_summoners(datastore_client, args):
         sort = args[3]
 
     summoner_dict = get_summoner_dict(datastore_client, sort)
-    summoner_json = json.dumps(summoner_dict, indent = 4) 
+    summoner_json = json.dumps(summoner_dict, indent=4)
     resp = flask.Response(summoner_json)
     resp.headers['Access-Control-Allow-Origin'] = '*'
     resp.headers['Access-Control-Allow-Credentials'] = 'true'
@@ -106,6 +110,63 @@ def delete_user(datastore_client, args):
         return "summoner successfully deleted"
     except KeyError:
         return None
+
+
+def update_user_mastery(datastore_client, args=None, puuid=None, summoner_id=None, summoner_name=None):
+
+    # Use args if being called via post call
+    if puuid is None:
+        if args[2] is None or len(args[2]) < 78:
+            return "A valid puuid is required updating user winrate"
+        puuid = args[2]
+
+    key = datastore_client.key('summoner_mastery', puuid)
+    datastore_result = datastore_client.get(key)
+
+    historic_user_mastery = json.loads(json.dumps(datastore_result), parse_int=str)
+
+
+    champions_url = "http://ddragon.leagueoflegends.com/cdn/13.5.1/data/en_US/champion.json"
+    all_champions = json.loads(get(champions_url).text)['data']
+    all_champions = {val['key']: [key, val['title']] for key, val in all_champions.items()}
+
+    updated_user_mastery = get_user_mastery(summoner_id, "na1")
+    updated_user_mastery = {val['championId']:val for val in updated_user_mastery}
+
+    cleaned_new_user_mastery = {}
+    for key, val in updated_user_mastery.items():
+        new_key = all_champions.get(str(key))[0]
+        new_val = {
+            'title': all_champions.get(str(key))[1],
+            'mastery': val['championLevel'],
+            'tokensEarned': val['tokensEarned']
+        }
+        cleaned_new_user_mastery[new_key] = new_val
+
+    if historic_user_mastery is None:
+        write_dict_to_datastore(datastore_client, puuid, cleaned_new_user_mastery, 'summoner_mastery')
+        return
+    else:
+        notifications = []
+        for champ, val in cleaned_new_user_mastery.items():
+            historical_champ_val = historic_user_mastery[champ]
+            if champ not in historic_user_mastery:
+                # Gotta start somewhere
+                notifications.append(f"Nice, {champ}")
+            elif int(val['mastery']) > int(historical_champ_val['mastery']):
+                if int(val['mastery']) == 7:
+                    notifications.append(f"{summoner_name} has finally done it, they're {val['title']}. Congrats on mastery 7")
+                else:
+                    notifications.append(f"Look at {summoner_name} go, mastery {val['mastery']} on {champ}")
+            elif int(val['tokensEarned']) > int(historical_champ_val['tokensEarned']):
+                notifications.append(f"Token get! {summoner_name} got a token for {champ}. That's progress babieeeee")
+
+        if notifications:
+            for notification in notifications:
+                discord_webhook = os.environ['Discord_Web_Hook']
+                requests.post(discord_webhook)
+            write_dict_to_datastore(datastore_client, puuid, cleaned_new_user_mastery, 'summoner_mastery')
+
 
 
 def update_user_winrate(datastore_client, args=None, puuid=None):
@@ -175,8 +236,6 @@ def update_user_winrate(datastore_client, args=None, puuid=None):
     winrate_data["last_updated"] = most_recent_ts
     winrate_data["puuid"] = puuid
     datastore_client.put(winrate_data)
-
-   
 
     # TODO make this below method generic so you don't have to do the above work
     update_summoner_field(datastore_client, puuid, "win_rate", new_winrate)

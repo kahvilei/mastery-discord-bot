@@ -1,15 +1,18 @@
+import json
+
 from google.cloud import datastore
 import google.cloud.logging
 
-from db_functions import write_dict_to_datastore, get_summoner_field, get_summoner, update_summoner_field, get_all_summoners, \
-    delete_user, get_summoner_dict, update_user_winrate, get_all_summoner_IDs, get_info
+from db_functions import write_dict_to_datastore, get_summoner_field, get_summoner, update_summoner_field, \
+    get_all_summoners, \
+    delete_user, get_summoner_dict, update_user_winrate, get_all_summoner_IDs, get_info, update_user_mastery
 from riot_functions import get_user_matches, get_match_data, lookup_summoner, get_live_matches
 import flask
 
 ###
-#
 # This file does all the orchestration and functions that require both database functions and riot API functions
 ###
+
 
 def summoner_match_refresh(datastore_client, args):
     if args[2] is None or len(args[2]) < 2:
@@ -36,8 +39,14 @@ def mass_stats_refresh(datastore_client, args):
     results = []
     for summoner in summoner_dict:
         puuid = summoner["puuid"]
+        summoner_id = summoner.get("id")
+        mastery_response = update_user_mastery(datastore_client,
+                                               puuid=puuid,
+                                               summoner_id=summoner_id,
+                                               summoner_name=summoner.get('name'))
         individual_response = update_user_winrate(datastore_client, puuid=puuid)
         results.append(f"{individual_response} for {puuid}")
+        results.append(f"{mastery_response} for {puuid}")
     return flask.Response("\n".join(results))
 
 
@@ -104,7 +113,9 @@ def entrypoint(request):
         elif root == "add-user": return add_tracked_user(datastore_client, path_segments)
         elif root == "get-summoner": return get_summoner(datastore_client, path_segments)
         elif root == "get-info": return get_info(datastore_client, path_segments)
-        elif root == "get-live-matches": return get_live_matches(datastore_client, path_segments)
+        elif root == "get-live-matches":
+            summoners = json.loads(get_all_summoners(datastore_client).data)
+            return get_live_matches(datastore_client, summoners, path_segments)
         elif root == 'delete-user': return delete_user(datastore_client, path_segments)
         elif root == "mass-match-refresh": return mass_match_refresh(datastore_client, path_segments)
         elif root == "mass-stats-refresh": return mass_stats_refresh(datastore_client, path_segments)
