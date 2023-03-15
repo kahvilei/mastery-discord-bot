@@ -1,6 +1,7 @@
 import json
 import os
 import flask
+import requests
 from google.cloud import datastore
 from google.cloud.datastore import Key
 from requests import get
@@ -164,7 +165,10 @@ def update_user_mastery(datastore_client, args=None, puuid=None, summoner_id=Non
         if notifications:
             for notification in notifications:
                 discord_webhook = os.environ['Discord_Web_Hook']
-                requests.post(discord_webhook)
+                payload = {'content': notification}
+                response = requests.request("POST", discord_webhook, data=payload)
+                print(f'Sent {notification} \nresponse: {response.text}')
+
             write_dict_to_datastore(datastore_client, puuid, cleaned_new_user_mastery, 'summoner_mastery')
 
 
