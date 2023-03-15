@@ -3,7 +3,6 @@ import os
 import flask
 import requests
 from google.cloud import datastore
-from google.cloud.datastore import Key
 from requests import get
 
 from functions.riot_functions import get_user_mastery
