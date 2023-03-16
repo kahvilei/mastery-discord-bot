@@ -79,7 +79,8 @@ def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name):
                 else:
                     notifications.append(f"Look at {summoner_name} go, mastery level {val['mastery']} on {champ}")
             elif int(val['tokensEarned']) > int(historical_champ_val['tokensEarned']):
-                notifications.append(f"Token get! {summoner_name} got a token for {champ}. That's progress babieeeee")
+                notifications.append(
+                    f"Token get! {summoner_name} got a mastery token for {champ}. That's progress babieeeee")
 
         if notifications:
             for notification in notifications:
