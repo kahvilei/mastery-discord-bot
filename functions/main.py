@@ -67,7 +67,7 @@ def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name):
     else:
         notifications = []
         for champ, val in new_user_mastery.items():
-            historical_champ_val = historic_user_mastery[champ]
+            historical_champ_val = historic_user_mastery.get(champ)
             if champ not in historic_user_mastery:
                 # Gotta start somewhere
                 notifications.append(f"Gotta start somewhere, {summoner_name} just played {champ} for the first time")
@@ -85,8 +85,8 @@ def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name):
             for notification in notifications:
                 discord_webhook = os.environ['Discord_Web_Hook']
                 payload = {'content': notification}
-                response = requests.request("POST", discord_webhook, data=payload)
-                print(f'Sent {notification} \nresponse: {response.text}')
+                requests.request("POST", discord_webhook, data=payload)
+                print(f'Sent {notification}')
             update_db_mastery(datastore_client, puuid, new_user_mastery)
 
 
