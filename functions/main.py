@@ -7,11 +7,13 @@ import google.cloud.logging
 
 from db_functions import write_dict_to_datastore, get_summoner_field, get_summoner, update_summoner_field, \
     get_all_summoners, \
-    delete_user, get_summoner_dict, update_user_winrate, get_all_summoner_IDs, get_info, update_user_mastery,\
+    delete_user, get_summoner_dict, update_user_winrate, get_all_summoner_IDs, get_info, \
+    update_user_mastery as update_db_mastery, \
     get_user_mastery as db_mastery
 from riot_functions import get_user_matches, get_match_data, lookup_summoner, get_live_matches, get_user_mastery, \
     get_champion_data
 import flask
+
 
 ###
 # This file does all the orchestration and functions that require both database functions and riot API functions
@@ -34,7 +36,8 @@ def mass_match_refresh(datastore_client, args):
     results = " "
     for summoner in summoner_dict:
         last_match_start_ts = get_summoner_field(datastore_client, summoner["puuid"], "last_match_start_ts")
-        results += " " + update_user_matches(summoner["puuid"], summoner["region"], last_match_start_ts, datastore_client) + " for " + summoner["name"]
+        results += " " + update_user_matches(summoner["puuid"], summoner["region"], last_match_start_ts,
+                                             datastore_client) + " for " + summoner["name"]
     return flask.Response(results)
 
 
@@ -44,13 +47,12 @@ def mass_stats_refresh(datastore_client, args):
     for summoner in summoner_dict:
         puuid = summoner["puuid"]
         summoner_id = summoner.get("id")
-        mastery_response = update_user_mastery(datastore_client,
-                                               puuid=puuid,
-                                               summoner_id=summoner_id,
-                                               summoner_name=summoner.get('name'))
+        update_user_mastery(datastore_client,
+                            puuid=puuid,
+                            summoner_id=summoner_id,
+                            summoner_name=summoner.get('name'))
         individual_response = update_user_winrate(datastore_client, puuid=puuid)
         results.append(f"{individual_response} for {puuid}")
-        results.append(f"{mastery_response} for {puuid}")
     return flask.Response("\n".join(results))
 
 
@@ -68,13 +70,14 @@ def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name):
             historical_champ_val = historic_user_mastery[champ]
             if champ not in historic_user_mastery:
                 # Gotta start somewhere
-                notifications.append(f"Nice, {champ}")
+                notifications.append(f"Gotta start somewhere, {summoner_name} just played {champ} for the first time")
             elif int(val['mastery']) > int(historical_champ_val['mastery']):
                 if int(val['mastery']) == 7:
                     notifications.append(
-                        f"{summoner_name} has finally done it, they're {val['title']}. Congrats on mastery 7")
+                        f"{summoner_name} has finally done it, they're {val['title']}. "
+                        f"Congrats on {champ} mastery level 7")
                 else:
-                    notifications.append(f"Look at {summoner_name} go, mastery {val['mastery']} on {champ}")
+                    notifications.append(f"Look at {summoner_name} go, mastery level {val['mastery']} on {champ}")
             elif int(val['tokensEarned']) > int(historical_champ_val['tokensEarned']):
                 notifications.append(f"Token get! {summoner_name} got a token for {champ}. That's progress babieeeee")
 
@@ -84,6 +87,7 @@ def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name):
                 payload = {'content': notification}
                 response = requests.request("POST", discord_webhook, data=payload)
                 print(f'Sent {notification} \nresponse: {response.text}')
+            update_db_mastery(datastore_client, puuid, new_user_mastery)
 
 
 def update_user_matches(puuid, region, last_match, datastore_client):
@@ -104,7 +108,6 @@ def update_user_matches(puuid, region, last_match, datastore_client):
 
 
 def add_tracked_user(datastore_client, args):
-
     if args[2] is None or len(args[2]) < 2:
         return "A valid region is required"
     region = args[2]
@@ -143,20 +146,29 @@ def entrypoint(request):
         path_segments = request_path.split('/')
         root = path_segments[1]
 
-        if root == "get-all-summoners": return get_all_summoners(datastore_client, path_segments)
-        elif root == "get-all-summoner-IDs": return get_all_summoner_IDs(datastore_client, path_segments)
-        elif root == "summoner-match-refresh": return summoner_match_refresh(datastore_client, path_segments)
-        elif root == "add-user": return add_tracked_user(datastore_client, path_segments)
-        elif root == "get-summoner": return get_summoner(datastore_client, path_segments)
-        elif root == "get-info": return get_info(datastore_client, path_segments)
+        if root == "get-all-summoners":
+            return get_all_summoners(datastore_client, path_segments)
+        elif root == "get-all-summoner-IDs":
+            return get_all_summoner_IDs(datastore_client, path_segments)
+        elif root == "summoner-match-refresh":
+            return summoner_match_refresh(datastore_client, path_segments)
+        elif root == "add-user":
+            return add_tracked_user(datastore_client, path_segments)
+        elif root == "get-summoner":
+            return get_summoner(datastore_client, path_segments)
+        elif root == "get-info":
+            return get_info(datastore_client, path_segments)
         elif root == "get-live-matches":
             summoners = json.loads(get_all_summoners(datastore_client).data)
             return get_live_matches(datastore_client, summoners, path_segments)
-        elif root == 'delete-user': return delete_user(datastore_client, path_segments)
-        elif root == "mass-match-refresh": return mass_match_refresh(datastore_client, path_segments)
-        elif root == "mass-stats-refresh": return mass_stats_refresh(datastore_client, path_segments)
-        else: return "invalid operation"
+        elif root == 'delete-user':
+            return delete_user(datastore_client, path_segments)
+        elif root == "mass-match-refresh":
+            return mass_match_refresh(datastore_client, path_segments)
+        elif root == "mass-stats-refresh":
+            return mass_stats_refresh(datastore_client, path_segments)
+        else:
+            return "invalid operation"
 
     except Exception as err:
         return str(err)
-
