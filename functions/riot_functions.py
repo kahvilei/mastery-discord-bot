@@ -3,6 +3,7 @@ import logging
 import os
 import requests
 import flask
+from requests import get
 
 auth_key = os.environ['Riot_API_Key']
 
@@ -41,6 +42,11 @@ def lookup_summoner(user, region):
 
     return summoner_dict
 
+def get_champion_data():
+    champions_url = "http://ddragon.leagueoflegends.com/cdn/13.5.1/data/en_US/champion.json"
+    all_champions = json.loads(get(champions_url).text)['data']
+    return {val['key']: [key, val['title']] for key, val in all_champions.items()}
+
 
 # Makes the call to get a specific matches information
 def get_match_data(puuid, region, match):
@@ -76,11 +82,23 @@ def get_user_matches(puuid, region, last_ts):
 
 
 # Gets the list of recent matches a user has played with a ts to limit getting too old data
-def get_user_mastery(summoner_name, region):
+def get_user_mastery(summoner_name, region, all_champions):
     path = f'https://{region}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/{summoner_name}'
 
     response = requests.get(path, headers=headers)
-    return json.loads(response.text)
+    champion_mastery = json.loads(response.text)
+    updated_user_mastery = {val['championId']: val for val in champion_mastery}
+
+    cleaned_new_user_mastery = {}
+    for key, val in updated_user_mastery.items():
+        new_key = all_champions.get(str(key))[0]
+        new_val = {
+            'title': all_champions.get(str(key))[1],
+            'mastery': val['championLevel'],
+            'tokensEarned': val['tokensEarned']
+        }
+        cleaned_new_user_mastery[new_key] = new_val
+    return cleaned_new_user_mastery
 
 
 # Gets the list of live matches for every user in the system, does not store data

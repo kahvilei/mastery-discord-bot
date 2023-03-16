@@ -1,12 +1,16 @@
 import json
+import os
 
+import requests
 from google.cloud import datastore
 import google.cloud.logging
 
 from db_functions import write_dict_to_datastore, get_summoner_field, get_summoner, update_summoner_field, \
     get_all_summoners, \
-    delete_user, get_summoner_dict, update_user_winrate, get_all_summoner_IDs, get_info, update_user_mastery
-from riot_functions import get_user_matches, get_match_data, lookup_summoner, get_live_matches
+    delete_user, get_summoner_dict, update_user_winrate, get_all_summoner_IDs, get_info, update_user_mastery,\
+    get_user_mastery as db_mastery
+from riot_functions import get_user_matches, get_match_data, lookup_summoner, get_live_matches, get_user_mastery, \
+    get_champion_data
 import flask
 
 ###
@@ -48,6 +52,38 @@ def mass_stats_refresh(datastore_client, args):
         results.append(f"{individual_response} for {puuid}")
         results.append(f"{mastery_response} for {puuid}")
     return flask.Response("\n".join(results))
+
+
+def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name):
+    historic_user_mastery = db_mastery(datastore_client, puuid)
+    champion_data = get_champion_data()
+    new_user_mastery = get_user_mastery(summoner_id, "na1", champion_data)
+
+    if historic_user_mastery is None:
+        write_dict_to_datastore(datastore_client, puuid, new_user_mastery, 'summoner_mastery')
+        return
+    else:
+        notifications = []
+        for champ, val in new_user_mastery.items():
+            historical_champ_val = historic_user_mastery[champ]
+            if champ not in historic_user_mastery:
+                # Gotta start somewhere
+                notifications.append(f"Nice, {champ}")
+            elif int(val['mastery']) > int(historical_champ_val['mastery']):
+                if int(val['mastery']) == 7:
+                    notifications.append(
+                        f"{summoner_name} has finally done it, they're {val['title']}. Congrats on mastery 7")
+                else:
+                    notifications.append(f"Look at {summoner_name} go, mastery {val['mastery']} on {champ}")
+            elif int(val['tokensEarned']) > int(historical_champ_val['tokensEarned']):
+                notifications.append(f"Token get! {summoner_name} got a token for {champ}. That's progress babieeeee")
+
+        if notifications:
+            for notification in notifications:
+                discord_webhook = os.environ['Discord_Web_Hook']
+                payload = {'content': notification}
+                response = requests.request("POST", discord_webhook, data=payload)
+                print(f'Sent {notification} \nresponse: {response.text}')
 
 
 def update_user_matches(puuid, region, last_match, datastore_client):
