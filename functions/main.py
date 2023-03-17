@@ -1,5 +1,6 @@
 import json
 import os
+import random
 
 import requests
 from google.cloud import datastore
@@ -71,16 +72,68 @@ def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name):
             if champ not in historic_user_mastery:
                 # Gotta start somewhere
                 notifications.append(f"Gotta start somewhere, {summoner_name} just played {champ} for the first time")
-            elif int(val['mastery']) > int(historical_champ_val['mastery']):
-                if int(val['mastery']) == 7:
-                    notifications.append(
-                        f"{summoner_name} has finally done it, they're {val['title']}. "
-                        f"Congrats on {champ} mastery level 7")
-                else:
-                    notifications.append(f"Look at {summoner_name} go, mastery level {val['mastery']} on {champ}")
-            elif int(val['tokensEarned']) > int(historical_champ_val['tokensEarned']):
-                notifications.append(
-                    f"Token get! {summoner_name} got a mastery token for {champ}. That's progress babieeeee")
+            else:
+                old_tokens = int(historical_champ_val['tokensEarned'])
+                new_tokens = int(val['tokensEarned'])
+                old_mastery = int(historical_champ_val['mastery'])
+                new_mastery = int(val['mastery'])
+
+                if new_mastery > old_mastery:
+                    if new_mastery == 4 & champ == "Jhin":
+                        notifications.append(
+                            f"4️⃣({summoner_name} just got mastery level 4 on {champ} ")
+                    elif new_mastery < 5:
+                        message_options = [
+                            f"{summoner_name} now has a level {new_mastery} mastery for {champ}. It's no mastery 7 but they're trying their best.",
+                            f"Look at {summoner_name} over here, achieving level {new_mastery} on {champ}",
+                            f"If I, the bot, were {summoner_name}, I would have achieved mastery level {new_mastery} on {champ}. Which is what they just did.",
+                            f"They're not mastery 7, or 6, or even 5, but at least {summoner_name} is now level {new_mastery} on {champ}",
+                            f"There once was a gamer named {summoner_name}, they got mastery level {new_mastery} on {champ}. Then a discord bot sent a message. The end.",
+                            f"{summoner_name}. {champ}. Mastery level {new_mastery}."
+                        ]
+                        notifications.append(random.choice(message_options))
+                    elif new_mastery == 5:
+                        message_options = [
+                            f"{summoner_name} is mastery level 5 for {champ}. Time to get tokens.",
+                            f"Does it seem like {summoner_name} is mastery level 5 on {champ} to anyone else here? No? Just me?",
+                            f"Good news is {summoner_name} is now mastery 5 on {champ}, bad news is they have no tokens",
+                            f"{summoner_name} got mastery level 5 on {champ}, if they don't get an S on the next game everyone laugh at them.",
+                            f"Wouldn't it be crazy if {summoner_name} got mastery 5 on {champ}?",
+                        ]
+                        notifications.append(random.choice(message_options))
+                    elif new_mastery == 6:
+                        message_options = [
+                            f"Look at {summoner_name} go, mastery level 6 on {champ}",
+                            f"\"Look at me, I'm {summoner_name}, I've got no more tokens for {champ} because I spent them all getting to mastery level 6, I'm so cool\" That's what you sound like right now {summoner_name}",
+                            f"So {summoner_name} just upgraded to mastery level 6 on {champ}. Can everyone please send a gif that properly captures this achievement?",
+                            f"Now get three more tokens for {champ}, {summoner_name}. Mastery level 6 is like 7 but worse",
+                            f"It could almost be said that {summoner_name} is good at {champ} (almost). They've just achieved mastery level 6.",
+                        ]
+                        notifications.append(random.choice(message_options))
+                    elif new_mastery == 7:
+                        notifications.append(
+                            f"{summoner_name} has finally done it, they're {val['title']}. "
+                            f"Congrats on {champ} mastery level 7")
+
+                elif new_tokens > old_tokens:
+                    if new_mastery == 5 and new_tokens == 1:
+                        notifications.append(
+                            f"Aww, {summoner_name} just got their first {champ} mastery token! Good for them.")
+                    elif new_mastery == 5 and new_tokens == 2:
+                        notifications.append(
+                            f"{summoner_name} now has enough tokens to level up their {champ} mastery to level 6! If they don't it's because they are poor.")
+                    elif new_mastery == 6 and new_tokens == 3:
+                        notifications.append(
+                            f"👀 looks like {summoner_name} finally has enough tokens to reach mastery to level 7 on {champ}. Took them long enough.")
+                    else:
+                        message_options = [
+                            f"🪙🪙🪙Token acquired on {champ} by {summoner_name} 🪙🪙🪙",
+                            f"Token get! {summoner_name} got a token for {champ}. "
+                            f"That's progress babieeeee",
+                            f"Congratulation on your recent S, {summoner_name}. You just got a {champ} token.",
+                            f"{summoner_name} just got a {champ} mastery token, they only need {(new_mastery - 3) - new_tokens} more for mastery level {new_mastery + 1}"
+                        ]
+                        notifications.append(random.choice(message_options))
 
         if notifications:
             for notification in notifications:
