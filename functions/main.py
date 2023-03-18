@@ -1,6 +1,7 @@
 import json
 import os
 import random
+import traceback
 
 import requests
 from google.cloud import datastore
@@ -230,5 +231,5 @@ def entrypoint(request):
 
     except Exception as err:
         print('Error errored.')
-        print(err.with_traceback())
+        print(traceback.format_exc())
         return str(err)
