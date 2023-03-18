@@ -87,6 +87,8 @@ def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name, cha
                     if new_mastery == 4 and champ == "Jhin":
                         notifications.append(
                             f"4️⃣4️⃣4️⃣4️⃣ ({summoner_name} just got mastery level 4 on {champ})")
+                    elif champ == "Teemo":
+                        notifications.append(f"Someone got some mastery score on Teemo, but we're not gonna say who or what level because that's not right.")
                     elif new_mastery < 5:
                         message_options = [
                             f"{summoner_name} now has a level {new_mastery} mastery for {champ}. It's no mastery 7 but they're trying their best.",
