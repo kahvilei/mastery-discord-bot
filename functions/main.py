@@ -45,23 +45,24 @@ def mass_match_refresh(datastore_client, args):
 def mass_stats_refresh(datastore_client, args):
     summoner_dict = get_summoner_dict(datastore_client)
     results = []
+
+    champion_data = get_champion_data()
     for summoner in summoner_dict:
         puuid = summoner["puuid"]
         summoner_id = summoner.get("id")
         update_user_mastery(datastore_client,
                             puuid=puuid,
                             summoner_id=summoner_id,
-                            summoner_name=summoner.get('name'))
+                            summoner_name=summoner.get('name'),
+                            champion_data=champion_data)
         individual_response = update_user_winrate(datastore_client, puuid=puuid)
         results.append(f"{individual_response} for {puuid}")
     return flask.Response("\n".join(results))
 
 
-def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name):
+def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name, champion_data):
     print(f"Getting historic user data for {summoner_name}")
     historic_user_mastery = db_mastery(datastore_client, puuid)
-    print(f"Getting generic champion metadata")
-    champion_data = get_champion_data()
     print(f"Getting getting current mastery data for {summoner_name}")
     new_user_mastery = get_user_mastery(summoner_id, "na1", champion_data)
 
@@ -82,7 +83,7 @@ def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name):
                 new_mastery = int(val['mastery'])
 
                 if new_mastery > old_mastery:
-                    if new_mastery == 4 & champ == "Jhin":
+                    if new_mastery == 4 and champ == "Jhin":
                         notifications.append(
                             f"4️⃣4️⃣4️⃣4️⃣ ({summoner_name} just got mastery level 4 on {champ})")
                     elif new_mastery < 5:
