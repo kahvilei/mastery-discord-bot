@@ -228,4 +228,6 @@ def entrypoint(request):
             return "invalid operation"
 
     except Exception as err:
+        print('Error errored.')
+        print(err.with_traceback())
         return str(err)
