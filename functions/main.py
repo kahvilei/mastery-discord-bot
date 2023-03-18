@@ -58,8 +58,11 @@ def mass_stats_refresh(datastore_client, args):
 
 
 def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name):
+    print(f"Getting historic user data for {summoner_name}")
     historic_user_mastery = db_mastery(datastore_client, puuid)
+    print(f"Getting generic champion metadata")
     champion_data = get_champion_data()
+    print(f"Getting getting current mastery data for {summoner_name}")
     new_user_mastery = get_user_mastery(summoner_id, "na1", champion_data)
 
     if historic_user_mastery is None:
