@@ -1,6 +1,7 @@
 import json
 import os
 import random
+import re
 
 import requests
 from google.cloud import datastore
@@ -57,6 +58,35 @@ def mass_stats_refresh(datastore_client, args):
     return flask.Response("\n".join(results))
 
 
+def misspell(word):
+    vowels = ['a', 'e', 'i', 'o', 'u']
+    replacement_match = re.search(r'[^aeiouAEIOU][aeiouAEIOU][^aeiouAEIOU]',word)
+    cvv_match = re.search(r'^[^aeiouAEIOU](aa|ee|ii|oo|uu)', word)
+    double_vowel_match = re.search(r'[aeiouAEIOU][aeiouAEIOU]',word)
+    only_y_match = re.search(r'[^aeiouAEIOU][yY][^aeiouAEIOU]',word)
+    if replacement_match:
+        index = replacement_match.start() + 1
+        letter = replacement_match.group()[1]
+        candidates = [vowel for vowel in vowels if vowel != letter]
+        return word[: index] + random.choice(candidates) + word[index + 1:]
+    elif word[0].lower() in vowels:
+        return 'B' + word.lower()
+    elif cvv_match:
+        letter = word[1]
+        candidates = [vowel for vowel in vowels if vowel != letter]
+
+        return word[0] + random.choice(candidates)*2 + word[3:]
+    elif double_vowel_match:
+        index = double_vowel_match.start()
+        return word[: index] + word[index + 1] + word[index] + word[index + 2:]
+    elif only_y_match:
+        index = only_y_match.start()
+        match = only_y_match.group()
+        return '' + word[: index] + match[0] + 'i' + match[2] + word[index+3:]
+    elif word == 'Vi':
+        return 'Pi'
+
+
 def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name):
     historic_user_mastery = db_mastery(datastore_client, puuid)
     champion_data = get_champion_data()
@@ -71,7 +101,15 @@ def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name):
             historical_champ_val = historic_user_mastery.get(champ)
             if champ not in historic_user_mastery:
                 # Gotta start somewhere
-                notifications.append(f"Gotta start somewhere, {summoner_name} just played {champ} for the first time")
+                misspelt = f"\"{misspell(champ)}\""
+                message_options = [
+                    f"Woah, {summoner_name} just tried this {misspelt} fella for the first time, that was something",
+                    f"{summoner_name}, please share your first thoughts playing this {misspelt} champ for the first time",
+                    f"{summoner_name} just discovered a brand new champion, sources say their name is {misspelt}",
+                    f"Gotta start somewhere, {summoner_name} played {misspelt} for the first time",
+                    f"Look at {summoner_name} learning and growing, finally trying new champs. Or maybe they were out of ARAM rerolls and were forced to play this {misspelt} champ"
+                ]
+                notifications.append(random.choice(message_options))
             else:
                 old_tokens = int(historical_champ_val['tokensEarned'])
                 new_tokens = int(val['tokensEarned'])
