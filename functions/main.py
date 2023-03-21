@@ -1,6 +1,7 @@
 import json
 import os
 import random
+import traceback
 import re
 
 import requests
@@ -46,13 +47,16 @@ def mass_match_refresh(datastore_client, args):
 def mass_stats_refresh(datastore_client, args):
     summoner_dict = get_summoner_dict(datastore_client)
     results = []
+
+    champion_data = get_champion_data()
     for summoner in summoner_dict:
         puuid = summoner["puuid"]
         summoner_id = summoner.get("id")
         update_user_mastery(datastore_client,
                             puuid=puuid,
                             summoner_id=summoner_id,
-                            summoner_name=summoner.get('name'))
+                            summoner_name=summoner.get('name'),
+                            champion_data=champion_data)
         individual_response = update_user_winrate(datastore_client, puuid=puuid)
         results.append(f"{individual_response} for {puuid}")
     return flask.Response("\n".join(results))
@@ -87,9 +91,10 @@ def misspell(word):
         return 'Pi'
 
 
-def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name):
+def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name, champion_data):
+    print(f"Getting historic user data for {summoner_name}")
     historic_user_mastery = db_mastery(datastore_client, puuid)
-    champion_data = get_champion_data()
+    print(f"Getting getting current mastery data for {summoner_name}")
     new_user_mastery = get_user_mastery(summoner_id, "na1", champion_data)
 
     if historic_user_mastery is None:
@@ -117,9 +122,11 @@ def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name):
                 new_mastery = int(val['mastery'])
 
                 if new_mastery > old_mastery:
-                    if new_mastery == 4 & champ == "Jhin":
+                    if new_mastery == 4 and champ == "Jhin":
                         notifications.append(
                             f"4️⃣4️⃣4️⃣4️⃣ ({summoner_name} just got mastery level 4 on {champ})")
+                    elif champ == "Teemo":
+                        notifications.append(f"Someone got some mastery score on Teemo, but we're not gonna say who or what level because that's not right.")
                     elif new_mastery < 5:
                         message_options = [
                             f"{summoner_name} now has a level {new_mastery} mastery for {champ}. It's no mastery 7 but they're trying their best.",
@@ -154,24 +161,33 @@ def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name):
                             f"Congrats on {champ} mastery level 7")
 
                 elif new_tokens > old_tokens:
-                    if new_mastery == 5 and new_tokens == 1:
-                        notifications.append(
-                            f"Aww, {summoner_name} just got their first {champ} mastery token! Good for them.")
-                    elif new_mastery == 5 and new_tokens == 2:
-                        notifications.append(
-                            f"{summoner_name} now has enough tokens to level up their {champ} mastery to level 6! If they don't it's because they are poor.")
-                    elif new_mastery == 6 and new_tokens == 3:
-                        notifications.append(
-                            f"👀 looks like {summoner_name} finally has enough tokens to reach mastery to level 7 on {champ}. Took them long enough.")
-                    else:
-                        message_options = [
-                            f"🪙🪙🪙Token acquired on {champ} by {summoner_name} 🪙🪙🪙",
-                            f"Token get! {summoner_name} got a token for {champ}. "
-                            f"That's progress babieeeee",
-                            f"Congratulation on your recent S, {summoner_name}. You just got a {champ} token.",
-                            f"{summoner_name} just got a {champ} mastery token, they only need {(new_mastery - 3) - new_tokens} more for mastery level {new_mastery + 1}"
-                        ]
-                        notifications.append(random.choice(message_options))
+                    message_options = []
+                    if new_mastery == 5:
+                        if new_tokens == 1:
+                            message_options.append(f"Aww, {summoner_name} just got their first {champ} mastery token! Good for them.")
+                            message_options.append(f"{summoner_name} got a {champ} token! You're doing great and I love you.")
+                            message_options.append(f"{summoner_name} got a {champ} token!")
+                            message_options.append(f"Time for {summoner_name} to have a {champ} token in their inventory for awhile... unless they get another...")
+                        elif new_tokens == 2:
+                            message_options.append(f"{summoner_name} now has enough tokens to level up their {champ} mastery to level 6! If they don't upgrade it, it's because they are poor.")
+                            message_options.append(f"{summoner_name} got their second token for {champ}. Now time to cash in on that gaming and get to level 6")
+                            message_options.append(f"🦧🫴🪙🪙 <- that's {summoner_name} now that they've got two tokens at level 5 on {champ}. Time to level up.")
+
+                    elif new_mastery == 6:
+                        if new_tokens == 1:
+                            message_options.append(f"🪙🪙🪙Token acquired on {champ} by {summoner_name} 🪙🪙🪙")
+                            message_options.append(f"Token get! {summoner_name} got a token for {champ}. That's progress babieeeee")
+                            message_options.append(f"Congratulation on your recent S, {summoner_name}. You just got a {champ} token.")
+                            message_options.append(f"{summoner_name} just got a {champ} mastery token, two more to go!")
+                        elif new_tokens == 2:
+                            message_options.append(f"{summoner_name} just got a {champ} mastery token, One more to go!")
+                            message_options.append(f"{summoner_name} just got a {champ} mastery token, I've heard they only give those out to the gamers that are really cool")
+                            message_options.append(f"{summoner_name} just got a {champ} mastery token, kinda like a bitcoin, but equally worthless. A {champ}coin")
+                        elif new_tokens == 3:
+                            message_options.append(f"Took some time to get here (or not, idk we didn't check), but {summoner_name} has enough tokens on {champ} to get mastery 7. Let's see it")
+                            message_options.append(f"They're finally done. {summoner_name} has enough tokens on {champ} to get mastery 7.")
+
+                    notifications.append(random.choice(message_options))
 
         if notifications:
             for notification in notifications:
@@ -263,4 +279,6 @@ def entrypoint(request):
             return "invalid operation"
 
     except Exception as err:
+        print('Error errored.')
+        print(traceback.format_exc())
         return str(err)
