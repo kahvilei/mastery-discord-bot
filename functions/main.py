@@ -13,7 +13,7 @@ from db_functions import write_dict_to_datastore, get_summoner_field, get_summon
     delete_user, get_summoner_dict, update_user_winrate, get_all_summoner_IDs, get_info, \
     update_user_mastery as update_db_mastery, \
     get_user_mastery as db_mastery
-from functions.utils import generate_mastery_notifications
+from functions.utils import generate_mastery_notifications, misspell
 from riot_functions import get_user_matches, get_match_data, lookup_summoner, get_live_matches, get_user_mastery, \
     get_champion_data
 import flask
@@ -61,36 +61,6 @@ def mass_stats_refresh(datastore_client, args):
         individual_response = update_user_winrate(datastore_client, puuid=puuid)
         results.append(f"{individual_response} for {puuid}")
     return flask.Response("\n".join(results))
-
-
-def misspell(word):
-    vowels = ['a', 'e', 'i', 'o', 'u']
-    replacement_match = re.search(r'[^aeiouAEIOU][aeiouAEIOU][^aeiouAEIOU]',word)
-    cvv_match = re.search(r'^[^aeiouAEIOU](aa|ee|ii|oo|uu)', word)
-    double_vowel_match = re.search(r'[aeiouAEIOU][aeiouAEIOU]',word)
-    only_y_match = re.search(r'[^aeiouAEIOU][yY][^aeiouAEIOU]',word)
-    if replacement_match:
-        index = replacement_match.start() + 1
-        letter = replacement_match.group()[1]
-        candidates = [vowel for vowel in vowels if vowel != letter]
-        return word[: index] + random.choice(candidates) + word[index + 1:]
-    elif word[0].lower() in vowels:
-        return 'B' + word.lower()
-    elif cvv_match:
-        letter = word[1]
-        candidates = [vowel for vowel in vowels if vowel != letter]
-
-        return word[0] + random.choice(candidates)*2 + word[3:]
-    elif double_vowel_match:
-        index = double_vowel_match.start()
-        return word[: index] + word[index + 1] + word[index] + word[index + 2:]
-    elif only_y_match:
-        index = only_y_match.start()
-        match = only_y_match.group()
-        return '' + word[: index] + match[0] + 'i' + match[2] + word[index+3:]
-    elif word == 'Vi':
-        return 'Pi'
-
 
 def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name, champion_data):
     print(f"Getting historic user data for {summoner_name}")

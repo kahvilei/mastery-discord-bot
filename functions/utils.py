@@ -1,4 +1,5 @@
 import random
+import re
 from datetime import date
 import calendar
 
@@ -87,3 +88,32 @@ def generate_mastery_notifications(new_mastery, old_mastery, champ, summoner_nam
 
         notifications.append(random.choice(message_options))
     return notifications
+
+
+def misspell(word):
+    vowels = ['a', 'e', 'i', 'o', 'u']
+    replacement_match = re.search(r'[^aeiouAEIOU][aeiouAEIOU][^aeiouAEIOU]',word)
+    cvv_match = re.search(r'^[^aeiouAEIOU](aa|ee|ii|oo|uu)', word)
+    double_vowel_match = re.search(r'[aeiouAEIOU][aeiouAEIOU]',word)
+    only_y_match = re.search(r'[^aeiouAEIOU][yY][^aeiouAEIOU]',word)
+    if replacement_match:
+        index = replacement_match.start() + 1
+        letter = replacement_match.group()[1]
+        candidates = [vowel for vowel in vowels if vowel != letter]
+        return word[: index] + random.choice(candidates) + word[index + 1:]
+    elif word[0].lower() in vowels:
+        return 'B' + word.lower()
+    elif cvv_match:
+        letter = word[1]
+        candidates = [vowel for vowel in vowels if vowel != letter]
+
+        return word[0] + random.choice(candidates)*2 + word[3:]
+    elif double_vowel_match:
+        index = double_vowel_match.start()
+        return word[: index] + word[index + 1] + word[index] + word[index + 2:]
+    elif only_y_match:
+        index = only_y_match.start()
+        match = only_y_match.group()
+        return '' + word[: index] + match[0] + 'i' + match[2] + word[index+3:]
+    elif word == 'Vi':
+        return 'Pi'
