@@ -58,7 +58,7 @@ def generate_mastery_notifications(new_mastery, old_mastery, champ, summoner_nam
                 message_options.append(f"{summoner_name} got a {champ} token! You're doing great and I love you.")
                 message_options.append(f"{summoner_name} got a {champ} token!")
                 message_options.append(
-                    f"Time for {summoner_name} to have a {champ} token in their inventory for awhile... unless they get another...")
+                    f"Time for {summoner_name} to have a {champ} token in their inventory for a while... unless they get another...")
             elif new_tokens == 2:
                 message_options.append(
                     f"{summoner_name} now has enough tokens to level up their {champ} mastery to level 6! If they don't upgrade it, it's because they are poor.")
