@@ -80,6 +80,7 @@ def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name, cha
                 misspelt = f"\"{misspell(champ)}\""
                 message_options = [
                     f"Woah, {summoner_name} just tried this {misspelt} fella for the first time, that was something",
+                    f"{summoner_name} just played this {misspelt} for the first time. Post a screenshot showing how you did. Unless you're ashamed...",
                     f"{summoner_name}, please share your first thoughts playing this {misspelt} champ for the first time",
                     f"{summoner_name} just discovered a brand new champion, sources say their name is {misspelt}",
                     f"Gotta start somewhere, {summoner_name} played {misspelt} for the first time",
