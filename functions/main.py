@@ -13,7 +13,7 @@ from db_functions import write_dict_to_datastore, get_summoner_field, get_summon
     delete_user, get_summoner_dict, update_user_winrate, get_all_summoner_IDs, get_info, \
     update_user_mastery as update_db_mastery, \
     get_user_mastery as db_mastery
-from functions.utils import generate_mastery_notifications, misspell
+from utils import generate_mastery_notifications, misspell
 from riot_functions import get_user_matches, get_match_data, lookup_summoner, get_live_matches, get_user_mastery, \
     get_champion_data
 import flask

@@ -116,4 +116,4 @@ def misspell(word):
         match = only_y_match.group()
         return '' + word[: index] + match[0] + 'i' + match[2] + word[index+3:]
     elif word == 'Vi':
-        return 'Pi'
+        return 'Vie'
