@@ -44,7 +44,8 @@ def lookup_summoner(user, region):
 
 def get_champion_data():
     champions_url = "http://ddragon.leagueoflegends.com/cdn/13.5.1/data/en_US/champion.json"
-    all_champions = json.loads(get(champions_url).text)['data']
+    champions_data = get(champions_url)
+    all_champions = json.loads(champions_data.text)['data']
     return {val['key']: [key, val['title']] for key, val in all_champions.items()}
 
 

@@ -1,0 +1,542 @@
+{
+  "Sona": {
+    "title": "Maven of the Strings",
+    "mastery": 6,
+    "tokensEarned": 3
+  },
+  "Nami": {
+    "title": "the Tidecaller",
+    "mastery": 6,
+    "tokensEarned": 3
+  },
+  "Diana": {
+    "title": "Scorn of the Moon",
+    "mastery": 5,
+    "tokensEarned": 0
+  },
+  "Zed": {
+    "title": "the Master of Shadows",
+    "mastery": 5,
+    "tokensEarned": 0
+  },
+  "LeeSin": {
+    "title": "the Blind Monk",
+    "mastery": 5,
+    "tokensEarned": 0
+  },
+  "Akali": {
+    "title": "the Rogue Assassin",
+    "mastery": 5,
+    "tokensEarned": 0
+  },
+  "Janna": {
+    "title": "the Storm's Fury",
+    "mastery": 5,
+    "tokensEarned": 0
+  },
+  "Evelynn": {
+    "title": "Agony's Embrace",
+    "mastery": 5,
+    "tokensEarned": 0
+  },
+  "Karma": {
+    "title": "the Enlightened One",
+    "mastery": 5,
+    "tokensEarned": 0
+  },
+  "Ashe": {
+    "title": "the Frost Archer",
+    "mastery": 4,
+    "tokensEarned": 0
+  },
+  "Poppy": {
+    "title": "Keeper of the Hammer",
+    "mastery": 4,
+    "tokensEarned": 0
+  },
+  "Soraka": {
+    "title": "the Starchild",
+    "mastery": 4,
+    "tokensEarned": 0
+  },
+  "Quinn": {
+    "title": "Demacia's Wings",
+    "mastery": 4,
+    "tokensEarned": 0
+  },
+  "Chogath": {
+    "title": "the Terror of the Void",
+    "mastery": 3,
+    "tokensEarned": 0
+  },
+  "Morgana": {
+    "title": "the Fallen",
+    "mastery": 3,
+    "tokensEarned": 0
+  },
+  "Brand": {
+    "title": "the Burning Vengeance",
+    "mastery": 3,
+    "tokensEarned": 0
+  },
+  "Lulu": {
+    "title": "the Fae Sorceress",
+    "mastery": 3,
+    "tokensEarned": 0
+  },
+  "Nunu": {
+    "title": "the Boy and His Yeti",
+    "mastery": 3,
+    "tokensEarned": 0
+  },
+  "Vladimir": {
+    "title": "the Crimson Reaper",
+    "mastery": 3,
+    "tokensEarned": 0
+  },
+  "Ahri": {
+    "title": "the Nine-Tailed Fox",
+    "mastery": 3,
+    "tokensEarned": 0
+  },
+  "Ryze": {
+    "title": "the Rune Mage",
+    "mastery": 3,
+    "tokensEarned": 0
+  },
+  "Sivir": {
+    "title": "the Battle Mistress",
+    "mastery": 3,
+    "tokensEarned": 0
+  },
+  "Orianna": {
+    "title": "the Lady of Clockwork",
+    "mastery": 3,
+    "tokensEarned": 0
+  },
+  "Yuumi": {
+    "title": "the Magical Cat",
+    "mastery": 3,
+    "tokensEarned": 0
+  },
+  "Lux": {
+    "title": "the Lady of Luminosity",
+    "mastery": 3,
+    "tokensEarned": 0
+  },
+  "Karthus": {
+    "title": "the Deathsinger",
+    "mastery": 3,
+    "tokensEarned": 0
+  },
+  "Annie": {
+    "title": "the Dark Child",
+    "mastery": 3,
+    "tokensEarned": 0
+  },
+  "Malphite": {
+    "title": "Shard of the Monolith",
+    "mastery": 3,
+    "tokensEarned": 0
+  },
+  "Velkoz": {
+    "title": "the Eye of the Void",
+    "mastery": 3,
+    "tokensEarned": 0
+  },
+  "Leona": {
+    "title": "the Radiant Dawn",
+    "mastery": 3,
+    "tokensEarned": 0
+  },
+  "Zyra": {
+    "title": "Rise of the Thorns",
+    "mastery": 3,
+    "tokensEarned": 0
+  },
+  "Braum": {
+    "title": "the Heart of the Freljord",
+    "mastery": 3,
+    "tokensEarned": 0
+  },
+  "MasterYi": {
+    "title": "the Wuju Bladesman",
+    "mastery": 3,
+    "tokensEarned": 0
+  },
+  "Khazix": {
+    "title": "the Voidreaver",
+    "mastery": 3,
+    "tokensEarned": 0
+  },
+  "MissFortune": {
+    "title": "the Bounty Hunter",
+    "mastery": 3,
+    "tokensEarned": 0
+  },
+  "Riven": {
+    "title": "the Exile",
+    "mastery": 3,
+    "tokensEarned": 0
+  },
+  "Maokai": {
+    "title": "the Twisted Treant",
+    "mastery": 2,
+    "tokensEarned": 0
+  },
+  "Pantheon": {
+    "title": "the Unbreakable Spear",
+    "mastery": 2,
+    "tokensEarned": 0
+  },
+  "Veigar": {
+    "title": "the Tiny Master of Evil",
+    "mastery": 2,
+    "tokensEarned": 0
+  },
+  "Corki": {
+    "title": "the Daring Bombardier",
+    "mastery": 2,
+    "tokensEarned": 0
+  },
+  "Lucian": {
+    "title": "the Purifier",
+    "mastery": 2,
+    "tokensEarned": 0
+  },
+  "Aatrox": {
+    "title": "the Darkin Blade",
+    "mastery": 2,
+    "tokensEarned": 0
+  },
+  "Darius": {
+    "title": "the Hand of Noxus",
+    "mastery": 2,
+    "tokensEarned": 0
+  },
+  "Jax": {
+    "title": "Grandmaster at Arms",
+    "mastery": 2,
+    "tokensEarned": 0
+  },
+  "Nidalee": {
+    "title": "the Bestial Huntress",
+    "mastery": 2,
+    "tokensEarned": 0
+  },
+  "Kayle": {
+    "title": "the Righteous",
+    "mastery": 2,
+    "tokensEarned": 0
+  },
+  "Nasus": {
+    "title": "the Curator of the Sands",
+    "mastery": 2,
+    "tokensEarned": 0
+  },
+  "Twitch": {
+    "title": "the Plague Rat",
+    "mastery": 2,
+    "tokensEarned": 0
+  },
+  "Seraphine": {
+    "title": "the Starry-Eyed Songstress",
+    "mastery": 2,
+    "tokensEarned": 0
+  },
+  "Draven": {
+    "title": "the Glorious Executioner",
+    "mastery": 2,
+    "tokensEarned": 0
+  },
+  "Ezreal": {
+    "title": "the Prodigal Explorer",
+    "mastery": 2,
+    "tokensEarned": 0
+  },
+  "Jinx": {
+    "title": "the Loose Cannon",
+    "mastery": 2,
+    "tokensEarned": 0
+  },
+  "Gnar": {
+    "title": "the Missing Link",
+    "mastery": 2,
+    "tokensEarned": 0
+  },
+  "Vayne": {
+    "title": "the Night Hunter",
+    "mastery": 2,
+    "tokensEarned": 0
+  },
+  "Warwick": {
+    "title": "the Uncaged Wrath of Zaun",
+    "mastery": 2,
+    "tokensEarned": 0
+  },
+  "Taric": {
+    "title": "the Shield of Valoran",
+    "mastery": 2,
+    "tokensEarned": 0
+  },
+  "Nautilus": {
+    "title": "the Titan of the Depths",
+    "mastery": 2,
+    "tokensEarned": 0
+  },
+  "Caitlyn": {
+    "title": "the Sheriff of Piltover",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "TwistedFate": {
+    "title": "the Card Master",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Jhin": {
+    "title": "the Virtuoso",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Alistar": {
+    "title": "the Minotaur",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Varus": {
+    "title": "the Arrow of Retribution",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Rengar": {
+    "title": "the Pridestalker",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Garen": {
+    "title": "The Might of Demacia",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Syndra": {
+    "title": "the Dark Sovereign",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Galio": {
+    "title": "the Colossus",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "DrMundo": {
+    "title": "the Madman of Zaun",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Zilean": {
+    "title": "the Chronokeeper",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Jayce": {
+    "title": "the Defender of Tomorrow",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Pyke": {
+    "title": "the Bloodharbor Ripper",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Leblanc": {
+    "title": "the Deceiver",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Irelia": {
+    "title": "the Blade Dancer",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Vi": {
+    "title": "the Piltover Enforcer",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Heimerdinger": {
+    "title": "the Revered Inventor",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Neeko": {
+    "title": "the Curious Chameleon",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Ornn": {
+    "title": "The Fire below the Mountain",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Renata": {
+    "title": "the Chem-Baroness",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Xayah": {
+    "title": "the Rebel",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Teemo": {
+    "title": "the Swift Scout",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Ziggs": {
+    "title": "the Hexplosives Expert",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Shyvana": {
+    "title": "the Half-Dragon",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Katarina": {
+    "title": "the Sinister Blade",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Shaco": {
+    "title": "the Demon Jester",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Elise": {
+    "title": "the Spider Queen",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Qiyana": {
+    "title": "Empress of the Elements",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "KogMaw": {
+    "title": "the Mouth of the Abyss",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Olaf": {
+    "title": "the Berserker",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Thresh": {
+    "title": "the Chain Warden",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Talon": {
+    "title": "the Blade's Shadow",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Graves": {
+    "title": "the Outlaw",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Singed": {
+    "title": "the Mad Chemist",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Sion": {
+    "title": "The Undead Juggernaut",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Shen": {
+    "title": "the Eye of Twilight",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Tryndamere": {
+    "title": "the Barbarian King",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Rumble": {
+    "title": "the Mechanized Menace",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Renekton": {
+    "title": "the Butcher of the Sands",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Skarner": {
+    "title": "the Crystal Vanguard",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Kaisa": {
+    "title": "Daughter of the Void",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Fiora": {
+    "title": "the Grand Duelist",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Bard": {
+    "title": "the Wandering Caretaker",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "AurelionSol": {
+    "title": "The Star Forger",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Rammus": {
+    "title": "the Armordillo",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Kennen": {
+    "title": "the Heart of the Tempest",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Gragas": {
+    "title": "the Rabble Rouser",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Ivern": {
+    "title": "the Green Father",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Volibear": {
+    "title": "the Relentless Storm",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Fiddlesticks": {
+    "title": "the Ancient Fear",
+    "mastery": 1,
+    "tokensEarned": 0
+  },
+  "Illaoi": {
+    "title": "the Kraken Priestess",
+    "mastery": 1,
+    "tokensEarned": 0
+  }
+}
