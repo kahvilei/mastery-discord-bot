@@ -32,6 +32,9 @@ def generate_mastery_notifications(summoner_name, champ, new_mastery_data, histo
             elif calendar.day_name[date.today().weekday()] == 'Tuesday' and new_mastery == 2:
                 notifications.append(
                     f"{summoner_name} got mastery level 2 for {champ} on a Tuesday!!!!!!!!! Twosday baybeeeeee!!!!!!")
+            elif champ == "Yorick":
+                notifications.append(
+                    f"Someone (probably Garrett) played Yorick. More like Yordick, am I right? (I am right)")
             elif champ == "Teemo":
                 notifications.append(
                     f"Someone got some mastery score on Teemo, but we're not gonna say who or what level because that's not right.")
