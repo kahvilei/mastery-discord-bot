@@ -42,8 +42,13 @@ def lookup_summoner(user, region):
 
     return summoner_dict
 
+
 def get_champion_data():
-    champions_url = "http://ddragon.leagueoflegends.com/cdn/13.5.1/data/en_US/champion.json"
+    versions_url = "https://ddragon.leagueoflegends.com/api/versions.json"
+    version_data = get(versions_url)
+    current_version = json.loads(version_data.text)[0]
+
+    champions_url = f"http://ddragon.leagueoflegends.com/cdn/{current_version}/data/en_US/champion.json"
     champions_data = get(champions_url)
     all_champions = json.loads(champions_data.text)['data']
     return {val['key']: [key, val['title']] for key, val in all_champions.items()}
