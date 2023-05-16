@@ -68,7 +68,7 @@ def generate_mastery_notifications(summoner_name, champ, new_mastery_data, histo
                 if title.lower().startswith('the '):
                     title = title[4:]
                 notifications.append(
-                    f"{summoner_name} has finally done it, they're now the {new_mastery_data['title']}. "
+                    f"{summoner_name} has finally done it, they're now the {title}. "
                     f"Congrats on {champ} mastery level 7")
 
         elif new_tokens > old_tokens:
