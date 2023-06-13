@@ -1,8 +1,8 @@
 import random
 import re
-from datetime import date
 import calendar
-
+from datetime import datetime
+from pytz import timezone
 
 def generate_mastery_notifications(summoner_name, champ, new_mastery_data, historical_champ_val):
     notifications = []
@@ -29,7 +29,7 @@ def generate_mastery_notifications(summoner_name, champ, new_mastery_data, histo
             if new_mastery == 4 and champ == "Jhin":
                 notifications.append(
                     f"4️⃣4️⃣4️⃣4️⃣ ({summoner_name} just got mastery level 4 on {champ})")
-            elif calendar.day_name[date.today().weekday()] == 'Tuesday' and new_mastery == 2:
+            elif calendar.day_name[datetime.now(timezone('America/Chicago')).weekday()] == 'Tuesday' and new_mastery == 2:
                 notifications.append(
                     f"{summoner_name} got mastery level 2 for {champ} on a Tuesday!!!!!!!!! Twosday baybeeeeee!!!!!!")
             elif champ == "Teemo":
