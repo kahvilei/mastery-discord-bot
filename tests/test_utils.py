@@ -2,7 +2,7 @@ from datetime import date
 from unittest import TestCase
 from unittest.mock import patch
 
-from functions.utils import generate_mastery_notifications, misspell
+from functions.utils import generate_mastery_notifications, misspell, combine_names
 
 
 class Test(TestCase):
@@ -20,7 +20,6 @@ class Test(TestCase):
             assert messages[0] == "Snam got mastery level 2 for Neeko on a Tuesday!!!!!!!!! Twosday baybeeeeee!!!!!!"
 
     def test_jhin(self):
-
         summoner_name = 'Snam'
         champ = "Jhin"
         historical_champ_val = {"mastery": "3", "title": "the Darkin Blade", "tokensEarned": "0"}
@@ -38,7 +37,6 @@ class Test(TestCase):
 
         notifications = generate_mastery_notifications(summoner_name, champ, new_mastery_data, historical_champ_val)
         assert len(notifications) == 1
-
 
     def test_mispell(self):
         all_champs = ["Aatrox", "Ahri", "Akali", "Akshan", "Alistar", "Amumu", "Anivia", "Annie", "Aphelios", "Ashe",\
@@ -64,3 +62,19 @@ class Test(TestCase):
             print(f"before: {champ}, after: {definitely_not_champ}")
             assert definitely_not_champ != champ, champ
             assert definitely_not_champ is not None, champ
+
+
+    def test_combine_names(self):
+        assert combine_names("snam", 'Rek\'Sai') == 'snai'
+        assert combine_names("snam", 'Sejuani') == 'sni'
+        assert combine_names("kadie", 'Viktor') == 'kadiktor'
+        assert combine_names("snam", 'aatrox') == 'snatrox'
+        assert combine_names("armaan", 'Xin Zhao') == 'armao'
+        assert combine_names("armaan", 'Nasus') == 'armasus'
+        assert combine_names("Shaco", 'kadie') == 'Shadie'
+        assert combine_names("snam", 'Nunu & Willump') == 'snu & Willump'
+        assert combine_names("snam", 'Master Yi') == 'snaster Yi'
+        assert combine_names("grandtheftodom", 'Master Yi') == 'gr Yi'
+        assert combine_names("Talon", 'snam') == 'Tam'
+
+

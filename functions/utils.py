@@ -39,11 +39,20 @@ def generate_mastery_notifications(summoner_name, champ, new_mastery_data, histo
                 message_options = [
                     f"{summoner_name} now has a level {new_mastery} mastery for {champ}. It's no mastery 7 but they're trying their best.",
                     f"Look at {summoner_name} over here, achieving level {new_mastery} on {champ}",
+                    f"{summoner_name}'s mastery level level {new_mastery} on {champ}",
                     f"If I, the bot, were {summoner_name}, I would have achieved mastery level {new_mastery} on {champ}. Which is what they just did.",
                     f"They're not mastery 7, or 6, or even 5, but at least {summoner_name} is now level {new_mastery} on {champ}",
                     f"There once was a gamer named {summoner_name}, they got mastery level {new_mastery} on {champ}. Then a discord bot sent a message. The end.",
                     f"{summoner_name}. {champ}. Mastery level {new_mastery}."
                 ]
+
+                if combine_names(summoner_name, champ) is not None:
+                    message_options.append(f"{summoner_name} is mastery {new_mastery} on {champ}. Their new name is {combine_names(summoner_name, champ)}")
+                    message_options.append(f"{combine_names(summoner_name, champ)} is now mastery {new_mastery}. Wait, what?")
+                    message_options.append(f"{summoner_name} is mastery {new_mastery} on {champ}. Their new couple name is {combine_names(champ, new_mastery)}. Everyone ship them.")
+                    message_options.append(f"{summoner_name} is mastery {new_mastery} on {champ}. Someone search discord gifs for their alias, \"{combine_names(champ, new_mastery)}\".")
+
+
                 notifications.append(random.choice(message_options))
             elif new_mastery == 5:
                 message_options = [
@@ -139,3 +148,12 @@ def misspell(word):
         return '' + word[: index] + match[0] + 'i' + match[2] + word[index+3:]
     elif word == 'Vi':
         return 'Vie'
+
+
+def combine_names(name1, name2):
+    for letter1_index, letter1 in enumerate(name1[1:-1]):
+        for letter2_index, letter2 in enumerate(name2[1:-1]):
+            if str(letter1).lower() == str(letter2).lower():
+
+                new_name = name1[0:letter1_index+1] + name2[letter2_index+1:]
+                return new_name
