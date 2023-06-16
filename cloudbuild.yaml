@@ -13,6 +13,7 @@ steps:
   - --entry-point=entrypoint
   - --set-secrets=Riot_API_Key=projects/451871121938/secrets/Riot_API_Key/versions/latest
   - --set-secrets=Discord_Web_Hook=projects/451871121938/secrets/Discord_Web_Hook/versions/latest
+  - --set-secrets=CHATGPT_TOKEN=projects/451871121938/secrets/CHATGPT_TOKEN/versions/latest
 
 #   steps:
 # - name: 'gcr.io/google.com/cloudsdktool/cloud-schedule'

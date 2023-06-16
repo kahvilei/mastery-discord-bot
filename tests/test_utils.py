@@ -76,5 +76,6 @@ class Test(TestCase):
         assert combine_names("snam", 'Master Yi') == 'snaster Yi'
         assert combine_names("grandtheftodom", 'Master Yi') == 'gr Yi'
         assert combine_names("Talon", 'snam') == 'Tam'
+        assert combine_names("Thresh", 'snam') == None
 
 
