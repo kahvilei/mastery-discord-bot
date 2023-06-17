@@ -29,7 +29,9 @@ def generate_mastery_notifications(summoner_name, champ, new_mastery_data, histo
 
     if first_time or old_tokens < new_tokens or old_mastery < new_mastery:
 
-        if random.random() < 0.9:
+        # Having this always be true for now
+        # if random.random() < 0.9:
+        if True:
             messages.append(generate_ai_message(summoner_name, new_mastery, champ, first_time, tokens))
         else:
             messages.append(generate_handwritten_message(summoner_name, new_mastery, champ, first_time, tokens, title))
