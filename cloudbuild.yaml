@@ -6,7 +6,6 @@ steps:
   - deploy
   - summoners_orchestration
   - --region=us-central1
-  - --source=./functions
   - --trigger-http
   - --runtime=python39
   - --allow-unauthenticated

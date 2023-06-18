@@ -6,7 +6,7 @@ import flask
 import google
 import responses
 
-from functions.main import entrypoint
+from main import entrypoint
 
 
 class FakeQuery:

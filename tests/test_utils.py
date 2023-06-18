@@ -2,7 +2,7 @@ from datetime import date
 from unittest import TestCase
 from unittest.mock import patch
 
-from functions.utils import generate_mastery_notifications, misspell, combine_names
+from utils import generate_mastery_notifications, misspell, combine_names
 
 
 class Test(TestCase):

@@ -14,7 +14,7 @@
             "name": "Get all summoners",
             "type": "python",
             "request": "launch",
-            "program": "functions/testing.py",
+            "program": "testing.py",
             "console": "integratedTerminal",
             "args": ["get-all-summoners"],
             "justMyCode": true
@@ -23,7 +23,7 @@
             "name": "Get live matches",
             "type": "python",
             "request": "launch",
-            "program": "functions/testing.py",
+            "program": "testing.py",
             "console": "integratedTerminal",
             "args": ["get-live-matches"],
             "justMyCode": true
@@ -32,7 +32,7 @@
             "name": "Delete User",
             "type": "python",
             "request": "launch",
-            "program": "functions/testing.py",
+            "program": "testing.py",
             "console": "integratedTerminal",
             "args": ["delete-user"],
             "justMyCode": true
@@ -41,7 +41,7 @@
             "name": "Add User",
             "type": "python",
             "request": "launch",
-            "program": "functions/testing.py",
+            "program": "testing.py",
             "console": "integratedTerminal",
             "args": ["add-user"],
             "justMyCode": true
@@ -50,7 +50,7 @@
             "name": "Mass Match Refresh",
             "type": "python",
             "request": "launch",
-            "program": "functions/testing.py",
+            "program": "testing.py",
             "console": "integratedTerminal",
             "args": ["mass-match-refresh"],
             "justMyCode": true
@@ -59,7 +59,7 @@
             "name": "Mass Stats Refresh",
             "type": "python",
             "request": "launch",
-            "program": "functions/testing.py",
+            "program": "testing.py",
             "console": "integratedTerminal",
             "args": ["mass-stats-refresh"],
             "justMyCode": true
@@ -68,7 +68,7 @@
             "name": "get summoner IDs",
             "type": "python",
             "request": "launch",
-            "program": "functions/testing.py",
+            "program": "testing.py",
             "console": "integratedTerminal",
             "args": ["get-all-summoner-IDs"],
             "justMyCode": true
