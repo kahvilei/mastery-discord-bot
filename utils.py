@@ -93,6 +93,8 @@ def generate_ai_message(summoner_name, new_mastery, champ, first_time=False, tok
         win = most_recent_match.get('win')
         if kda > 4:
             extra_notes.append(f'Optionally mention that the player also went {kills}/{deaths}/{assists} in their last match (this is a really good score)')
+        elif kda < 2:
+            extra_notes.append(f'Optionally mention that the player also went {kills}/{deaths}/{assists} in their last match (this is a pretty bad score)')
         if deaths == 0:
             extra_notes.append(f'Optionally mention that this player didn\'t die in their last match (this is impressive)')
         if most_recent_match.get('pentaKills') != '0':
