@@ -92,9 +92,9 @@ def generate_ai_message(summoner_name, new_mastery, champ, first_time=False, tok
         kda = round((kills + assists) / (deaths if deaths > 0 else 1), 2)
         win = most_recent_match.get('win')
         if kda > 4:
-            extra_notes.append(f'Optionally mention that the player also went {kills}/{deaths}/{assists} in their last match (this is a really good score)')
+            extra_notes.append(f'Optionally mention that the player "went {kills}/{deaths}/{assists}" in their last match (this is a really good score)')
         elif kda < 2:
-            extra_notes.append(f'Optionally mention that the player also went {kills}/{deaths}/{assists} in their last match (this is a pretty bad score)')
+            extra_notes.append(f'Optionally mention that the player "went {kills}/{deaths}/{assists}" in their last match (this is a pretty bad score)')
         if deaths == 0:
             extra_notes.append(f'Optionally mention that this player didn\'t die in their last match (this is impressive)')
         if most_recent_match.get('pentaKills') != '0':
@@ -110,12 +110,13 @@ def generate_ai_message(summoner_name, new_mastery, champ, first_time=False, tok
 
     default_prompt = [
         f'The player "{summoner_name}" just finished a match, and got to checkpoint {new_mastery}/7 on the champion "{champ}" in league of legends',
-        f'Write a message that alerts a chat channel that this happened',
-        f'Really try to make jokes with {champ}\'s identity or abilities in the message',
+        f'Write a funny message that alerts a chat channel that this happened',
+        f'The message should have a joke based on {champ}\'s identity or abilities in league of legends',
         'specifically name the player\'s checkpoint in the message',
-        'Keep the message roughly under 100 chars in the message',
+        'Keep the message roughly under 150 chars in the message',
         'Don\'t address the message to that player, as the message will be for multiple people to read',
         'Make excitement of the message appropriate for the checkpoint they are at in the message',
+        'don\'t explicitly mention "league of legends" or "lol" in the message',
         'Don\'t use the word congratulations or congrats',
         'Don\'t use hashtags or @s in the message',
         'Refer to a player\'s checkpoint as their "mastery level", and don\'t use the word "checkpoint"'
