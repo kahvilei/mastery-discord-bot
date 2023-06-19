@@ -1,5 +1,6 @@
+import json
 from datetime import date
-from unittest import TestCase
+from unittest import TestCase, mock
 from unittest.mock import patch
 
 from utils import generate_mastery_notifications, misspell, combine_names
@@ -29,13 +30,23 @@ class Test(TestCase):
         assert len(messages) == 1
         assert messages[0] == "4️⃣4️⃣4️⃣4️⃣ (Snam just got mastery level 4 on Jhin)"
 
-    def test_mastery_notifications(self):
+
+    @patch('google.cloud.datastore.Client')
+    def test_mastery_notifications(self, datastore_client):
+
+        # Set the mocked datastore's query's fetch to return the sample json file
+        query = mock.MagicMock()
+        datastore_client.return_value.query.return_value = query
+        datastore_client.return_value.query.add_filter.return_value = query
+        query.fetch.return_value = json.load(open("most_recent_match_response.json"))
+
         summoner_name = 'snam'
-        champ = "Neeko"
+        champ = "Aatrox"
         historical_champ_val = {"mastery": "2", "title": "the Darkin Blade", "tokensEarned": "0"}
         new_mastery_data = {"mastery": "3", "title": "the Darkin Blade", "tokensEarned": "0"}
 
-        notifications = generate_mastery_notifications(summoner_name, champ, new_mastery_data, historical_champ_val)
+        puuid = 'rvlA_wzDihhSjaknwXcvWA2fagOiQDk-fC67wMSi5uEgOU55Tg3IU-lSWrv5OgS9J0R51ikgHW9f3g'
+        notifications = generate_mastery_notifications(summoner_name, champ, new_mastery_data, historical_champ_val, puuid=puuid)
         assert len(notifications) == 1
 
     def test_mispell(self):

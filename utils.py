@@ -3,17 +3,22 @@ import random
 import re
 import calendar
 from datetime import datetime
+from google.cloud import datastore
 
 import openai
 from pytz import timezone
 
+from db_functions import get_most_recent_user_match
 
-def generate_mastery_notifications(summoner_name, champ, new_mastery_data, historical_champ_val):
+
+def generate_mastery_notifications(summoner_name, champ, new_mastery_data, historical_champ_val, puuid=None):
     first_time = historical_champ_val is None
     messages = []
     title = new_mastery_data.get('title')
     new_tokens = int(new_mastery_data.get('tokensEarned'))
     new_mastery = int(new_mastery_data.get('mastery'))
+
+    # Determine if we should send a notification
     if not first_time:
         old_tokens = int(historical_champ_val.get('tokensEarned'))
         old_mastery = int(historical_champ_val.get('mastery'))
@@ -29,12 +34,11 @@ def generate_mastery_notifications(summoner_name, champ, new_mastery_data, histo
 
     if first_time or old_tokens < new_tokens or old_mastery < new_mastery:
 
-        # Having this always be true for now
-        # if random.random() < 0.9:
-        if True:
-            messages.append(generate_ai_message(summoner_name, new_mastery, champ, first_time, tokens))
-        else:
-            messages.append(generate_handwritten_message(summoner_name, new_mastery, champ, first_time, tokens, title))
+        if puuid is not None:
+            datastore_client = datastore.Client()
+            most_recent_match = get_most_recent_user_match(datastore_client, puuid)
+
+        messages.append(generate_ai_message(summoner_name, new_mastery, champ, first_time, tokens, most_recent_match))
 
     return messages
 
@@ -77,31 +81,59 @@ def combine_names(name1, name2):
 
 
 # makes a call to chatgpt to generate a message for a summoner, mastery level, and champion
-def generate_ai_message(summoner_name, new_mastery, champ, first_time=False, tokens=None):
-    default_prompt = f'Write log to record player "{summoner_name}" just got to checkpoint {new_mastery}/7 on the champion "{champ}" in league of legends. ' \
-                     f'Have the message be creative and make jokes with {champ}\"s identity or abilities in the message.' \
-                     'specifically name the player\'s checkpoint in the message.' \
-                     'Keep the message roughly under 100 chars in the message.' \
-                     'don\t address the message to that player, as the message will be for everyone in the message.' \
-                     'make excitement of the message appropriate for the checkpoint they are at in the message.' \
-                     'for checkpoints 1-3, be disappointed rather than congratulatory in the message.' \
-                     'don\'t use the word congratulations or congrats. ' \
-                     'don\'t use hashtags or @s in the message.' \
-                     'refer to a player\'s checkpoint as their "mastery level", and don\'t use the word "checkpoint".'
-    first_time_prompt = f'Write a message saying "{summoner_name}" just played AS the champion "{champ}" for the first time. ' \
-                        f'Have the message be creative and make jokes with {champ}\"s identity or abilities in the message.' \
-                        'do not assume the match was a victory or loss, and don\'t assume it went well or poorly' \
-                        'Keep the message under 60 chars in the message. ' \
-                        'don\'t try and sound like a social media/corporate post, try and sound like a buddy asking how it went.' \
-                        'Add something people can respond to, like asking that player to send a screenshot showing how they did, or ask for them to send a gif representing how the match went, or use an emoji to represent how the match went.'
-    got_token_prompt = f'Write a message saying the "{summoner_name}" just earned a token for the champion "{champ}" while playing {champ}. ' \
-                       'anyone seeing this message will already know this, so no need to repeat it, but a token is a mark that means that player did well in a game. ' \
-                       f'that champion is a character in the game league of legends, surround {champ}\'s name with a lot of emojis that represent that champion. ' \
-                       'keep the message under 60 chars in the message, and state the person that earned the token. ' \
-                       f'don\'t specify that they were playing league of legends, but make sure to specify {summoner_name} and {champ}. ' \
-                       f'don\'t be shy with the emoji usage, there should be a lot of them, but they should all be related to the league of legends champion "{champ}". ' \
-                       f'remember that {summoner_name} is the one that earned the token, {champ} was the champion they were playing as. ' \
-                       'do not send the message as a congratulation, but as a notification to everyone else that the player got a token. '
+def generate_ai_message(summoner_name, new_mastery, champ, first_time=False, tokens=None, most_recent_match=None):
+    extra_notes = []
+    if champ == most_recent_match.get('championName'):
+        # This means we have more to work with
+        # calculate kda from match data, cast to floats first
+        kills = int(most_recent_match.get('kills'))
+        deaths = int(most_recent_match.get('deaths'))
+        assists = int(most_recent_match.get('assists'))
+        kda = round((kills + assists) / (deaths if deaths > 0 else 1), 2)
+        win = most_recent_match.get('win')
+        if kda > 4:
+            extra_notes.append(f'Optionally mention that the player also went {kills}/{deaths}/{assists} in their last match (this is a really good score)')
+        if deaths == 0:
+            extra_notes.append(f'Optionally mention that this player didn\'t die in their last match (this is impressive)')
+        if most_recent_match.get('pentaKills') != '0':
+            extra_notes.append(f'Mention the player got a "pentakill" in their last match, this is incredibly impressive, really hype this up')
+        if most_recent_match.get('firstBloodKill'):
+            extra_notes.append(f'Optionally mention the player got first blood in their last match')
+        if most_recent_match['challenges'].get('hadOpenNexus', '0') != '0':
+            extra_notes.append(f'Optionally mention they had an open nexus, and it was a close game')
+        if win:
+            extra_notes.append(f'The player won this match')
+        else:
+            extra_notes.append(f'The player lost this match')
+
+    default_prompt = [
+        f'The player "{summoner_name}" just finished a match, and got to checkpoint {new_mastery}/7 on the champion "{champ}" in league of legends',
+        f'Write a message that alerts a chat channel that this happened',
+        f'Really try to make jokes with {champ}\'s identity or abilities in the message',
+        'specifically name the player\'s checkpoint in the message',
+        'Keep the message roughly under 100 chars in the message',
+        'Don\'t address the message to that player, as the message will be for multiple people to read',
+        'Make excitement of the message appropriate for the checkpoint they are at in the message',
+        'Don\'t use the word congratulations or congrats',
+        'Don\'t use hashtags or @s in the message',
+        'Refer to a player\'s checkpoint as their "mastery level", and don\'t use the word "checkpoint"'
+        ]
+    first_time_prompt = [
+        f'Write a message saying "{summoner_name}" just played AS the champion "{champ}" for the first time',
+        f'Have the message be creative and make jokes with {champ}\"s identity or abilities in the message',
+        'Keep the message under 60 chars in the message',
+        'don\'t try and sound like a social media/corporate post, try and sound like a buddy asking how it went',
+        'Add something people can respond to, like asking that player to send a screenshot showing how they did, or ask for them to send a gif representing how the match went, or use an emoji to represent how the match went']
+    got_token_prompt = [
+        f'Write a message saying the "{summoner_name}" just earned a token for the champion "{champ}" while playing {champ}',
+        'anyone seeing this message will already know this, so no need to repeat it, but a token is a mark that means that player did well in a game',
+        f'that champion is a character in the game league of legends, surround {champ}\'s name with a lot of emojis that represent that champion',
+        'keep the message under 60 chars in the message, and state the person that earned the token',
+        f'don\'t specify that they were playing league of legends, but make sure to specify {summoner_name} and {champ}',
+        f'don\'t be shy with the emoji usage, there should be a lot of them, but they should all be related to the league of legends champion "{champ}',
+        f'remember that {summoner_name} is the one that earned the token, {champ} was the champion they were playing as',
+        'do not send the message as a congratulation, but as a notification to everyone else that the player got a token. '
+    ]
 
     # get token from envvar
     openai.api_key = os.getenv('CHATGPT_TOKEN')
@@ -114,17 +146,25 @@ def generate_ai_message(summoner_name, new_mastery, champ, first_time=False, tok
     else:
         prompt = default_prompt
 
+    # combine prompt with extra notes, and turn into a string with periods
+    prompt = '. '.join(prompt + extra_notes)
+    prompt += ". Here is the message:\n"
+
     response = openai.Completion.create(
         engine='text-davinci-003',  # Specify the model/engine to use
         prompt=prompt,
-        max_tokens=50,  # Set the maximum length of the generated response
+        max_tokens=len(prompt),  # Set the maximum length of the generated response
         n=1,  # Generate a single response
         stop=None,  # Define a custom stop sequence if needed
     )
 
     # Retrieve the generated response
     generated_text = response.choices[0].text.strip().replace('\n', '')
+    # remove any leading or trailing quotes
+    generated_text = generated_text.strip('"')
 
+
+    print(f'GENERATED MESSAGE: {generated_text}')
     return generated_text
 
 

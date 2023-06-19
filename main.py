@@ -32,16 +32,6 @@ def summoner_match_refresh(datastore_client, args):
     update_user_matches(puuid, region, last_match_start_ts, datastore_client)
 
 
-def mass_match_refresh(datastore_client, args):
-    summoner_dict = get_summoner_dict(datastore_client)
-    results = " "
-    for summoner in summoner_dict:
-        last_match_start_ts = get_summoner_field(datastore_client, summoner["puuid"], "last_match_start_ts")
-        results += " " + update_user_matches(summoner["puuid"], summoner["region"], last_match_start_ts,
-                                             datastore_client) + " for " + summoner["name"]
-    return flask.Response(results)
-
-
 def mass_stats_refresh(datastore_client, args):
     summoner_dict = get_summoner_dict(datastore_client)
     results = []
@@ -50,12 +40,23 @@ def mass_stats_refresh(datastore_client, args):
     for summoner in summoner_dict:
         puuid = summoner["puuid"]
         summoner_id = summoner.get("id")
+
+        # First, update the user's match history
+        last_match_start_ts = get_summoner_field(datastore_client, summoner["puuid"], "last_match_start_ts")
+        update_user_matches(summoner["puuid"], summoner["region"], last_match_start_ts,
+                            datastore_client)
+
+        # Second, update the user's mastery
+        # This is what also sends the discord notifications
         update_user_mastery(datastore_client,
                             puuid=puuid,
                             summoner_id=summoner_id,
                             summoner_name=summoner.get('name'),
                             champion_data=champion_data)
+
+        # Third, update the user's winrate
         individual_response = update_user_winrate(datastore_client, puuid=puuid)
+
         results.append(f"{individual_response} for {puuid}")
     return flask.Response("\n".join(results))
 
@@ -74,7 +75,7 @@ def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name, cha
         notifications = []
         for champ, new_mastery in new_user_mastery.items():
             historical_champ_val = historic_user_mastery.get(champ)
-            notifications += generate_mastery_notifications(summoner_name, champ, new_mastery, historical_champ_val)
+            notifications += generate_mastery_notifications(summoner_name, champ, new_mastery, historical_champ_val, puuid)
 
         if notifications:
             for notification in notifications:
@@ -157,8 +158,6 @@ def entrypoint(request):
         return get_live_matches(datastore_client, summoners, path_segments)
     elif root == 'delete-user':
         return delete_user(datastore_client, path_segments)
-    elif root == "mass-match-refresh":
-        return mass_match_refresh(datastore_client, path_segments)
     elif root == "mass-stats-refresh":
         return mass_stats_refresh(datastore_client, path_segments)
     else:

@@ -118,6 +118,18 @@ def update_user_mastery(datastore_client, puuid, user_mastery):
     write_dict_to_datastore(datastore_client, puuid, user_mastery, 'summoner_mastery')
 
 
+# Get the player's most recent match
+def get_most_recent_user_match(datastore_client, puuid):
+
+    query = datastore_client.query(kind="summoner_match")
+    query.add_filter("puuid", "=", puuid)
+    query.order = ['-gameStartTimestamp']
+    responses = query.fetch(1)
+    query_result = list(responses)[0]
+
+    summoner_match = json.loads(json.dumps(query_result), parse_int=str)
+    return summoner_match
+
 def update_user_winrate(datastore_client, args=None, puuid=None):
 
     # Use args if being called via post call
