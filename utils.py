@@ -11,8 +11,19 @@ from pytz import timezone
 
 from db_functions import get_most_recent_user_match
 
+# For an individual player, generate a message if they've increased their mastery, or had a notable game
+def generate_game_notifications(new_matches):
+    pass
 
-def generate_mastery_notifications(summoner_name, champ, new_mastery_data, historical_champ_val, puuid=None):
+
+def generate_notifications(new_matches, mastery_updates, summoner_name):
+    if mastery_updates:
+        return generate_mastery_notifications(mastery_updates)
+    elif new_matches:
+        return generate_game_notifications(new_matches)
+
+
+def generate_mastery_notifications(summoner_name, champ, new_mastery_data, historical_champ_val):
     first_time = historical_champ_val is None
     messages = []
     title = new_mastery_data.get('title')
