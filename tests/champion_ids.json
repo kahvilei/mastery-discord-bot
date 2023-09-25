@@ -1,0 +1,662 @@
+{
+  "266": [
+    "Aatrox",
+    "the Darkin Blade"
+  ],
+  "103": [
+    "Ahri",
+    "the Nine-Tailed Fox"
+  ],
+  "84": [
+    "Akali",
+    "the Rogue Assassin"
+  ],
+  "166": [
+    "Akshan",
+    "the Rogue Sentinel"
+  ],
+  "12": [
+    "Alistar",
+    "the Minotaur"
+  ],
+  "32": [
+    "Amumu",
+    "the Sad Mummy"
+  ],
+  "34": [
+    "Anivia",
+    "the Cryophoenix"
+  ],
+  "1": [
+    "Annie",
+    "the Dark Child"
+  ],
+  "523": [
+    "Aphelios",
+    "the Weapon of the Faithful"
+  ],
+  "22": [
+    "Ashe",
+    "the Frost Archer"
+  ],
+  "136": [
+    "AurelionSol",
+    "The Star Forger"
+  ],
+  "268": [
+    "Azir",
+    "the Emperor of the Sands"
+  ],
+  "432": [
+    "Bard",
+    "the Wandering Caretaker"
+  ],
+  "200": [
+    "Belveth",
+    "the Empress of the Void"
+  ],
+  "53": [
+    "Blitzcrank",
+    "the Great Steam Golem"
+  ],
+  "63": [
+    "Brand",
+    "the Burning Vengeance"
+  ],
+  "201": [
+    "Braum",
+    "the Heart of the Freljord"
+  ],
+  "233": [
+    "Briar",
+    "the Restrained Hunger"
+  ],
+  "51": [
+    "Caitlyn",
+    "the Sheriff of Piltover"
+  ],
+  "164": [
+    "Camille",
+    "the Steel Shadow"
+  ],
+  "69": [
+    "Cassiopeia",
+    "the Serpent's Embrace"
+  ],
+  "31": [
+    "Chogath",
+    "the Terror of the Void"
+  ],
+  "42": [
+    "Corki",
+    "the Daring Bombardier"
+  ],
+  "122": [
+    "Darius",
+    "the Hand of Noxus"
+  ],
+  "131": [
+    "Diana",
+    "Scorn of the Moon"
+  ],
+  "119": [
+    "Draven",
+    "the Glorious Executioner"
+  ],
+  "36": [
+    "DrMundo",
+    "the Madman of Zaun"
+  ],
+  "245": [
+    "Ekko",
+    "the Boy Who Shattered Time"
+  ],
+  "60": [
+    "Elise",
+    "the Spider Queen"
+  ],
+  "28": [
+    "Evelynn",
+    "Agony's Embrace"
+  ],
+  "81": [
+    "Ezreal",
+    "the Prodigal Explorer"
+  ],
+  "9": [
+    "Fiddlesticks",
+    "the Ancient Fear"
+  ],
+  "114": [
+    "Fiora",
+    "the Grand Duelist"
+  ],
+  "105": [
+    "Fizz",
+    "the Tidal Trickster"
+  ],
+  "3": [
+    "Galio",
+    "the Colossus"
+  ],
+  "41": [
+    "Gangplank",
+    "the Saltwater Scourge"
+  ],
+  "86": [
+    "Garen",
+    "The Might of Demacia"
+  ],
+  "150": [
+    "Gnar",
+    "the Missing Link"
+  ],
+  "79": [
+    "Gragas",
+    "the Rabble Rouser"
+  ],
+  "104": [
+    "Graves",
+    "the Outlaw"
+  ],
+  "887": [
+    "Gwen",
+    "The Hallowed Seamstress"
+  ],
+  "120": [
+    "Hecarim",
+    "the Shadow of War"
+  ],
+  "74": [
+    "Heimerdinger",
+    "the Revered Inventor"
+  ],
+  "420": [
+    "Illaoi",
+    "the Kraken Priestess"
+  ],
+  "39": [
+    "Irelia",
+    "the Blade Dancer"
+  ],
+  "427": [
+    "Ivern",
+    "the Green Father"
+  ],
+  "40": [
+    "Janna",
+    "the Storm's Fury"
+  ],
+  "59": [
+    "JarvanIV",
+    "the Exemplar of Demacia"
+  ],
+  "24": [
+    "Jax",
+    "Grandmaster at Arms"
+  ],
+  "126": [
+    "Jayce",
+    "the Defender of Tomorrow"
+  ],
+  "202": [
+    "Jhin",
+    "the Virtuoso"
+  ],
+  "222": [
+    "Jinx",
+    "the Loose Cannon"
+  ],
+  "145": [
+    "Kaisa",
+    "Daughter of the Void"
+  ],
+  "429": [
+    "Kalista",
+    "the Spear of Vengeance"
+  ],
+  "43": [
+    "Karma",
+    "the Enlightened One"
+  ],
+  "30": [
+    "Karthus",
+    "the Deathsinger"
+  ],
+  "38": [
+    "Kassadin",
+    "the Void Walker"
+  ],
+  "55": [
+    "Katarina",
+    "the Sinister Blade"
+  ],
+  "10": [
+    "Kayle",
+    "the Righteous"
+  ],
+  "141": [
+    "Kayn",
+    "the Shadow Reaper"
+  ],
+  "85": [
+    "Kennen",
+    "the Heart of the Tempest"
+  ],
+  "121": [
+    "Khazix",
+    "the Voidreaver"
+  ],
+  "203": [
+    "Kindred",
+    "The Eternal Hunters"
+  ],
+  "240": [
+    "Kled",
+    "the Cantankerous Cavalier"
+  ],
+  "96": [
+    "KogMaw",
+    "the Mouth of the Abyss"
+  ],
+  "897": [
+    "KSante",
+    "the Pride of Nazumah"
+  ],
+  "7": [
+    "Leblanc",
+    "the Deceiver"
+  ],
+  "64": [
+    "LeeSin",
+    "the Blind Monk"
+  ],
+  "89": [
+    "Leona",
+    "the Radiant Dawn"
+  ],
+  "876": [
+    "Lillia",
+    "the Bashful Bloom"
+  ],
+  "127": [
+    "Lissandra",
+    "the Ice Witch"
+  ],
+  "236": [
+    "Lucian",
+    "the Purifier"
+  ],
+  "117": [
+    "Lulu",
+    "the Fae Sorceress"
+  ],
+  "99": [
+    "Lux",
+    "the Lady of Luminosity"
+  ],
+  "54": [
+    "Malphite",
+    "Shard of the Monolith"
+  ],
+  "90": [
+    "Malzahar",
+    "the Prophet of the Void"
+  ],
+  "57": [
+    "Maokai",
+    "the Twisted Treant"
+  ],
+  "11": [
+    "MasterYi",
+    "the Wuju Bladesman"
+  ],
+  "902": [
+    "Milio",
+    "The Gentle Flame"
+  ],
+  "21": [
+    "MissFortune",
+    "the Bounty Hunter"
+  ],
+  "62": [
+    "MonkeyKing",
+    "the Monkey King"
+  ],
+  "82": [
+    "Mordekaiser",
+    "the Iron Revenant"
+  ],
+  "25": [
+    "Morgana",
+    "the Fallen"
+  ],
+  "950": [
+    "Naafiri",
+    "the Hound of a Hundred Bites"
+  ],
+  "267": [
+    "Nami",
+    "the Tidecaller"
+  ],
+  "75": [
+    "Nasus",
+    "the Curator of the Sands"
+  ],
+  "111": [
+    "Nautilus",
+    "the Titan of the Depths"
+  ],
+  "518": [
+    "Neeko",
+    "the Curious Chameleon"
+  ],
+  "76": [
+    "Nidalee",
+    "the Bestial Huntress"
+  ],
+  "895": [
+    "Nilah",
+    "the Joy Unbound"
+  ],
+  "56": [
+    "Nocturne",
+    "the Eternal Nightmare"
+  ],
+  "20": [
+    "Nunu",
+    "the Boy and His Yeti"
+  ],
+  "2": [
+    "Olaf",
+    "the Berserker"
+  ],
+  "61": [
+    "Orianna",
+    "the Lady of Clockwork"
+  ],
+  "516": [
+    "Ornn",
+    "The Fire below the Mountain"
+  ],
+  "80": [
+    "Pantheon",
+    "the Unbreakable Spear"
+  ],
+  "78": [
+    "Poppy",
+    "Keeper of the Hammer"
+  ],
+  "555": [
+    "Pyke",
+    "the Bloodharbor Ripper"
+  ],
+  "246": [
+    "Qiyana",
+    "Empress of the Elements"
+  ],
+  "133": [
+    "Quinn",
+    "Demacia's Wings"
+  ],
+  "497": [
+    "Rakan",
+    "The Charmer"
+  ],
+  "33": [
+    "Rammus",
+    "the Armordillo"
+  ],
+  "421": [
+    "RekSai",
+    "the Void Burrower"
+  ],
+  "526": [
+    "Rell",
+    "the Iron Maiden"
+  ],
+  "888": [
+    "Renata",
+    "the Chem-Baroness"
+  ],
+  "58": [
+    "Renekton",
+    "the Butcher of the Sands"
+  ],
+  "107": [
+    "Rengar",
+    "the Pridestalker"
+  ],
+  "92": [
+    "Riven",
+    "the Exile"
+  ],
+  "68": [
+    "Rumble",
+    "the Mechanized Menace"
+  ],
+  "13": [
+    "Ryze",
+    "the Rune Mage"
+  ],
+  "360": [
+    "Samira",
+    "the Desert Rose"
+  ],
+  "113": [
+    "Sejuani",
+    "Fury of the North"
+  ],
+  "235": [
+    "Senna",
+    "the Redeemer"
+  ],
+  "147": [
+    "Seraphine",
+    "the Starry-Eyed Songstress"
+  ],
+  "875": [
+    "Sett",
+    "the Boss"
+  ],
+  "35": [
+    "Shaco",
+    "the Demon Jester"
+  ],
+  "98": [
+    "Shen",
+    "the Eye of Twilight"
+  ],
+  "102": [
+    "Shyvana",
+    "the Half-Dragon"
+  ],
+  "27": [
+    "Singed",
+    "the Mad Chemist"
+  ],
+  "14": [
+    "Sion",
+    "The Undead Juggernaut"
+  ],
+  "15": [
+    "Sivir",
+    "the Battle Mistress"
+  ],
+  "72": [
+    "Skarner",
+    "the Crystal Vanguard"
+  ],
+  "37": [
+    "Sona",
+    "Maven of the Strings"
+  ],
+  "16": [
+    "Soraka",
+    "the Starchild"
+  ],
+  "50": [
+    "Swain",
+    "the Noxian Grand General"
+  ],
+  "517": [
+    "Sylas",
+    "the Unshackled"
+  ],
+  "134": [
+    "Syndra",
+    "the Dark Sovereign"
+  ],
+  "223": [
+    "TahmKench",
+    "The River King"
+  ],
+  "163": [
+    "Taliyah",
+    "the Stoneweaver"
+  ],
+  "91": [
+    "Talon",
+    "the Blade's Shadow"
+  ],
+  "44": [
+    "Taric",
+    "the Shield of Valoran"
+  ],
+  "17": [
+    "Teemo",
+    "the Swift Scout"
+  ],
+  "412": [
+    "Thresh",
+    "the Chain Warden"
+  ],
+  "18": [
+    "Tristana",
+    "the Yordle Gunner"
+  ],
+  "48": [
+    "Trundle",
+    "the Troll King"
+  ],
+  "23": [
+    "Tryndamere",
+    "the Barbarian King"
+  ],
+  "4": [
+    "TwistedFate",
+    "the Card Master"
+  ],
+  "29": [
+    "Twitch",
+    "the Plague Rat"
+  ],
+  "77": [
+    "Udyr",
+    "the Spirit Walker"
+  ],
+  "6": [
+    "Urgot",
+    "the Dreadnought"
+  ],
+  "110": [
+    "Varus",
+    "the Arrow of Retribution"
+  ],
+  "67": [
+    "Vayne",
+    "the Night Hunter"
+  ],
+  "45": [
+    "Veigar",
+    "the Tiny Master of Evil"
+  ],
+  "161": [
+    "Velkoz",
+    "the Eye of the Void"
+  ],
+  "711": [
+    "Vex",
+    "the Gloomist"
+  ],
+  "254": [
+    "Vi",
+    "the Piltover Enforcer"
+  ],
+  "234": [
+    "Viego",
+    "The Ruined King"
+  ],
+  "112": [
+    "Viktor",
+    "the Machine Herald"
+  ],
+  "8": [
+    "Vladimir",
+    "the Crimson Reaper"
+  ],
+  "106": [
+    "Volibear",
+    "the Relentless Storm"
+  ],
+  "19": [
+    "Warwick",
+    "the Uncaged Wrath of Zaun"
+  ],
+  "498": [
+    "Xayah",
+    "the Rebel"
+  ],
+  "101": [
+    "Xerath",
+    "the Magus Ascendant"
+  ],
+  "5": [
+    "XinZhao",
+    "the Seneschal of Demacia"
+  ],
+  "157": [
+    "Yasuo",
+    "the Unforgiven"
+  ],
+  "777": [
+    "Yone",
+    "the Unforgotten"
+  ],
+  "83": [
+    "Yorick",
+    "Shepherd of Souls"
+  ],
+  "350": [
+    "Yuumi",
+    "the Magical Cat"
+  ],
+  "154": [
+    "Zac",
+    "the Secret Weapon"
+  ],
+  "238": [
+    "Zed",
+    "the Master of Shadows"
+  ],
+  "221": [
+    "Zeri",
+    "The Spark of Zaun"
+  ],
+  "115": [
+    "Ziggs",
+    "the Hexplosives Expert"
+  ],
+  "26": [
+    "Zilean",
+    "the Chronokeeper"
+  ],
+  "142": [
+    "Zoe",
+    "the Aspect of Twilight"
+  ],
+  "143": [
+    "Zyra",
+    "Rise of the Thorns"
+  ]
+}

@@ -7,3 +7,8 @@ class Test(TestCase):
     def test_get_champion_data(self):
         data = get_champion_data()
         assert len(data) > 100
+
+
+def test_get_champion_data():
+    data = get_champion_data()
+    assert len(data) > 100
