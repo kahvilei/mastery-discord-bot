@@ -91,8 +91,6 @@ def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name, cha
                     'tokensEarned': new_mastery['tokensEarned'],
                     'title': new_mastery['title']
                 }
-            else:
-                print('No mastery changes to note')
 
 
 # Updates the database with the most recent matches. Returns the most recent match
