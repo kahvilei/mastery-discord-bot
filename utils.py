@@ -1,47 +1,98 @@
-import json
+import calendar
 import os
 import random
 import re
-import calendar
 from datetime import datetime
-from google.cloud import datastore
 
 import openai
 from pytz import timezone
 
-from db_functions import get_most_recent_user_match
+
+# For an individual player, generate a message if they've increased their mastery, or had a notable game
+def generate_notification(new_match, mastery_updates, summoner_name):
+    if mastery_updates:
+        return generate_mastery_notification(mastery_updates, new_match, summoner_name)
+    elif is_notable_game(new_match):
+        return generate_notable_game_notification(new_match, summoner_name)
 
 
-def generate_mastery_notifications(summoner_name, champ, new_mastery_data, historical_champ_val, puuid=None):
-    first_time = historical_champ_val is None
-    messages = []
-    title = new_mastery_data.get('title')
-    new_tokens = int(new_mastery_data.get('tokensEarned'))
-    new_mastery = int(new_mastery_data.get('mastery'))
+# Returns true if the player had a kda of 10 or more
+def is_notable_game(match_data):
+    # calculate kda from match data, cast to floats first
+    kills = int(match_data.get('kills'))
+    deaths = int(match_data.get('deaths'))
+    assists = int(match_data.get('assists'))
+    kda = round((kills + assists) / (deaths if deaths > 0 else 1), 2)
+    return kda >= 10
 
-    # Determine if we should send a notification
-    if not first_time:
-        old_tokens = int(historical_champ_val.get('tokensEarned'))
-        old_mastery = int(historical_champ_val.get('mastery'))
 
-        if old_tokens < new_tokens:
-            tokens = new_tokens
-        else:
-            tokens = None
+# Create the prompt for the AI to generate a message, and call the AI
+def generate_notable_game_notification(new_match, player_name):
+    notable_game_info = generate_notable_game_information(new_match)
+
+    prompt = f"Write an announcement message that will be sent in a discord channel to notify everyone that " \
+             f"{player_name} just played a good game of league of legends.\n"
+    prompt += '\n'.join(notable_game_info)
+
+    return call_gpt(prompt)
+
+
+# This looks at the most recent match data, and pulls out any notable information
+def generate_notable_game_information(new_match):
+    # calculate kda from match data, cast to floats first
+    kills = int(new_match.get('kills'))
+    deaths = int(new_match.get('deaths'))
+    assists = int(new_match.get('assists'))
+    kda = round((kills + assists) / (deaths if deaths > 0 else 1), 2)
+
+    game_info = ["Here is some information about the player's last match:"]
+    # If the player had a kda of 10 or more, add that to the message
+    if kda >= 10:
+        game_info.append(
+            f'The player "went {kills}/{deaths}/{assists}" in their last match (this is a really good score)')
+        game_info.append(f'The player had a K/D/A of {kda} in their last match (this is a really good score)')
+
+    if kda <= 1:
+        game_info.append(
+            f'The player "went {kills}/{deaths}/{assists}" in their last match (this is a really bad score)')
+        game_info.append(f'The player had a K/D/A of {kda} in their last match (this is a really bad score)')
+
+    # If the player didn't die, add that to the message
+    if deaths == 0:
+        game_info.append(f"The player didn't die at all")
+
+    # If the player got a penta kill, add that to the message
+    if new_match.get('pentaKills') != '0':
+        game_info.append("The player got a pentakill, this is very rare and should be noted")
+
+    # If the player got first blood, add that to the message
+    if new_match.get('firstBloodKill'):
+        game_info.append("The player got first blood")
+
+    # If the player had an open nexus, add that to the message
+    if new_match['challenges'].get('hadOpenNexus', '0') != '0':
+        game_info.append("The player had an open nexus, and it was a close game")
+
+    # If the player won, add that to the message
+    if new_match.get('win'):
+        game_info.append("The player won this match")
     else:
-        tokens = None
-        old_mastery = 0
-        old_tokens = 0
+        game_info.append("The player lost this match")
 
-    if first_time or old_tokens < new_tokens or old_mastery < new_mastery:
+    # If the player dealt a lot of damage, add that to the message
+    total_damage = int(new_match.get('totalDamageDealtToChampions'))
+    if total_damage > 45000:
+        game_info.append(f"The player dealt {total_damage} damage to champs, this is a lot")
 
-        if puuid is not None:
-            datastore_client = datastore.Client()
-            most_recent_match = get_most_recent_user_match(datastore_client, puuid)
+    # if the player healed a lot, add that to the message
+    total_healing = int(new_match.get('totalHeal'))
+    if total_healing > 45000:
+        game_info.append(f"The player healed {total_healing} damage to champs, this is a lot")
 
-        messages.append(generate_ai_message(summoner_name, new_mastery, champ, first_time, tokens, most_recent_match))
+    # make sure the name of the champion is in the message
+    game_info.append(f"The player played as {new_match.get('championName')} (This must be mentioned)")
 
-    return messages
+    return game_info
 
 
 def misspell(word):
@@ -81,84 +132,17 @@ def combine_names(name1, name2):
                 return new_name
 
 
-# makes a call to chatgpt to generate a message for a summoner, mastery level, and champion
-def generate_ai_message(summoner_name, new_mastery, champ, first_time=False, tokens=None, most_recent_match=None):
-    extra_notes = []
-    if champ == most_recent_match.get('championName'):
-        # This means we have more to work with
-        # calculate kda from match data, cast to floats first
-        kills = int(most_recent_match.get('kills'))
-        deaths = int(most_recent_match.get('deaths'))
-        assists = int(most_recent_match.get('assists'))
-        kda = round((kills + assists) / (deaths if deaths > 0 else 1), 2)
-        win = most_recent_match.get('win')
-        if kda > 4:
-            extra_notes.append(f'Optionally mention that the player "went {kills}/{deaths}/{assists}" in their last match (this is a really good score)')
-        elif kda < 2:
-            extra_notes.append(f'Optionally mention that the player "went {kills}/{deaths}/{assists}" in their last match (this is a pretty bad score)')
-        if deaths == 0:
-            extra_notes.append(f'Optionally mention that this player didn\'t die in their last match (this is impressive)')
-        if most_recent_match.get('pentaKills') != '0':
-            extra_notes.append(f'Mention the player got a "pentakill" in their last match, this is incredibly impressive, really hype this up')
-        if most_recent_match.get('firstBloodKill'):
-            extra_notes.append(f'Optionally mention the player got first blood in their last match')
-        if most_recent_match['challenges'].get('hadOpenNexus', '0') != '0':
-            extra_notes.append(f'Optionally mention they had an open nexus, and it was a close game')
-        if win:
-            extra_notes.append(f'The player won this match')
-        else:
-            extra_notes.append(f'The player lost this match')
+def call_gpt(prompt):
+    prompt += "Here is the message:\n"
 
-    default_prompt = [
-        f'The player "{summoner_name}" just finished a match, and got to checkpoint {new_mastery}/7 on the champion "{champ}" in league of legends',
-        f'The message must contain the checkpoint number'
-        f'Write a funny message that alerts a chat channel that this happened',
-        f'The message should have a joke based on {champ}\'s identity or abilities in league of legends',
-        'specifically name the player\'s checkpoint in the message',
-        'Keep the message roughly under 150 chars in the message',
-        'Don\'t address the message to that player, as the message will be for multiple people to read',
-        'Make excitement of the message appropriate for the checkpoint they are at in the message',
-        'don\'t explicitly mention "league of legends" or "lol" in the message',
-        'Don\'t use the word congratulations or congrats',
-        'Don\'t use hashtags, #s, or @s in the message',
-        'Refer to a player\'s checkpoint as their "mastery level", and don\'t use the word "checkpoint"'
-        ]
-    first_time_prompt = [
-        f'Write a message saying "{summoner_name}" just played AS the champion "{champ}" for the first time',
-        f'Have the message be creative and make jokes with {champ}\"s identity or abilities in the message',
-        'Keep the message under 60 chars in the message',
-        'don\'t try and sound like a social media/corporate post, try and sound like a buddy asking how it went',
-        'Add something people can respond to, like asking that player to send a screenshot showing how they did, or ask for them to send a gif representing how the match went, or use an emoji to represent how the match went']
-    got_token_prompt = [
-        f'Write a message saying the "{summoner_name}" just earned a token for the champion "{champ}" while playing {champ}',
-        'anyone seeing this message will already know this, so no need to repeat it, but a token is a mark that means that player did well in a game',
-        f'that champion is a character in the game league of legends, surround {champ}\'s name with a lot of emojis that represent that champion',
-        'keep the message under 60 chars in the message, and state the person that earned the token',
-        f'don\'t specify that they were playing league of legends, but make sure to specify {summoner_name} and {champ}',
-        f'don\'t be shy with the emoji usage, there should be a lot of them, but they should all be related to the league of legends champion "{champ}',
-        f'remember that {summoner_name} is the one that earned the token, {champ} was the champion they were playing as',
-        'do not send the message as a congratulation, but as a notification to everyone else that the player got a token. '
-    ]
+    prompt = ". ".join(prompt)
 
     # get token from envvar
     openai.api_key = os.getenv('CHATGPT_TOKEN')
-
-    # populate prompt with the relevant prompt
-    if first_time:
-        prompt = first_time_prompt
-    elif tokens is not None:
-        prompt = got_token_prompt
-    else:
-        prompt = default_prompt
-
-    # combine prompt with extra notes, and turn into a string with periods
-    prompt = '. '.join(prompt + extra_notes)
-    prompt += ". Here is the message:\n"
-
     response = openai.Completion.create(
-        engine='text-davinci-003',  # Specify the model/engine to use
+        model='text-davinci-003',  # Specify the model/engine to use
         prompt=prompt,
-        max_tokens=len(prompt),  # Set the maximum length of the generated response
+        max_tokens=160,  # Set the maximum length of the generated response
         n=1,  # Generate a single response
         stop=None,  # Define a custom stop sequence if needed
     )
@@ -167,10 +151,62 @@ def generate_ai_message(summoner_name, new_mastery, champ, first_time=False, tok
     generated_text = response.choices[0].text.strip().replace('\n', '')
     # remove any leading or trailing quotes
     generated_text = generated_text.strip('"')
-
+    generated_text = generated_text.strip('\n')
+    generated_text.replace("@", "")
 
     print(f'GENERATED MESSAGE: {generated_text}')
     return generated_text
+
+
+# makes a call to chatgpt to generate a message for a summoner, mastery level, and champion
+def generate_mastery_notification(mastery_updates, new_match, summoner_name):
+    champ = new_match.get('championName')
+    new_mastery = mastery_updates.get('mastery')
+    default_prompt = [
+        f"Write an announcement message that will be sent in a discord channel to notify everyone",
+        "The message should adhere to the following guidelines, and try and use the additional info",
+        f"The player \"{summoner_name}\" just finished a match, and got to mastery {new_mastery}/7 on the champion \"{champ}\" in league of legends",
+        f"The message must contain the mastery level",
+        f"Write a funny message that alerts a chat channel that this happened",
+        f"The message should have a joke based on {champ}'s identity or abilities in league of legends",
+        "Keep the message roughly under 150 characters",
+        "The message will be for multiple people to read"
+    ]
+    first_time_prompt = [
+        f'Write a message saying "{summoner_name}" just played AS the champion "{champ}" for the first time',
+        f"Have the message be creative and make jokes with {champ}'s identity or abilities in the message",
+        "Keep the message roughly under 150 characters"
+    ]
+    got_token_prompt = [
+        f"Write a message saying the \"{summoner_name}\" just earned a token for the champion \"{champ}\" while playing {champ}",
+        f"anyone seeing this message will already know this, so no need to repeat it, but a token is a mark that means that player did well in a game",
+        f"that champion is a character in the game league of legends, surround {champ}'s name with a lot of emojis that represent that champion",
+        f"Keep the message roughly under 150 characters",
+        f"don't specify that they were playing league of legends, but make sure to specify {summoner_name} and {champ}",
+        f"don't be shy with the emoji usage, there should be a lot of them, but they should all be related to the league of legends champion \"{champ}",
+        f"remember that {summoner_name} is the one that earned the token, {champ} was the champion they were playing as",
+        f"do not send the message as a congratulation, but as a notification to everyone else that the player got a token. "
+    ]
+    # First match as the champ
+    if int(mastery_updates.get('mastery')) == 1:
+        prompt = first_time_prompt
+    # Got a token
+    elif int(mastery_updates.get('tokensEarned', 0)) > 0:
+        prompt = got_token_prompt
+    # Got a mastery level
+    else:
+        prompt = default_prompt
+        # If they got to mastery level 7, add a special message to note they've finished
+        if mastery_updates.get('mastery') == 7:
+            prompt.append(f"Make sure to note that in getting to mastery 7, the player has mastered that champion, " \
+                          f"and {summoner_name} can now be referred to as {mastery_updates.get('title')}.")
+
+    # Add the notable game information to the prompt
+    additional_info = generate_notable_game_information(new_match)
+    for fact in additional_info:
+        prompt.append(fact)
+
+    return call_gpt(prompt)
 
 
 def generate_handwritten_message(summoner_name, new_mastery, champ, first_time=False, tokens=None, title=None):

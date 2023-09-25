@@ -13,7 +13,7 @@ from db_functions import write_dict_to_datastore, get_summoner_field, get_summon
     get_user_mastery as db_mastery
 from riot_functions import get_user_matches, get_match_data, lookup_summoner, get_live_matches, get_user_mastery, \
     get_champion_data
-from utils import generate_mastery_notifications
+from utils import generate_notification
 
 
 ###
@@ -43,19 +43,27 @@ def mass_stats_refresh(datastore_client, args):
 
         # First, update the user's match history
         last_match_start_ts = get_summoner_field(datastore_client, summoner["puuid"], "last_match_start_ts")
-        update_user_matches(summoner["puuid"], summoner["region"], last_match_start_ts,
-                            datastore_client)
+        most_recent_match = update_user_matches(summoner["puuid"], summoner["region"], last_match_start_ts,
+                                                datastore_client)
 
         # Second, update the user's mastery
-        # This is what also sends the discord notifications
-        update_user_mastery(datastore_client,
-                            puuid=puuid,
-                            summoner_id=summoner_id,
-                            summoner_name=summoner.get('name'),
-                            champion_data=champion_data)
+        mastery_updates = update_user_mastery(datastore_client,
+                                              puuid=puuid,
+                                              summoner_id=summoner_id,
+                                              summoner_name=summoner.get('name'),
+                                              champion_data=champion_data)
 
         # Third, update the user's winrate
         individual_response = update_user_winrate(datastore_client, puuid=puuid)
+
+        # Fourth, generate any needed notifications
+        notification = generate_notification(most_recent_match, mastery_updates, summoner.get('name'))
+
+        if notification:
+            discord_webhook = os.environ.get('Discord_Web_Hook', 'http://test/')
+            payload = {'content': notification}
+            requests.request("POST", discord_webhook, data=payload)
+            print(f'Sent {notification}')
 
         results.append(f"{individual_response} for {puuid}")
     return flask.Response("\n".join(results))
@@ -70,22 +78,24 @@ def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name, cha
 
     if historic_user_mastery is None:
         write_dict_to_datastore(datastore_client, puuid, new_user_mastery, 'summoner_mastery')
+        print(f'Looks like we just saw {summoner_name} for the first time')
         return
     else:
-        notifications = []
         for champ, new_mastery in new_user_mastery.items():
-            historical_champ_val = historic_user_mastery.get(champ)
-            notifications += generate_mastery_notifications(summoner_name, champ, new_mastery, historical_champ_val, puuid)
+            if historic_user_mastery.get(champ) is None or \
+                    int(historic_user_mastery[champ]['mastery']) < int(new_mastery['mastery']) or \
+                    int(historic_user_mastery[champ]['tokensEarned']) < int(new_mastery['tokensEarned']):
+                return {
+                    "champ": champ,
+                    "mastery": new_mastery['mastery'],
+                    'tokensEarned': new_mastery['tokensEarned'],
+                    'title': new_mastery['title']
+                }
+            else:
+                print('No mastery changes to note')
 
-        if notifications:
-            for notification in notifications:
-                discord_webhook = os.environ.get('Discord_Web_Hook', 'http://test/')
-                payload = {'content': notification}
-                requests.request("POST", discord_webhook, data=payload)
-                print(f'Sent {notification}')
-            update_db_mastery(datastore_client, puuid, new_user_mastery)
 
-
+# Updates the database with the most recent matches. Returns the most recent match
 def update_user_matches(puuid, region, last_match, datastore_client):
     user_matches = get_user_matches(puuid, region, last_match)
     recorded_matches = []
@@ -97,10 +107,9 @@ def update_user_matches(puuid, region, last_match, datastore_client):
         last_match_start_ts = str(recorded_matches[0]["gameStartTimestamp"])[:-3]
         update_summoner_field(datastore_client, puuid, "last_match_start_ts", last_match_start_ts)
         print(f"Logged {len(recorded_matches)} matches")
-        return f"Logged {len(recorded_matches)} matches"
+        return recorded_matches[0]
 
     print("no updates required")
-    return "no updates required"
 
 
 def add_tracked_user(datastore_client, args):
@@ -162,4 +171,3 @@ def entrypoint(request):
         return mass_stats_refresh(datastore_client, path_segments)
     else:
         return "invalid operation"
-
