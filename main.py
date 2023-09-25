@@ -57,7 +57,9 @@ def mass_stats_refresh(datastore_client, args):
         individual_response = update_user_winrate(datastore_client, puuid=puuid)
 
         # Fourth, generate any needed notifications
-        notification = generate_notification(most_recent_match, mastery_updates, summoner.get('name'))
+        notification = None
+        if most_recent_match is not None and mastery_updates is not None:
+            notification = generate_notification(most_recent_match, mastery_updates, summoner.get('name'))
 
         if notification:
             discord_webhook = os.environ.get('Discord_Web_Hook', 'http://test/')
@@ -85,6 +87,7 @@ def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name, cha
             if historic_user_mastery.get(champ) is None or \
                     int(historic_user_mastery[champ]['mastery']) < int(new_mastery['mastery']) or \
                     int(historic_user_mastery[champ]['tokensEarned']) < int(new_mastery['tokensEarned']):
+                write_dict_to_datastore(datastore_client, puuid, new_user_mastery, 'summoner_mastery')
                 return {
                     "champ": champ,
                     "mastery": new_mastery['mastery'],
