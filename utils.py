@@ -14,6 +14,8 @@ def generate_notification(new_match, mastery_updates, summoner_name):
         return generate_mastery_notification(mastery_updates, new_match, summoner_name)
     elif is_notable_game(new_match):
         return generate_notable_game_notification(new_match, summoner_name)
+    else:
+        print("Game recorded, but nothing notable enough to send a notification")
 
 
 # Returns true if the player had a kda of 10 or more
