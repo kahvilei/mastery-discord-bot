@@ -203,10 +203,11 @@ def generate_mastery_notification(mastery_updates, new_match, summoner_name):
             prompt.append(f"Make sure to note that in getting to mastery 7, the player has mastered that champion, " \
                           f"and {summoner_name} can now be referred to as {mastery_updates.get('title')}.")
 
-    # Add the notable game information to the prompt
-    additional_info = generate_notable_game_information(new_match)
-    for fact in additional_info:
-        prompt.append(fact)
+    if new_match is not None:
+        # Add the notable game information to the prompt if we have that info
+        additional_info = generate_notable_game_information(new_match)
+        for fact in additional_info:
+            prompt.append(fact)
 
     return call_gpt(prompt)
 

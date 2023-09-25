@@ -58,7 +58,7 @@ def mass_stats_refresh(datastore_client, args):
 
         # Fourth, generate any needed notifications
         notification = None
-        if most_recent_match is not None and mastery_updates is not None:
+        if most_recent_match is not None or mastery_updates is not None:
             notification = generate_notification(most_recent_match, mastery_updates, summoner.get('name'))
 
         if notification:
@@ -113,7 +113,7 @@ def update_user_matches(puuid, region, last_match, datastore_client):
         print(f"Logged {len(recorded_matches)} matches")
         return recorded_matches[0]
 
-    print("no updates required")
+    print("no match updates required")
 
 
 def add_tracked_user(datastore_client, args):
