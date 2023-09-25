@@ -41,6 +41,8 @@ def mass_stats_refresh(datastore_client, args):
         puuid = summoner["puuid"]
         summoner_id = summoner.get("id")
 
+        print(f'Stats refresh started for {summoner.get("name", "Unknown")}')
+
         # First, update the user's match history
         last_match_start_ts = get_summoner_field(datastore_client, summoner["puuid"], "last_match_start_ts")
         most_recent_match = update_user_matches(summoner["puuid"], summoner["region"], last_match_start_ts,
@@ -59,7 +61,7 @@ def mass_stats_refresh(datastore_client, args):
         # Fourth, generate any needed notifications
         notification = None
         if most_recent_match is not None or mastery_updates is not None:
-            notification = generate_notification(most_recent_match, mastery_updates, summoner.get('name'))
+            notification = generate_notification(most_recent_match, mastery_updates, summoner.get('name'), champion_data)
 
         if notification:
             discord_webhook = os.environ.get('Discord_Web_Hook', 'http://test/')

@@ -9,11 +9,11 @@ from pytz import timezone
 
 
 # For an individual player, generate a message if they've increased their mastery, or had a notable game
-def generate_notification(new_match, mastery_updates, summoner_name):
+def generate_notification(new_match, mastery_updates, summoner_name, champion_data):
     if mastery_updates:
-        return generate_mastery_notification(mastery_updates, new_match, summoner_name)
+        return generate_mastery_notification(mastery_updates, new_match, summoner_name, champion_data)
     elif is_notable_game(new_match):
-        return generate_notable_game_notification(new_match, summoner_name)
+        return generate_notable_game_notification(new_match, summoner_name, champion_data)
     else:
         print("Game recorded, but nothing notable enough to send a notification")
 
@@ -29,12 +29,18 @@ def is_notable_game(match_data):
 
 
 # Create the prompt for the AI to generate a message, and call the AI
-def generate_notable_game_notification(new_match, player_name):
+def generate_notable_game_notification(new_match, player_name, champion_data):
     notable_game_info = generate_notable_game_information(new_match)
 
     prompt = f"Write an announcement message that will be sent in a discord channel to notify everyone that " \
              f"{player_name} just played a good game of league of legends.\n"
     prompt += '\n'.join(notable_game_info)
+
+    champ_blurb = champion_data.get(new_match.get('championName'))
+    if champ_blurb:
+        # add the blurb as extra prompt context about the champion
+        prompt += (f"Also, for further context about the champ {new_match.get('championName')}, "
+                      f"here's a truncated blurb with more info to reference in the notification: {champ_blurb}")
 
     return call_gpt(prompt)
 
@@ -161,9 +167,10 @@ def call_gpt(prompt):
 
 
 # makes a call to chatgpt to generate a message for a summoner, mastery level, and champion
-def generate_mastery_notification(mastery_updates, new_match, summoner_name):
+def generate_mastery_notification(mastery_updates, new_match, summoner_name, champion_data):
     champ = new_match.get('championName')
     new_mastery = mastery_updates.get('mastery')
+
     default_prompt = [
         f"Write an announcement message that will be sent in a discord channel to notify everyone",
         "The message should adhere to the following guidelines, and try and use the additional info",
@@ -208,6 +215,12 @@ def generate_mastery_notification(mastery_updates, new_match, summoner_name):
         additional_info = generate_notable_game_information(new_match)
         for fact in additional_info:
             prompt.append(fact)
+
+    champ_blurb = champion_data.get(champ)
+    if champ_blurb:
+        # add the blurb as extra prompt context about the champion
+        prompt.append(f"Also, for further context about the champ {champ}, "
+                      f"here's a truncated blurb with more info to reference in the notification: {champ_blurb}")
 
     return call_gpt(prompt)
 
