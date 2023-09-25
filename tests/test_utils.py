@@ -86,9 +86,9 @@ class Test(TestCase):
 
 def test_generate_notable_game_information():
     # First load the sample data from the file
-    sample_data = json.load(open("most_recent_match_response.json"))[0]
+    sample_data = json.load(open("C:\\Users\\Sam\\PycharmProjects\\cloud-gamers\\tests\\most_recent_match_response.json"))
     # Then, run the function
-    notable_game_information = generate_notable_game_information(sample_data, "snam")
+    notable_game_information = generate_notable_game_information(sample_data)
     # Then, assert that the output is what we expect
     assert len(notable_game_information) > 0
 

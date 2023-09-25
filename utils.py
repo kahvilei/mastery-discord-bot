@@ -64,15 +64,15 @@ def generate_notable_game_information(new_match):
         game_info.append(f"The player didn't die at all")
 
     # If the player got a penta kill, add that to the message
-    if new_match.get('pentaKills') != '0':
+    if int(new_match.get('pentaKills', 0)) > 0:
         game_info.append("The player got a pentakill, this is very rare and should be noted")
 
     # If the player got first blood, add that to the message
-    if new_match.get('firstBloodKill'):
+    if new_match.get('firstBloodKill', False):
         game_info.append("The player got first blood")
 
     # If the player had an open nexus, add that to the message
-    if new_match['challenges'].get('hadOpenNexus', '0') != '0':
+    if int(new_match.get('challenges', {}).get('hadOpenNexus', '0')) >= 1:
         game_info.append("The player had an open nexus, and it was a close game")
 
     # If the player won, add that to the message
