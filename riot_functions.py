@@ -51,7 +51,7 @@ def get_champion_data():
     champions_url = f"http://ddragon.leagueoflegends.com/cdn/{current_version}/data/en_US/champion.json"
     champions_data = get(champions_url)
     all_champions = json.loads(champions_data.text)['data']
-    return {val['key']: [key, val['title']] for key, val in all_champions.items()}
+    return {val['key']: [key, val['title'], val['blurb']] for key, val in all_champions.items()}
 
 
 # Makes the call to get a specific matches information

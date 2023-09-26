@@ -32,15 +32,20 @@ def is_notable_game(match_data):
 def generate_notable_game_notification(new_match, player_name, champion_data):
     notable_game_info = generate_notable_game_information(new_match)
 
-    prompt = f"Write an announcement message that will be sent in a discord channel to notify everyone that " \
-             f"{player_name} just played a good game of league of legends.\n"
+    champion_name = new_match.get('championName')
+    prompt = f"Write an message for everyone that will be sent in a discord channel to report that " \
+             f"{player_name} just finished a good game of league of legends as {champion_name}. " \
+             f"The message should have a joke based on {champion_name}'s identity or abilities in league of legends. " \
+             f"Use any facts about that {champion_name} to make the message more interesting, or joke that " \
+             f"{player_name} is a lot like {champion_name}. " \
+             "make the message sound sarcastically not impressed. "
+
     prompt += '\n'.join(notable_game_info)
 
-    champ_blurb = champion_data.get(new_match.get('championName'))
+    champ_blurb = get_champion_blurb(champion_data, champion_name)
     if champ_blurb:
         # add the blurb as extra prompt context about the champion
-        prompt += (f"Also, for further context about the champ {new_match.get('championName')}, "
-                      f"here's a truncated blurb with more info to reference in the notification: {champ_blurb}")
+        prompt += champ_blurb
 
     return call_gpt(prompt)
 
@@ -98,7 +103,10 @@ def generate_notable_game_information(new_match):
         game_info.append(f"The player healed {total_healing} damage to champs, this is a lot")
 
     # make sure the name of the champion is in the message
-    game_info.append(f"The player played as {new_match.get('championName')} (This must be mentioned)")
+    game_info.append(
+        f"The player played as {new_match.get('championName')} (This should be noted in the first sentence)")
+
+    game_info.append("\n")
 
     return game_info
 
@@ -140,6 +148,22 @@ def combine_names(name1, name2):
                 return new_name
 
 
+# Returns the blurb about a champion with the extra text so it can be used in a prompt
+def get_champion_blurb(champ_data, champ_name):
+    # Extract the blurb for the champion
+    # iterate through the touple of champ name, title, and blurb to find the blurb
+    champ_blurb = None
+    for champ in champ_data.values():
+        if champ[0].lower() == champ_name.lower():
+            champ_blurb = champ[2]
+            break
+
+    if champ_blurb:
+        # add the blurb as extra prompt context about the champion
+        return (f"Also, for further context about the champ {champ_name}, "
+                f"here's a truncated blurb with more info to reference in the notification: {champ_blurb}\n\n")
+
+
 def call_gpt(prompt):
     prompt += "Here is the message:\n"
 
@@ -150,7 +174,7 @@ def call_gpt(prompt):
     response = openai.Completion.create(
         model='text-davinci-003',  # Specify the model/engine to use
         prompt=prompt,
-        max_tokens=160,  # Set the maximum length of the generated response
+        max_tokens=100,  # Set the maximum length of the generated response
         n=1,  # Generate a single response
         stop=None,  # Define a custom stop sequence if needed
     )
@@ -188,7 +212,6 @@ def generate_mastery_notification(mastery_updates, new_match, summoner_name, cha
     ]
     got_token_prompt = [
         f"Write a message saying the \"{summoner_name}\" just earned a token for the champion \"{champ}\" while playing {champ}",
-        f"anyone seeing this message will already know this, so no need to repeat it, but a token is a mark that means that player did well in a game",
         f"that champion is a character in the game league of legends, surround {champ}'s name with a lot of emojis that represent that champion",
         f"Keep the message roughly under 150 characters",
         f"don't specify that they were playing league of legends, but make sure to specify {summoner_name} and {champ}",
@@ -216,11 +239,9 @@ def generate_mastery_notification(mastery_updates, new_match, summoner_name, cha
         for fact in additional_info:
             prompt.append(fact)
 
-    champ_blurb = champion_data.get(champ)
-    if champ_blurb:
-        # add the blurb as extra prompt context about the champion
-        prompt.append(f"Also, for further context about the champ {champ}, "
-                      f"here's a truncated blurb with more info to reference in the notification: {champ_blurb}")
+    blurb = get_champion_blurb(champion_data, champ)
+    if blurb:
+        prompt.append(blurb)
 
     return call_gpt(prompt)
 

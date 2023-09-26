@@ -1,10 +1,11 @@
 import json
+import random
 from datetime import date
 from unittest import TestCase, mock
 from unittest.mock import patch
 
 from utils import misspell, combine_names, generate_mastery_notification, generate_notable_game_information, \
-    is_notable_game
+    is_notable_game, generate_notification
 
 
 class Test(TestCase):
@@ -86,7 +87,8 @@ class Test(TestCase):
 
 def test_generate_notable_game_information():
     # First load the sample data from the file
-    sample_data = json.load(open("C:\\Users\\Sam\\PycharmProjects\\cloud-gamers\\tests\\most_recent_match_response.json"))
+    sample_data = json.load(
+        open("C:\\Users\\Sam\\PycharmProjects\\cloud-gamers\\tests\\most_recent_match_response.json"))
     # Then, run the function
     notable_game_information = generate_notable_game_information(sample_data)
     # Then, assert that the output is what we expect
@@ -113,8 +115,31 @@ def test_is_notable_game():
 
 
 def test_generate_mastery_notification():
-    mastery_update = {'champ': 'Sona', 'mastery': 7, 'title': 'Maven of the Strings', 'tokensEarned': 0}
+    mastery_update = {'champ': 'DrMundo', 'mastery': 7, 'title': 'The Madman of Zaun', 'tokensEarned': 0}
 
     # Load the recent match from the file
-    sample_data = json.load(open("most_recent_match_response.json"))[0]
-    notification = generate_mastery_notification(mastery_update, sample_data, "snam")
+    sample_data = json.load(open("most_recent_match_response.json"))
+
+    # load the champion data from the file
+    champion_data = json.load(open("champions.json"))['data']
+    champion_data = {val['key']: [key, val['title'], val['blurb']] for key, val in champion_data.items()}
+    notification = generate_mastery_notification(mastery_update, sample_data, "snam", champion_data)
+
+    assert notification is not None
+
+
+def test_generate_notification():
+    # test the case where there is a notable game
+
+    sample_data = json.load(open("most_recent_match_response.json"))
+    champion_data = json.load(open("champions.json"))['data']
+    champion_data = {val['key']: [key, val['title'], val['blurb']] for key, val in champion_data.items()}
+
+    # Select a random champion and update the sample data to be that champion
+    new_champ = random.choice([champ[0] for champ in champion_data.values()])
+    sample_data['championName'] = new_champ
+
+    notification = generate_notification(sample_data, None, "Snam", champion_data)
+
+    assert notification is not None
+
