@@ -192,7 +192,11 @@ def call_gpt(prompt):
 
 # makes a call to chatgpt to generate a message for a summoner, mastery level, and champion
 def generate_mastery_notification(mastery_updates, new_match, summoner_name, champion_data):
-    champ = new_match.get('championName')
+    if new_match is not None:
+        champ = new_match.get('championName')
+    else:
+        champ = mastery_updates.get('champ')
+        
     new_mastery = mastery_updates.get('mastery')
 
     default_prompt = [

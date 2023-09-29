@@ -62,7 +62,7 @@ def mass_stats_refresh(datastore_client, args):
         # So technically by doing an "AND" here there's only mastery notifications. Switch to an "or" if we ever want
         # to turn on 10+ kda notifications
         notification = None
-        if most_recent_match is not None and mastery_updates is not None:
+        if mastery_updates is not None:
             notification = generate_notification(most_recent_match, mastery_updates, summoner.get('name'), champion_data)
 
         if notification:
