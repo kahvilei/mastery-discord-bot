@@ -196,7 +196,7 @@ def generate_mastery_notification(mastery_updates, new_match, summoner_name, cha
         champ = new_match.get('championName')
     else:
         champ = mastery_updates.get('champ')
-        
+
     new_mastery = mastery_updates.get('mastery')
 
     default_prompt = [
@@ -216,10 +216,9 @@ def generate_mastery_notification(mastery_updates, new_match, summoner_name, cha
     ]
     got_token_prompt = [
         f"Write a message saying the \"{summoner_name}\" just earned a token for the champion \"{champ}\" while playing {champ}",
-        f"that champion is a character in the game league of legends, surround {champ}'s name with a lot of emojis that represent that champion",
+        f"anyone seeing this message will already know this, so no need to repeat it, but a token is a mark that means that player did well in a game",
         f"Keep the message roughly under 150 characters",
         f"don't specify that they were playing league of legends, but make sure to specify {summoner_name} and {champ}",
-        f"don't be shy with the emoji usage, there should be a lot of them, but they should all be related to the league of legends champion \"{champ}",
         f"remember that {summoner_name} is the one that earned the token, {champ} was the champion they were playing as",
         f"do not send the message as a congratulation, but as a notification to everyone else that the player got a token. "
     ]
