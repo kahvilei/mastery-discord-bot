@@ -161,7 +161,8 @@ def get_champion_blurb(champ_data, champ_name):
     if champ_blurb:
         # add the blurb as extra prompt context about the champion
         return (f"Also, for further context about the champ {champ_name}, "
-                f"here's a truncated blurb with more info to reference in the notification: {champ_blurb}\n\n")
+                f"here's a truncated blurb with more info to reference in the notification,"
+                f" though try not to quote too much of it verbatim: {champ_blurb}\n\n")
 
 
 def call_gpt(prompt):
