@@ -115,14 +115,21 @@ def test_is_notable_game():
 
 
 def test_generate_mastery_notification():
-    mastery_update = {'champ': 'DrMundo', 'mastery': 7, 'title': 'The Madman of Zaun', 'tokensEarned': 0}
+    # load the champion data from the file
+    champion_data = json.load(open("champions.json", encoding='utf-8'))['data']
+    champion_data = {val['key']: [key, val['title'], val['blurb']] for key, val in champion_data.items()}
+
+    new_champ = random.choice(list(champion_data.values()))
+    mastery_update = {'champ': new_champ[0], 'mastery': random.randint(1,7), 'title': new_champ[0], 'tokensEarned': 0}
 
     # Load the recent match from the file
     sample_data = json.load(open("most_recent_match_response.json"))
 
-    # load the champion data from the file
-    champion_data = json.load(open("champions.json"))['data']
-    champion_data = {val['key']: [key, val['title'], val['blurb']] for key, val in champion_data.items()}
+    sample_data['championName'] = new_champ[0]
+    sample_data['kills'] = random.randint(0,20)
+    sample_data['deaths'] = random.randint(0,20)
+    sample_data['assists'] = random.randint(0,20)
+
     notification = generate_mastery_notification(mastery_update, sample_data, "snam", champion_data)
 
     assert notification is not None

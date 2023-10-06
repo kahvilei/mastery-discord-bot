@@ -172,16 +172,18 @@ def call_gpt(prompt):
 
     # get token from envvar
     openai.api_key = os.getenv('CHATGPT_TOKEN')
-    response = openai.Completion.create(
-        model='text-davinci-003',  # Specify the model/engine to use
-        prompt=prompt,
+    response = openai.ChatCompletion.create(
+        model='gpt-4',  # Specify the model/engine to use
+        messages=[
+            {'role': 'system', "content": prompt}
+        ],
         max_tokens=100,  # Set the maximum length of the generated response
         n=1,  # Generate a single response
         stop=None,  # Define a custom stop sequence if needed
     )
 
     # Retrieve the generated response
-    generated_text = response.choices[0].text.strip().replace('\n', '')
+    generated_text = response.choices[0].message.content.strip().replace('\n', '')
     # remove any leading or trailing quotes
     generated_text = generated_text.strip('"')
     generated_text = generated_text.strip('\n')
