@@ -187,7 +187,7 @@ def call_gpt(prompt):
     # remove any leading or trailing quotes
     generated_text = generated_text.strip('"')
     generated_text = generated_text.strip('\n')
-    generated_text.replace("@", "")
+    generated_text = generated_text.replace("@", "")
 
     print(f'GENERATED MESSAGE: {generated_text}')
     return generated_text
