@@ -210,12 +210,16 @@ def generate_mastery_notification(mastery_updates, new_match, summoner_name, cha
         f"Write a funny message that alerts a chat channel that this happened",
         f"The message should have a joke based on {champ}'s identity or abilities in league of legends",
         "Keep the message roughly under 150 characters",
-        "The message will be for multiple people to read"
+        "The message will be for multiple people to read",
+        "Write the message in first person",
+        "Prioritize being funny"
     ]
     first_time_prompt = [
         f'Write a message saying "{summoner_name}" just played AS the champion "{champ}" for the first time',
         f"Have the message be creative and make jokes with {champ}'s identity or abilities in the message",
-        "Keep the message roughly under 150 characters"
+        "Keep the message roughly under 150 characters",
+        "Write the message in first person",
+        "Prioritize being funny"
     ]
     got_token_prompt = [
         f"Write a message saying the \"{summoner_name}\" just earned a token for the champion \"{champ}\" while playing {champ}",
@@ -223,7 +227,9 @@ def generate_mastery_notification(mastery_updates, new_match, summoner_name, cha
         f"Keep the message roughly under 150 characters",
         f"don't specify that they were playing league of legends, but make sure to specify {summoner_name} and {champ}",
         f"remember that {summoner_name} is the one that earned the token, {champ} was the champion they were playing as",
-        f"do not send the message as a congratulation, but as a notification to everyone else that the player got a token. "
+        f"do not send the message as a congratulation, but as a notification to everyone else that the player got a token. ",
+        "Write the message in first person",
+        "Prioritize being funny"
     ]
     # First match as the champ
     if int(mastery_updates.get('mastery')) == 1:
