@@ -64,8 +64,11 @@ def generate_notable_game_information(new_match):
         game_info.append(
             f'The player "went {kills}/{deaths}/{assists}" in their last match (this is a really good score)')
         game_info.append(f'The player had a K/D/A of {kda} in their last match (this is a really good score)')
-
-    if kda <= 1:
+    elif kda >= 5:
+        game_info.append(
+            f'The player "went {kills}/{deaths}/{assists}" in their last match (this is a good score)')
+        game_info.append(f'The player had a K/D/A of {kda} in their last match (this is a good score)')
+    elif kda <= 1:
         game_info.append(
             f'The player "went {kills}/{deaths}/{assists}" in their last match (this is a really bad score)')
         game_info.append(f'The player had a K/D/A of {kda} in their last match (this is a really bad score)')
