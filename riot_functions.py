@@ -88,8 +88,8 @@ def get_user_matches(puuid, region, last_ts):
 
 
 # Gets the list of recent matches a user has played with a ts to limit getting too old data
-def get_user_mastery(summoner_name, region, all_champions):
-    path = f'https://{region}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/{summoner_name}'
+def get_user_mastery(puuid, region, all_champions):
+    path = f'https://{region}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/{puuid}'
 
     response = requests.get(path, headers=headers)
     champion_mastery = json.loads(response.text)

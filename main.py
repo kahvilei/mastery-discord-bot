@@ -51,7 +51,6 @@ def mass_stats_refresh(datastore_client, args):
         # Second, update the user's mastery
         mastery_updates = update_user_mastery(datastore_client,
                                               puuid=puuid,
-                                              summoner_id=summoner_id,
                                               summoner_name=summoner.get('name'),
                                               champion_data=champion_data)
 
@@ -75,11 +74,11 @@ def mass_stats_refresh(datastore_client, args):
     return flask.Response("\n".join(results))
 
 
-def update_user_mastery(datastore_client, puuid, summoner_id, summoner_name, champion_data):
+def update_user_mastery(datastore_client, puuid, summoner_name, champion_data):
     print(f"Getting historic user data for {summoner_name}")
     historic_user_mastery = db_mastery(datastore_client, puuid)
     print(f"Getting getting current mastery data for {summoner_name}")
-    new_user_mastery = get_user_mastery(summoner_id, "na1", champion_data)
+    new_user_mastery = get_user_mastery(puuid, "na1", champion_data)
     print(json.dumps(new_user_mastery))
 
     if historic_user_mastery is None:
