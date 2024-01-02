@@ -240,15 +240,16 @@ def generate_mastery_notification(mastery_updates, new_match, summoner_name, cha
     # Got a token
     elif int(mastery_updates.get('tokensEarned', 0)) > 0:
         prompt = got_token_prompt
-        if int(mastery_updates.get('mastery')) == 5 and int(mastery_updates.get('tokensEarned', 1)):
+        tokens_earned = int(mastery_updates.get('tokensEarned'))
+        if int(mastery_updates.get('mastery')) == 5 and tokens_earned == 1:
             prompt.append("This is their first token for this champion")
-        elif int(mastery_updates.get('mastery')) == 5 and int(mastery_updates.get('tokensEarned', 2)):
+        elif int(mastery_updates.get('mastery')) == 5 and tokens_earned == 2:
             prompt.append("This is their second token for this champion, and they now have the ability to combine their tokens to get to mastery 6")
-        elif int(mastery_updates.get('mastery')) == 6 and int(mastery_updates.get('tokensEarned', 1)):
+        elif int(mastery_updates.get('mastery')) == 6 and tokens_earned == 1:
             prompt.append("This is their first token for this champion at mastery level 6, but they need to earn 2 more to complete the mastery of the champion")
-        elif int(mastery_updates.get('mastery')) == 6 and int(mastery_updates.get('tokensEarned', 2)):
+        elif int(mastery_updates.get('mastery')) == 6 and tokens_earned == 2:
             prompt.append("This is their second token for this champion, now they need to have one more game where they get a grade of a S or an S+ to get the final token and complete the mastery of the champion")
-        elif int(mastery_updates.get('mastery')) == 6 and int(mastery_updates.get('tokensEarned', 3)):
+        elif int(mastery_updates.get('mastery')) == 6 and tokens_earned == 3:
             prompt.append("This is their final token for this champion, now all they have to do is combine their 3 tokens")
     # Got a mastery level
     else:
