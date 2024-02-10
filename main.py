@@ -105,6 +105,7 @@ def mass_stats_refresh(datastore_client, args):
     return flask.Response("\n".join(results))
 
 
+# todo move this to db_functions
 def update_user_mastery(datastore_client, puuid, summoner_name, mastery_data):
     print(f"Getting historic user data for {summoner_name}")
     historic_user_mastery = db_mastery(datastore_client, puuid)
