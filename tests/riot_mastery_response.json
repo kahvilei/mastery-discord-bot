@@ -45,7 +45,7 @@
     },
     {
         "championId": 64,
-        "championLevel": 5,
+        "championLevel": 7,
         "championPoints": 33247,
         "lastPlayTime": 1676694136000,
         "championPointsSinceLastLevel": 11647,
@@ -56,7 +56,7 @@
     },
     {
         "championId": 84,
-        "championLevel": 5,
+        "championLevel": 7,
         "championPoints": 31277,
         "lastPlayTime": 1680315639000,
         "championPointsSinceLastLevel": 9677,

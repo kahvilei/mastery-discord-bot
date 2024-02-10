@@ -18,7 +18,7 @@ def write_dict_to_datastore(datastore_client, primary_key, fields, kind):
     datastore_client.put(entity)
 
 
-def get_summoner_dict(datastore_client, sort='name'):
+def get_summoner_dict(datastore_client, sort="name"):
     query = datastore_client.query(kind="summoner")
     query.order = ["-" + sort]
     query_result = list(query.fetch())
@@ -51,8 +51,8 @@ def get_info(datastore_client, args):
         return "A valid field is required for info grab"
     field = args[3]
     resp = flask.Response(get_summoner_field(datastore_client, puuid, field))
-    resp.headers['Access-Control-Allow-Origin'] = '*'
-    resp.headers['Access-Control-Allow-Credentials'] = 'true'
+    resp.headers["Access-Control-Allow-Origin"] = "*"
+    resp.headers["Access-Control-Allow-Credentials"] = "true"
     return resp
 
 
@@ -62,7 +62,7 @@ def get_summoner(datastore_client, args):
             return "A valid puuid is required for deletion"
         puuid = args[2]
         db_key = datastore_client.key("summoner", puuid)
-        summoner = json.dumps(datastore_client.get(key=db_key), indent = 4)
+        summoner = json.dumps(datastore_client.get(key=db_key), indent=4)
         return summoner
     except KeyError:
         return None
@@ -70,7 +70,7 @@ def get_summoner(datastore_client, args):
 
 def get_all_summoners(datastore_client, args):
 
-    #Some initial request validations
+    # Some initial request validations
     if len(args) == 2 or args[2] != "sort":
         sort = "name"
     elif args[2] == "sort":
@@ -79,8 +79,8 @@ def get_all_summoners(datastore_client, args):
     summoner_dict = get_summoner_dict(datastore_client, sort)
     summoner_json = json.dumps(summoner_dict, indent=4)
     resp = flask.Response(summoner_json)
-    resp.headers['Access-Control-Allow-Origin'] = '*'
-    resp.headers['Access-Control-Allow-Credentials'] = 'true'
+    resp.headers["Access-Control-Allow-Origin"] = "*"
+    resp.headers["Access-Control-Allow-Credentials"] = "true"
     return resp
 
 
@@ -88,10 +88,10 @@ def get_all_summoner_IDs(datastore_client, args):
     # summoner_dict = [x[get_summoner_dict(datastore_client)]["puuid"]]
     summoner_dict = get_summoner_dict(datastore_client)
     summoner_puuid_array = [_["puuid"] for _ in summoner_dict]
-    summoner_json = json.dumps(summoner_puuid_array, indent = 4) 
+    summoner_json = json.dumps(summoner_puuid_array, indent=4)
     resp = flask.Response(summoner_json)
-    resp.headers['Access-Control-Allow-Origin'] = '*'
-    resp.headers['Access-Control-Allow-Credentials'] = 'true'
+    resp.headers["Access-Control-Allow-Origin"] = "*"
+    resp.headers["Access-Control-Allow-Credentials"] = "true"
     return resp
 
 
@@ -109,13 +109,14 @@ def delete_user(datastore_client, args):
 
 
 def get_user_mastery(datastore_client, puuid):
-    key = datastore_client.key('summoner_mastery', puuid)
+    key = datastore_client.key("summoner_mastery", puuid)
     datastore_result = datastore_client.get(key)
 
     return json.loads(json.dumps(datastore_result), parse_int=str)
 
+
 def update_user_mastery(datastore_client, puuid, user_mastery):
-    write_dict_to_datastore(datastore_client, puuid, user_mastery, 'summoner_mastery')
+    write_dict_to_datastore(datastore_client, puuid, user_mastery, "summoner_mastery")
 
 
 # Get the player's most recent match
@@ -123,12 +124,13 @@ def get_most_recent_user_match(datastore_client, puuid):
 
     query = datastore_client.query(kind="summoner_match")
     query.add_filter("puuid", "=", puuid)
-    query.order = ['-gameStartTimestamp']
+    query.order = ["-gameStartTimestamp"]
     responses = query.fetch(1)
     query_result = list(responses)[0]
 
     summoner_match = json.loads(json.dumps(query_result), parse_int=str)
     return summoner_match
+
 
 def update_user_winrate(datastore_client, args=None, puuid=None):
 
@@ -157,20 +159,20 @@ def update_user_winrate(datastore_client, args=None, puuid=None):
     matches_query_result = list(query.fetch())
     new_matches = json.loads(json.dumps(matches_query_result), parse_int=str)
 
-     #winrates for last 10 and 50 games
+    # winrates for last 10 and 50 games
     query = datastore_client.query(kind="summoner_match")
     query.add_filter("puuid", "=", puuid)
     matches_query_result = list(query.fetch(limit=10))
     ten_matches = json.loads(json.dumps(matches_query_result), parse_int=str)
     ten_wins = len([match for match in ten_matches if match["win"]])
-    ten_winrate = ten_wins/10
+    ten_winrate = ten_wins / 10
 
     query = datastore_client.query(kind="summoner_match")
     query.add_filter("puuid", "=", puuid)
     matches_query_result = list(query.fetch(limit=50))
     ten_matches = json.loads(json.dumps(matches_query_result), parse_int=str)
     fifty_wins = len([match for match in ten_matches if match["win"]])
-    fifty_winrate = fifty_wins/50
+    fifty_winrate = fifty_wins / 50
 
     update_summoner_field(datastore_client, puuid, "win_rate_10", ten_winrate)
     update_summoner_field(datastore_client, puuid, "win_rate_50", fifty_winrate)
@@ -178,14 +180,13 @@ def update_user_winrate(datastore_client, args=None, puuid=None):
     if len(new_matches) == 0:
         return "No new data to record"
 
-
-    most_recent_ts = max([int(match['gameStartTimestamp']) for match in new_matches])
+    most_recent_ts = max([int(match["gameStartTimestamp"]) for match in new_matches])
     wins = len([match for match in new_matches if match["win"]])
     new_match_count = len(new_matches)
 
     total_played += new_match_count
     total_wins += wins
-    new_winrate = float(total_wins)/total_played
+    new_winrate = float(total_wins) / total_played
     print(f"new winrate: {new_winrate}")
 
     db_key = datastore_client.key("user_winrate", puuid)

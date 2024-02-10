@@ -81,10 +81,10 @@ def get_match_data(puuid, region, match):
 def get_user_matches(puuid, region, last_ts):
     params = {"startTime": int(last_ts), "count": 10} if last_ts is not None else {"count": 10}
     region = _match_region_correction(region)
-    path = f'https://{region}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids'
 
+    path = f'https://{region}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids'
     response = requests.get(path, headers=headers, params=params)
-    return json.loads(response.text)
+    return response.json()
 
 
 # Gets the list of recent matches a user has played with a ts to limit getting too old data
