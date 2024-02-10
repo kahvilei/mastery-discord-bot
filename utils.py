@@ -284,7 +284,7 @@ def generate_mastery_notification(
                 f" {title}."
             )
             prompt.append(
-                f"Also, note that {summoner_name} has "
+                f"Also, be sure to note that {summoner_name} has "
                 f"now mastered {m7_count(mastery_data)} champions"
             )
 
