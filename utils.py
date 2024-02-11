@@ -302,7 +302,11 @@ def generate_mastery_notification(
 
 
 def m7_count(mastery_data):
-    mastery_sevens = [
-        champ for champ in mastery_data.values() if str(champ["mastery"]) == "7"
-    ]
-    return len(mastery_sevens)
+    counter = 0
+
+    for champ in mastery_data.values():
+        if str(champ["mastery"]) == "7":
+            counter += 1
+
+    return counter
+
