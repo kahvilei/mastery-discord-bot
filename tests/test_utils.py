@@ -47,34 +47,29 @@ def test_generate_mastery_notification():
     parent_dir = (
         os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)) + "/tests"
     )
-    champion_data = json.load(open(f"{parent_dir}/champions.json", encoding="utf-8"))[
-        "data"
-    ]
-    champion_data = {
-        val["key"]: [key, val["title"], val["blurb"]]
-        for key, val in champion_data.items()
-    }
+    champion_data = json.load(open(f"{parent_dir}/1.11.1.json", encoding="utf-8"))
 
-    new_champ = random.choice(list(champion_data.values()))
+    new_champ = random.choice(list(champion_data.keys()))
     mastery_update = {
-        "champ": new_champ[0],
+        "champ_id": new_champ,
         "mastery": random.randint(1, 7),
-        "title": new_champ[0],
         "tokensEarned": 0,
+        "championPointsSinceLastLevel": 50_000,
     }
 
     # Load the recent match from the file
     sample_data = json.load(open(f"{parent_dir}/most_recent_match_response.json"))
     mastery_data = json.load(open(f"{parent_dir}/historic_mastery_response.json"))
 
-    sample_data["championName"] = new_champ[0]
+    sample_data["championName"] = champion_data[new_champ]["alias"]
     sample_data["kills"] = random.randint(0, 20)
     sample_data["deaths"] = random.randint(0, 20)
     sample_data["assists"] = random.randint(0, 20)
 
-    with patch(
-        "utils.call_gpt", return_value="This is a test notification"
-    ) as mock_call_gpt:
+    with (
+        patch("utils.call_gpt", return_value="This is a test notification"),
+        patch("main.get_or_update_champion_data", return_value=champion_data),
+    ):
         notification = generate_mastery_notification(
             mastery_update, sample_data, "snam", champion_data
         )

@@ -1,3 +1,4 @@
+import json
 import os
 
 import openai
@@ -46,7 +47,7 @@ def generate_notable_game_notification(new_match, player_name, champion_data):
 
     prompt += "\n".join(notable_game_info)
 
-    champ_blurb = get_champion_blurb(champion_data, champion_name)
+    champ_blurb = get_champion_info(champion_data, champion_name)
     if champ_blurb:
         # add the blurb as extra prompt context about the champion
         prompt += champ_blurb
@@ -144,26 +145,22 @@ def combine_names(name1, name2):
 
 
 # Returns the blurb about a champion with the extra text so it can be used in a prompt
-def get_champion_blurb(champ_data, champ_name):
-    # Extract the blurb for the champion
-    # iterate through the touple of champ name, title, and blurb to find the blurb
-    champ_blurb = None
-    for champ in champ_data.values():
-        if champ[0].lower() == champ_name.lower():
-            champ_blurb = champ[2]
-            break
+def get_champion_info(champ_data):
 
-    if champ_blurb:
-        # add the blurb as extra prompt context about the champion
-        return (
-            f"Also, for further context about the champ {champ_name}, "
-            f"here's a truncated blurb with more info to reference in the notification,"
-            f" though try not to quote too much of it verbatim: {champ_blurb}\n\n"
-        )
+    champ_name = champ_data.get("name")
+    bio = champ_data.get("blurb")
+    spells = json.dumps(champ_data.get("spells"))
+    return "\n".join(
+        [
+            f"Here is the bio for {champ_name}: {bio}",
+            f"Here are the abilities for {champ_name}: {spells}",
+            "Use the bio and abilities in the message, but don't quote it too verbatim",
+        ]
+    )
 
 
 def call_gpt(prompt):
-    prompt += "Here is the message:\n"
+    prompt.append("Here is the message:\n")
 
     prompt = ". ".join(prompt)
 
@@ -193,10 +190,8 @@ def call_gpt(prompt):
 def generate_mastery_notification(
     mastery_updates, new_match, summoner_name, champion_data, mastery_data=None
 ):
-    if new_match is not None:
-        champ = new_match.get("championName")
-    else:
-        champ = mastery_updates.get("champ")
+    champ = champion_data.get(mastery_updates.get("champ_id"))
+    champ_name = champ.get("name")
 
     new_mastery = mastery_updates.get("mastery")
 
@@ -206,10 +201,10 @@ def generate_mastery_notification(
         "The message should adhere to the following guidelines, and try and"
         " use the additional info",
         f'The player "{summoner_name}" just finished a match, and got to'
-        f' mastery {new_mastery}/7 on the champion "{champ}" in league of legends',
+        f' mastery {new_mastery}/7 on the champion "{champ_name}" in league of legends',
         f"The message must contain the mastery level",
         f"Write a funny message that alerts a chat channel that this happened",
-        f"The message should have a joke based on {champ}'s identity or"
+        f"The message should have a joke based on {champ_name}'s identity or"
         f" abilities in league of legends",
         "Keep the message roughly under 150 characters",
         "The message will be for multiple people to read",
@@ -218,8 +213,8 @@ def generate_mastery_notification(
     ]
     first_time_prompt = [
         f'Write a message saying "{summoner_name}" just played AS the champion'
-        f' "{champ}" for the first time',
-        f"Have the message be creative and make jokes with {champ}'s identity"
+        f' "{champ_name}" for the first time',
+        f"Have the message be creative and make jokes with {champ_name}'s identity"
         f" or abilities in the message",
         "Keep the message roughly under 150 characters",
         "Write the message in first person",
@@ -227,15 +222,15 @@ def generate_mastery_notification(
     ]
     got_token_prompt = [
         f'Write a message saying the "{summoner_name}" just earned a token for'
-        f' the champion "{champ}" while playing {champ}',
+        f' the champion "{champ_name}" while playing {champ_name}',
         f"anyone seeing this message will already know this, so no need to"
         f" repeat it, but a token is a mark that means that"
         f" player did well in a game",
         f"Keep the message roughly under 150 characters",
         f"don't specify that they were playing league of legends, but make sure"
-        f" to specify {summoner_name} and {champ}",
+        f" to specify {summoner_name} and {champ_name}",
         f"remember that {summoner_name} is the one that earned the token,"
-        f" {champ} was the champion they were playing as",
+        f" {champ_name} was the champion they were playing as",
         f"do not send the message as a congratulation, but as a notification"
         f" to everyone else that the player got a token. ",
         "Write the message in first person",
@@ -294,9 +289,9 @@ def generate_mastery_notification(
         for fact in additional_info:
             prompt.append(fact)
 
-    blurb = get_champion_blurb(champion_data, champ)
-    if blurb:
-        prompt.append(blurb)
+    info = get_champion_info(champion_data[champ.get("key")])
+    if info:
+        prompt.append(info)
 
     return call_gpt(prompt)
 

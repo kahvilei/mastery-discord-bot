@@ -4,7 +4,7 @@ import os
 import flask
 import google.cloud.logging
 import requests
-from google.cloud import datastore
+from google.cloud import datastore, storage
 
 from db_functions import (
     write_dict_to_datastore,
@@ -26,6 +26,7 @@ from riot_functions import (
     get_live_matches,
     get_user_mastery,
     get_champion_data,
+    get_latest_version,
 )
 from utils import generate_notification
 
@@ -49,11 +50,33 @@ def summoner_match_refresh(datastore_client, args):
     update_user_matches(puuid, region, last_match_start_ts, datastore_client)
 
 
+def get_or_update_champion_data():
+    storage_client = storage.Client()
+
+    latest_version = get_latest_version()
+
+    bucket = storage_client.get_bucket("summon-cloud-cache")
+    # Check if our bucket has the latest version as a folder
+    blobs = bucket.list_blobs(prefix=f"{latest_version}.json")
+    blobs = [thing for thing in blobs]
+    if len(list(blobs)) == 0:
+        # If not, download the latest version and upload it
+        champion_data = get_champion_data(latest_version)
+        blob = bucket.blob(latest_version + ".json")
+        blob.upload_from_string(json.dumps(champion_data))
+    else:
+        # If so, download it
+        blob = bucket.blob(latest_version + ".json")
+        champion_data = json.loads(blob.download_as_string())
+
+    return champion_data
+
+
 def mass_stats_refresh(datastore_client, args):
     summoner_dict = get_summoner_dict(datastore_client)
     results = []
 
-    champion_data = get_champion_data()
+    champion_data = get_or_update_champion_data()
     for summoner in summoner_dict:
         puuid = summoner["puuid"]
         name = summoner.get("name")
@@ -105,7 +128,6 @@ def mass_stats_refresh(datastore_client, args):
     return flask.Response("\n".join(results))
 
 
-# todo move this to db_functions
 def update_user_mastery(datastore_client, puuid, summoner_name, mastery_data):
     print(f"Getting historic user data for {summoner_name}")
     historic_user_mastery = db_mastery(datastore_client, puuid)
@@ -119,20 +141,22 @@ def update_user_mastery(datastore_client, puuid, summoner_name, mastery_data):
         return
     else:
         updates = []
-        for champ, new_mastery in mastery_data.items():
-            if (
-                historic_user_mastery.get(champ) is None
-                or int(historic_user_mastery[champ]["mastery"])
-                < int(new_mastery["mastery"])
-                or int(historic_user_mastery[champ]["tokensEarned"])
-                < int(new_mastery["tokensEarned"])
-            ):
+        for champ_id, new_mastery in mastery_data.items():
+            token_diff = int(new_mastery["tokensEarned"]) - int(
+                historic_user_mastery[champ_id]["tokensEarned"]
+            )
+            mastery_diff = int(new_mastery["mastery"]) - int(
+                historic_user_mastery[champ_id]["mastery"]
+            )
+            if token_diff > 0 or mastery_diff > 0:
                 updates.append(
                     {
-                        "champ": champ,
+                        "champ_id": champ_id,
                         "mastery": new_mastery["mastery"],
                         "tokensEarned": new_mastery["tokensEarned"],
-                        "title": new_mastery["title"],
+                        "championPointsSinceLastLevel": new_mastery[
+                            "championPointsSinceLastLevel"
+                        ],
                     }
                 )
         if len(updates) > 0:
@@ -148,8 +172,9 @@ def update_user_matches(puuid, region, last_match, datastore_client):
     recorded_matches = []
     for match in user_matches:
         recorded_match = get_match_data(puuid, region, match)
+        primary_key = f"{puuid}_{match}"
         write_dict_to_datastore(
-            datastore_client, f"{puuid}_{match}", recorded_match, "summoner_match"
+            datastore_client, primary_key, recorded_match, "summoner_match"
         )
         recorded_matches.append(recorded_match)
     if len(recorded_matches) > 0:
@@ -186,7 +211,8 @@ def add_tracked_user(datastore_client, args):
 
 
 def add_user(datastore_client, user_data):
-    write_dict_to_datastore(datastore_client, user_data["puuid"], user_data, "summoner")
+    puuid = user_data["puuid"]
+    write_dict_to_datastore(datastore_client, puuid, user_data, "summoner")
 
 
 def entrypoint(request):

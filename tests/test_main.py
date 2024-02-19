@@ -4,7 +4,7 @@ from unittest import mock
 
 import responses
 
-from main import update_user_mastery
+from main import update_user_mastery, get_or_update_champion_data
 
 
 @responses.activate
@@ -44,3 +44,11 @@ def test_update_user_mastery():
 
     mastery_update = update_user_mastery(datastore_client, puuid, "snam", new_data)
     assert len(mastery_update) == 2
+
+
+def test_get_or_update_champion_data():
+
+    # TODO put some mocks here
+    # champ_data = get_or_update_champion_data()
+
+    print()
