@@ -139,20 +139,21 @@ def get_user_mastery(puuid, region, champion_data):
     response = requests.get(path, headers=headers)
     champion_mastery = response.json()
 
-    id_indexed_mastery = {str(val["championId"]): val for val in champion_mastery}
+    id_indexed_mastery = {val["championId"]: val for val in champion_mastery}
 
     cleaned_new_user_mastery = {}
     for champ_id, val in id_indexed_mastery.items():
 
-        # We use the champ name as the primary key for readability
-        champ_name = champion_data[champ_id]["alias"]
-        new_val = {
-            "champ_id": val["championName"],
-            "championPointsSinceLastLevel": val["championPointsSinceLastLevel"],
-            "mastery": val["championLevel"],
-            "tokensEarned": val["tokensEarned"],
-        }
-        cleaned_new_user_mastery[champ_name] = new_val
+        if str(champ_id) in champion_data:
+            # We use the champ name as the primary key for readability
+            champ_name = champion_data[str(champ_id)]["alias"]
+            new_val = {
+                "champ_id": val["championId"],
+                "championPointsSinceLastLevel": val["championPointsSinceLastLevel"],
+                "mastery": val["championLevel"],
+                "tokensEarned": val["tokensEarned"],
+            }
+            cleaned_new_user_mastery[champ_name] = new_val
     return cleaned_new_user_mastery
 
 
