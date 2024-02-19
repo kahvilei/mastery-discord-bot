@@ -7,7 +7,6 @@
 #   Some initial things is calculating here the win-rate-per-champ-per-summoner(per-mode?)
 #
 #
-#
 ###
 
 # TODO calculate per-champ win rates
