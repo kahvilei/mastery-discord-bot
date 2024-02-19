@@ -190,7 +190,8 @@ def call_gpt(prompt):
 def generate_mastery_notification(
     mastery_updates, new_match, summoner_name, champion_data, mastery_data=None
 ):
-    champ = champion_data.get(mastery_updates.get("champ_id"))
+    print(f"{mastery_updates=}")
+    champ = champion_data.get(str(mastery_updates.get("champ_id")))
     champ_name = champ.get("name")
 
     new_mastery = mastery_updates.get("mastery")
