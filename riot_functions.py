@@ -139,7 +139,7 @@ def get_user_mastery(puuid, region, champion_data):
     response = requests.get(path, headers=headers)
     champion_mastery = response.json()
 
-    id_indexed_mastery = {val["championId"]: val for val in champion_mastery}
+    id_indexed_mastery = {str(val["championId"]): val for val in champion_mastery}
 
     cleaned_new_user_mastery = {}
     for champ_id, val in id_indexed_mastery.items():
