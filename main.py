@@ -142,12 +142,12 @@ def update_user_mastery(datastore_client, puuid, summoner_name, mastery_data):
     else:
         updates = []
         for champ_name, new_mastery in mastery_data.items():
-            token_diff = int(new_mastery["tokensEarned"]) - int(
-                historic_user_mastery[champ_name]["tokensEarned"]
+            old_tokens = historic_user_mastery.get(champ_name, {}).get(
+                "tokensEarned", 0
             )
-            mastery_diff = int(new_mastery["mastery"]) - int(
-                historic_user_mastery[champ_name]["mastery"]
-            )
+            old_mastery = historic_user_mastery.get(champ_name, {}).get("mastery", 0)
+            token_diff = int(new_mastery["tokensEarned"]) - int(old_tokens)
+            mastery_diff = int(new_mastery["mastery"]) - int(old_mastery)
             if token_diff > 0 or mastery_diff > 0:
                 updates.append(
                     {
