@@ -201,7 +201,7 @@ def generate_mastery_notification(
         "Use the following information to generate a message for a discord channel consisting of multiple people who play league of legends together",
         "Keep the message under 4 sentences",
         "Write the message in first person as yourself, the bot",
-        "The message should poke fun where appropriate, and be sarcastic. Try not to be too serious or congratulatory. Do not be too mean, only where warranted (like a bad k/d/a)",
+        "The message should poke fun where appropriate, and be sarcastic. Try not to be too serious or congratulatory. Do not be too mean, only where warranted (like a bad k/d/a). Personal attack do not read well as you no nothing about the player, and it is not in the spirit of the bot",
         "Avoid being too on the nose, and try to be creative with the message. Utilize the champion information appended at the end of the prompt to make the message more interesting",
         "Sometimes nonsense and surrealist humor is good, but don't make the message too incoherent",
         "Curse words are allowed, but don't be too vulgar",
