@@ -169,7 +169,7 @@ def call_gpt(prompt):
     response = openai.ChatCompletion.create(
         model="gpt-4",  # Specify the model/engine to use
         messages=[{"role": "system", "content": prompt}],
-        max_tokens=200,  # Set the maximum length of the generated response
+        max_tokens=1000,  # Set the maximum length of the generated response
         n=1,  # Generate a single response
         stop=None,  # Define a custom stop sequence if needed
     )
