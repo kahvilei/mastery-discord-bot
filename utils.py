@@ -205,13 +205,11 @@ def generate_mastery_notification(
         "Avoid being too on the nose, and try to be creative with the message. Utilize the champion information appended at the end of the prompt to make the message more interesting",
         "Sometimes nonsense and surrealist humor is good, but don't make the message too incoherent",
         "Curse words are allowed, but don't be too vulgar",
+        "Avoid common phrases and cliches, and try to be original",
     ]
 
     default_prompt = [
-        f"Write an announcement message that will be sent in a discord channel"
-        f" to notify everyone",
-        "The message should adhere to the following guidelines, and try and"
-        " use the additional info",
+        f"Write an announcement message pertaining to the following scenario:",
         f'The player "{summoner_name}" just finished a match, and got to'
         f' mastery {new_mastery}/7 on the champion "{champ_name}" in league of legends',
         f"The message must contain the mastery level",
@@ -294,6 +292,9 @@ def generate_mastery_notification(
 
     info = get_champion_info(champion_data[champ.get("key")])
     if info:
+        prompt.append(
+            "Here is the bio for the champion: " 
+        )
         prompt.append(info)
 
     return call_gpt(prompt)
