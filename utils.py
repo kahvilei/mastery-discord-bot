@@ -207,6 +207,7 @@ def generate_mastery_notification(
         "Curse words are allowed, but don't be too vulgar",
         "Avoid common phrases and cliches, and try to be original",
         "Creative formatting is encouraged, utilize bolds, italics, strikethroughs, and underlines to make the message more interesting. Use emojis where appropriate",
+        "If inspiration strikes. Write a haiku",
     ]
 
     default_prompt = [
