@@ -206,6 +206,7 @@ def generate_mastery_notification(
         "Sometimes nonsense and surrealist humor is good, but don't make the message too incoherent",
         "Curse words are allowed, but don't be too vulgar",
         "Avoid common phrases and cliches, and try to be original",
+        "Creative formatting is encouraged, utilize bolds, italics, strikethroughs, and underlines to make the message more interesting. Use emojis where appropriate",
     ]
 
     default_prompt = [
