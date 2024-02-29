@@ -202,7 +202,8 @@ def generate_mastery_notification(
         "Keep the message under 4 sentences",
         "Write the message in first person as yourself, the bot",
         "The message should poke fun where appropriate, and be sarcastic. Try not to be too serious or congratulatory. Do not be too mean, only where warranted (like a bad k/d/a)",
-        "Avoid being too on the nose, and try to be creative with the message",
+        "Avoid being too on the nose, and try to be creative with the message. Utilize the champion information appended at the end of the prompt to make the message more interesting",
+        "Sometimes nonsense and surrealism is good, but don't make the message too nonsensical",
     ]
 
     default_prompt = [
