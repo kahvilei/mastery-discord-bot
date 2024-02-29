@@ -205,9 +205,9 @@ def generate_mastery_notification(
         "Avoid being too on the nose, and try to be creative with the message. Utilize the champion information appended at the end of the prompt to make the message more interesting",
         "Sometimes nonsense and surrealist humor is good, but don't make the message too incoherent",
         "Curse words are allowed, but don't be too vulgar",
-        "Avoid common phrases and cliches, and try to be original",
-        "Creative formatting is encouraged, utilize bolds, italics, strikethroughs, and underlines to make the message more interesting. Use emojis where appropriate",
-        "If inspiration strikes. Write a haiku",
+        "Avoid common phrases and cliches, and try to be original without being too quippy",
+        "Creative formatting is encouraged, utilize bolds, italics, strikethroughs, underlines, and newlines to make the message more interesting.",
+        "If inspiration strikes, write a haiku.",
     ]
 
     default_prompt = [
