@@ -169,7 +169,7 @@ def call_gpt(prompt):
     response = openai.ChatCompletion.create(
         model="gpt-4",  # Specify the model/engine to use
         messages=[{"role": "system", "content": prompt}],
-        max_tokens=100,  # Set the maximum length of the generated response
+        max_tokens=200,  # Set the maximum length of the generated response
         n=1,  # Generate a single response
         stop=None,  # Define a custom stop sequence if needed
     )
@@ -202,6 +202,7 @@ def generate_mastery_notification(
         "Keep the message roughly under 3 sentences",
         "Write the message in first person as yourself, the bot",
         "The message should poke fun where appropriate, and be sarcastic. Try not to be too serious or congratulatory",
+        "Avoid being too on the nose, and try to be creative with the message",
     ]
 
     default_prompt = [
