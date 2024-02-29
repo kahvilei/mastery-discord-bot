@@ -196,33 +196,32 @@ def generate_mastery_notification(
 
     new_mastery = mastery_updates.get("mastery")
 
-    context_prompt = [
-        "You are a discord bot that sends notifications to a channel when a player has a notable game, increases their mastery level on a champion, or earns a token for a champion.",
-        "Use the following information to generate a message for a discord channel consisting of multiple people who play league of legends together.",
-        "Keep the message roughly under 3 sentences.",
-        "Write the message in first person as yourself, the bot.",
-        "The message should poke fun where appropriate, and be sarcastic. Try not to be too serious or congratulatory.",
+    prompt = [
+        "You are a discord bot that sends notifications to a channel when a player has a notable game, increases their mastery level on a champion, or earns a token for a champion",
+        "Use the following information to generate a message for a discord channel consisting of multiple people who play league of legends together",
+        "Keep the message roughly under 3 sentences",
+        "Write the message in first person as yourself, the bot",
+        "The message should poke fun where appropriate, and be sarcastic. Try not to be too serious or congratulatory",
     ]
-
-    prompt = context_prompt
 
     default_prompt = [
         f"Write an announcement message that will be sent in a discord channel"
-        f" to notify everyone.",
+        f" to notify everyone",
         "The message should adhere to the following guidelines, and try and"
-        " use the additional info.",
+        " use the additional info",
         f'The player "{summoner_name}" just finished a match, and got to'
         f' mastery {new_mastery}/7 on the champion "{champ_name}" in league of legends',
-        f"The message must contain the mastery level.",
-        f"Write a message that alerts a chat channel that this happened.",
+        f"The message must contain the mastery level",
+        f"Write a message that alerts a chat channel that this happened",
         f"The message should have a joke based on {champ_name}'s identity or"
-        f" abilities in league of legends.",
+        f" abilities in league of legends",
     ]
+
     first_time_prompt = [
         f'Write a message saying "{summoner_name}" just played AS the champion'
-        f' "{champ_name}" for the first time.',
+        f' "{champ_name}" for the first time',
         f"Have the message be creative and make jokes with {champ_name}'s identity"
-        f" or abilities in the message.",
+        f" or abilities in the message",
     ]
     got_token_prompt = [
         f'Write a message saying the "{summoner_name}" just earned a token for'
@@ -230,7 +229,6 @@ def generate_mastery_notification(
         f"anyone seeing this message will already know this, so no need to"
         f" repeat it, but a token is a mark that means that"
         f" player did well in a game",
-        f"Keep the message roughly under 3 sentences",
         f"don't specify that they were playing league of legends, but make sure"
         f" to specify {summoner_name} and {champ_name}",
         f"remember that {summoner_name} is the one that earned the token,"
@@ -240,10 +238,10 @@ def generate_mastery_notification(
     ]
     # First match as the champ
     if int(mastery_updates.get("mastery")) == 1:
-        prompt.append(first_time_prompt)
+        prompt = prompt + first_time_prompt
     # Got a token
     elif int(mastery_updates.get("tokensEarned", 0)) > 0:
-        prompt.append(got_token_prompt)
+        prompt = prompt + got_token_prompt
         tokens_earned = int(mastery_updates.get("tokensEarned"))
         if int(mastery_updates.get("mastery")) == 5 and tokens_earned == 1:
             prompt.append("This is their first token for this champion")
@@ -271,7 +269,7 @@ def generate_mastery_notification(
             )
     # Got a mastery level
     else:
-        prompt.append(default_prompt)
+        prompt = prompt + default_prompt
         if mastery_updates.get("mastery") == 7:
             title = mastery_updates.get("title")
             prompt.append(
@@ -306,4 +304,3 @@ def m7_count(mastery_data):
             counter += 1
 
     return counter
-
