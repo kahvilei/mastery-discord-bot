@@ -7,7 +7,7 @@ import requests
 import flask
 from requests import get
 
-auth_key = os.environ["Riot_API_Key"]
+auth_key = os.environ.get("Riot_API_Key", "default")
 
 headers = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)",

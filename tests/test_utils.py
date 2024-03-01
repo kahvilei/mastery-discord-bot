@@ -10,7 +10,6 @@ from utils import (
     generate_notification,
 )
 
-
 def test_generate_notable_game_information():
     # First load the sample data from the file
     # get the parent dir path

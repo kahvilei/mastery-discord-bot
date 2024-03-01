@@ -42,7 +42,7 @@ def summoner_match_refresh(datastore_client, args):
         return "A valid region is required"
     region = args[2]
     if args[3] is None or len(args[3]) < 2:
-        return "A valid puiid is required for account addition"
+        return "A valid puuid is required for account addition"
     puuid = args[3]
     last_match_start_ts = get_summoner_field(
         datastore_client, puuid, "last_match_start_ts"
