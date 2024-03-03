@@ -210,17 +210,9 @@ def generate_mastery_notification(
         "Avoid being too on the nose, and try to be creative with the message. Utilize "
         "the champion information appended at the end of the prompt to make the message"
         " more interesting but don't spit out as much champion references as possible. "
-        "The message should be succinct. Nobody wants to read a novel in a discord "
-        "channel",
-        "Sometimes nonsense and surrealist humor is good, but don't make the message "
-        "too incoherent",
-        "Curse words are allowed, but don't be vulgar and don't be offensive",
-        "Avoid common phrases and cliches, and try to be original without being too "
-        "quippy",
+        "The message should be succinct. It should not be too long. Try to keep it short",
         "Creative formatting is encouraged — utilize bolds, italics, strikethroughs, "
         "underlines, and newlines to make the message more interesting. "
-        "Avoid too many emojis",
-        "If inspiration strikes, write a haiku.",
     ]
 
     default_prompt = [
