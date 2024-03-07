@@ -154,7 +154,8 @@ def get_champion_info(champ_data):
         [
             f"Here is the bio for {champ_name}: {bio}",
             f"Here are the abilities for {champ_name}: {spells}",
-            "Use the bio and abilities in the message, but don't quote it too verbatim",
+            f"The bio and the abilities are more to provide context about {champ_name}, "
+            f"the information shouldn't be overused in the message, only where it is specifically fitting",
         ]
     )
 
@@ -202,17 +203,14 @@ def generate_mastery_notification(
         "for a champion",
         "Use the following information to generate a message for a discord channel "
         "consisting of multiple people who play league of legends together",
-        "Keep the message under 4 sentences",
+        "Keep the message under 3 sentences",
         "Write the message in first person as yourself, the bot",
         "Try not to be too serious or congratulatory. Do not be too mean, only where "
-        "warranted (like a bad k/d/a). Personal attacks do not read well as you know "
-        "nothing about the player, and it is not in the spirit of the bot",
-        "Avoid being too on the nose, and try to be creative with the message. Utilize "
-        "the champion information appended at the end of the prompt to make the message"
-        " more interesting but don't spit out as much champion references as possible. "
+        "warranted (like a bad k/d/a).",
         "The message should be succinct. It should not be too long. Try to keep it short",
         "Creative formatting is encouraged — utilize bolds, italics, strikethroughs, "
-        "underlines, and newlines to make the message more interesting. "
+        "underlines, and newlines to make the message more interesting. ",
+        "it is very important that the message is short, it should be almost instantly readable"
     ]
 
     default_prompt = [
@@ -301,8 +299,6 @@ def generate_mastery_notification(
     if info:
         prompt.append("Here is the bio for the champion: ")
         prompt.append(info)
-
-    debugPrompt = ". ".join(prompt)
 
     return call_gpt(prompt)
 
