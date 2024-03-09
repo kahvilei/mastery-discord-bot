@@ -23,7 +23,7 @@ from riot_functions import (
     get_latest_version,
     get_most_recent_match_id,
 )
-from utils import generate_notification
+from utils import generate_mastery_notification
 
 
 ###
@@ -116,11 +116,11 @@ def check_mastery(datastore_client, args):
 
             for update in mastery_updates:
                 notifications.append(
-                    generate_notification(
-                        match_data,
-                        update,
-                        summoner.get("name"),
-                        champion_data,
+                    generate_mastery_notification(
+                        match_data=match_data,
+                        mastery_updates=update,
+                        summoner_name=summoner.get("name"),
+                        champion_data=champion_data,
                         mastery_data=user_mastery,
                     )
                 )

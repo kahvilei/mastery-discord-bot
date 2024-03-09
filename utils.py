@@ -3,59 +3,6 @@ import os
 
 from openai import OpenAI
 
-client = OpenAI(api_key=os.getenv("CHATGPT_TOKEN"))
-
-
-# For an individual player,
-# generate a message if they've increased their mastery, or had a notable game
-def generate_notification(
-    new_match, mastery_updates, summoner_name, champion_data, mastery_data
-):
-    if mastery_updates:
-        return generate_mastery_notification(
-            mastery_updates, new_match, summoner_name, champion_data, mastery_data
-        )
-    elif is_notable_game(new_match):
-        return generate_notable_game_notification(
-            new_match, summoner_name, champion_data
-        )
-    else:
-        print("Game recorded, but nothing notable enough to send a notification")
-
-
-# Returns true if the player had a kda of 10 or more
-def is_notable_game(match_data):
-    # calculate kda from match data, cast to floats first
-    kills = int(match_data.get("kills"))
-    deaths = int(match_data.get("deaths"))
-    assists = int(match_data.get("assists"))
-    kda = round((kills + assists) / (deaths if deaths > 0 else 1), 2)
-    return kda >= 10
-
-
-# Create the prompt for the AI to generate a message, and call the AI
-def generate_notable_game_notification(new_match, player_name, champion_data):
-    notable_game_info = generate_notable_game_information(new_match)
-
-    champion_name = new_match.get("championName")
-    prompt = (
-        f"Write an message for everyone that will be sent in a discord channel to report that "
-        f"{player_name} just finished a good game of league of legends as {champion_name}. "
-        f"The message should have a joke based on {champion_name}'s identity or abilities in league of legends. "
-        f"Use any facts about that {champion_name} to make the message more interesting, or joke that "
-        f"{player_name} is a lot like {champion_name}. "
-        "make the message sound sarcastically not impressed. "
-    )
-
-    prompt += "\n".join(notable_game_info)
-
-    champ_blurb = get_champion_info(champion_data)
-    if champ_blurb:
-        # add the blurb as extra prompt context about the champion
-        prompt += champ_blurb
-
-    return call_gpt(prompt)
-
 
 # Look at the most recent match data, and pull out any notable information
 def generate_notable_game_information(new_match):
@@ -168,6 +115,7 @@ def call_gpt(prompt):
     prompt = ". ".join(prompt)
 
     # get token from envvar
+    client = OpenAI(api_key=os.getenv("CHATGPT_TOKEN"))
     response = client.chat.completions.create(
         model="gpt-4",  # Specify the model/engine to use
         messages=[{"role": "system", "content": prompt}],
@@ -190,7 +138,7 @@ def call_gpt(prompt):
 
 # makes a call to chatgpt to generate a message for a summoner, mastery level, and champion
 def generate_mastery_notification(
-    mastery_updates, new_match, summoner_name, champion_data, mastery_data=None
+    mastery_updates, match_data, summoner_name, champion_data, mastery_data=None
 ):
     print(f"{mastery_updates=}")
     champ = champion_data.get(str(mastery_updates.get("champ_id")))
@@ -290,9 +238,9 @@ def generate_mastery_notification(
                 f"now mastered {m7_count(mastery_data)} champions"
             )
 
-    if new_match is not None:
-        # Add the notable game information to the prompt if we have that info
-        additional_info = generate_notable_game_information(new_match)
+    if match_data is not None and match_data.get("championName") == champ_name:
+        # Add the notable game information to the prompt
+        additional_info = generate_notable_game_information(match_data)
         for fact in additional_info:
             prompt.append(fact)
 
