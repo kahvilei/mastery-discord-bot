@@ -55,30 +55,6 @@ def get_or_update_champion_data():
     return champion_data
 
 
-def get_or_update_match_data(puuid, region, match_id):
-    # see if the player's most recent match is saved
-    storage_client = storage.Client()
-    bucket = storage_client.get_bucket("summon-cloud-cache")
-    blobs = bucket.list_blobs(prefix=f"match_data/{puuid}/{match_id}.json")
-    blobs = [thing for thing in blobs]
-    if len(list(blobs)) == 0:
-        # Clear any old match data
-        blobs = bucket.list_blobs(prefix=f"match_data/{puuid}/")
-        for blob in blobs:
-            blob.delete()
-
-        match_data = riot_functions.get_match_data(puuid, region, match_id)
-        # save date to bucket
-        blob = bucket.blob(f"match_data/{puuid}/{match_id}.json")
-        blob.upload_from_string(json.dumps(match_data))
-        return match_data
-    # If not, download the latest version and upload it
-    else:
-        blob = bucket.blob(f"match_data/{puuid}/{match_id}.json")
-        match_data = json.loads(blob.download_as_string())
-        return match_data
-
-
 def check_mastery(datastore_client, args):
 
     print("Getting summoners")
@@ -112,7 +88,7 @@ def check_mastery(datastore_client, args):
         if mastery_updates is not None:
 
             match_id = get_most_recent_match_id(puuid, region)
-            match_data = get_or_update_match_data(puuid, region, match_id)
+            match_data = riot_functions.get_match_data(puuid, region, match_id)
 
             for update in mastery_updates:
                 notifications.append(
