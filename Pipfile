@@ -14,7 +14,7 @@ googleapis-common-protos = "==1.56.2"
 requests = "==2.27.1"
 urllib3 = "==1.26.9"
 pytz = "==2023.3"
-openai = "==0.28.0"
+openai = "*"
 flask = "*"
 
 [dev-packages]

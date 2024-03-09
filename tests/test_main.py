@@ -4,7 +4,9 @@ from unittest import mock
 
 import responses
 
-from main import update_user_mastery, get_or_update_champion_data
+from main import (
+    update_user_mastery,
+)
 
 
 @responses.activate
@@ -13,6 +15,7 @@ def test_update_user_mastery():
     parent_dir = (
         os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)) + "/tests"
     )
+
     puuid = (
         "rvlA_wzDihhSjaknwXcvWA2fagOiQDk-fC67wMSi5uEgOU55Tg3IU-"
         "lSWrv5OgS9J0R51ikgHW9f3g"
@@ -52,3 +55,26 @@ def test_get_or_update_champion_data():
     # champ_data = get_or_update_champion_data()
 
     print()
+
+
+def test_get_or_update_match_data():
+
+    puuid = (
+        "rvlA_wzDihhSjaknwXcvWA2fagOiQDk-fC67wMSi5uEgOU55Tg3IU-lSWrv5OgS9J0R51ikgHW9f3g"
+    )
+    region = "na1"
+    match_id = "NA1_4942476192"
+
+    # TODO mock these calls
+    # match_data = get_or_update_match_data(puuid, region, match_id)
+    print()
+
+
+# def test_get_historic_mastery():
+#
+#     datastore_client = datastore.Client()
+#     mastery = db_functions.get_user_mastery(
+#         datastore_client,
+#         "rvlA_wzDihhSjaknwXcvWA2fagOiQDk-fC67wMSi5uEgOU55Tg3IU-lSWrv5OgS9J0R51ikgHW9f3g",
+#     )
+#     print(mastery)

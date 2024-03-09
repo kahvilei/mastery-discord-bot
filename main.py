@@ -4,29 +4,24 @@ import os
 import flask
 import google.cloud.logging
 import requests
-from google.cloud import datastore, storage
+from google.cloud import storage, datastore
 
+import riot_functions
 from db_functions import (
     write_dict_to_datastore,
-    get_summoner_field,
     get_summoner,
-    update_summoner_field,
     get_all_summoners,
     delete_user,
     get_summoner_dict,
-    update_user_winrate,
     get_all_summoner_IDs,
-    get_info,
     get_user_mastery as db_mastery,
 )
 from riot_functions import (
-    get_user_matches,
-    get_match_data,
     lookup_summoner,
-    get_live_matches,
     get_user_mastery,
     get_champion_data,
     get_latest_version,
+    get_most_recent_match_id,
 )
 from utils import generate_notification
 
@@ -37,27 +32,14 @@ from utils import generate_notification
 ###
 
 
-def summoner_match_refresh(datastore_client, args):
-    if args[2] is None or len(args[2]) < 2:
-        return "A valid region is required"
-    region = args[2]
-    if args[3] is None or len(args[3]) < 2:
-        return "A valid puuid is required for account addition"
-    puuid = args[3]
-    last_match_start_ts = get_summoner_field(
-        datastore_client, puuid, "last_match_start_ts"
-    )
-    update_user_matches(puuid, region, last_match_start_ts, datastore_client)
-
-
 def get_or_update_champion_data():
-    storage_client = storage.Client()
-
     latest_version = get_latest_version()
 
+    storage_client = storage.Client()
     bucket = storage_client.get_bucket("summon-cloud-cache")
+
     # Check if our bucket has the latest version as a folder
-    blobs = bucket.list_blobs(prefix=f"{latest_version}.json")
+    blobs = bucket.list_blobs(prefix=f"champion_data/{latest_version}.json")
     blobs = [thing for thing in blobs]
     if len(list(blobs)) == 0:
         # If not, download the latest version and upload it
@@ -72,7 +54,31 @@ def get_or_update_champion_data():
     return champion_data
 
 
-def mass_stats_refresh(datastore_client, args):
+def get_or_update_match_data(puuid, region, match_id):
+    # see if the player's most recent match is saved
+    storage_client = storage.Client()
+    bucket = storage_client.get_bucket("summon-cloud-cache")
+    blobs = bucket.list_blobs(prefix=f"match_data/{puuid}/{match_id}.json")
+    blobs = [thing for thing in blobs]
+    if len(list(blobs)) == 0:
+        # Clear any old match data
+        blobs = bucket.list_blobs(prefix=f"match_data/{puuid}/")
+        for blob in blobs:
+            blob.delete()
+
+        match_data = riot_functions.get_match_data(puuid, region, match_id)
+        # save date to bucket
+        blob = bucket.blob(f"match_data/{puuid}/{match_id}.json")
+        blob.upload_from_string(json.dumps(match_data))
+        return match_data
+    # If not, download the latest version and upload it
+    else:
+        blob = bucket.blob(f"match_data/{puuid}/{match_id}.json")
+        match_data = json.loads(blob.download_as_string())
+        return match_data
+
+
+def check_mastery(datastore_client, args):
     summoner_dict = get_summoner_dict(datastore_client)
     results = []
 
@@ -82,15 +88,11 @@ def mass_stats_refresh(datastore_client, args):
         name = summoner.get("name")
         region = summoner.get("region")
 
-        print(f'Stats refresh started for {summoner.get("name", "Unknown")}')
+        print(f'mastery update started for {summoner.get("name", "Unknown")}')
 
-        # First, update the user's match history
-        last_match_start_ts = get_summoner_field(
-            datastore_client, puuid, "last_match_start_ts"
-        )
-        most_recent_match = update_user_matches(
-            puuid, region, last_match_start_ts, datastore_client
-        )
+        match_id = get_most_recent_match_id(puuid, region)
+
+        match_data = get_or_update_match_data(puuid, region, match_id)
 
         # Second, update the user's mastery
         user_mastery = get_user_mastery(puuid, region, champion_data)
@@ -101,16 +103,13 @@ def mass_stats_refresh(datastore_client, args):
             mastery_data=user_mastery,
         )
 
-        # Third, update the user's winrate
-        individual_response = update_user_winrate(datastore_client, puuid=puuid)
-
-        # Fourth, generate any needed notifications
+        # Third, generate any needed notifications
         notifications = []
         if mastery_updates is not None:
             for update in mastery_updates:
                 notifications.append(
                     generate_notification(
-                        most_recent_match,
+                        match_data,
                         update,
                         summoner.get("name"),
                         champion_data,
@@ -124,7 +123,7 @@ def mass_stats_refresh(datastore_client, args):
             requests.request("POST", discord_webhook, data=payload)
             print(f"Sent {notification}")
 
-        results.append(f"{individual_response} for {puuid}")
+        results.append(f"Finished {puuid}")
     return flask.Response("\n".join(results))
 
 
@@ -166,33 +165,6 @@ def update_user_mastery(datastore_client, puuid, summoner_name, mastery_data):
         return updates
 
 
-# Updates the database with most recent matches. Returns the most recent match
-def update_user_matches(puuid, region, last_match, datastore_client):
-    user_matches = get_user_matches(puuid, region, last_match)
-    recorded_matches = []
-    for match in user_matches:
-        recorded_match = get_match_data(puuid, region, match)
-        primary_key = f"{puuid}_{match}"
-        write_dict_to_datastore(
-            datastore_client, primary_key, recorded_match, "summoner_match"
-        )
-        recorded_matches.append(recorded_match)
-    if len(recorded_matches) > 0:
-        last_match_start_ts = str(recorded_matches[0]["gameStartTimestamp"])[:-3]
-        # add the game length to the timestamp to avoid duplicate matches
-        last_match_end_ts = str(
-            int(last_match_start_ts) + recorded_matches[0]["timePlayed"] + 300
-        )
-
-        update_summoner_field(
-            datastore_client, puuid, "last_match_start_ts", last_match_end_ts
-        )
-        print(f"Logged {len(recorded_matches)} matches")
-        return recorded_matches[0]
-
-    print("no match updates required")
-
-
 def add_tracked_user(datastore_client, args):
     if args[2] is None or len(args[2]) < 2:
         return "A valid region is required"
@@ -205,7 +177,6 @@ def add_tracked_user(datastore_client, args):
 
     user_data = lookup_summoner(summoner, region)
     add_user(datastore_client, user_data)
-    update_user_matches(user_data["puuid"], region, None, datastore_client)
 
     return f"successfully added user {summoner}"
 
@@ -236,20 +207,13 @@ def entrypoint(request):
         return get_all_summoners(datastore_client, path_segments)
     elif root == "get-all-summoner-IDs":
         return get_all_summoner_IDs(datastore_client, path_segments)
-    elif root == "summoner-match-refresh":
-        return summoner_match_refresh(datastore_client, path_segments)
     elif root == "add-user":
         return add_tracked_user(datastore_client, path_segments)
     elif root == "get-summoner":
         return get_summoner(datastore_client, path_segments)
-    elif root == "get-info":
-        return get_info(datastore_client, path_segments)
-    elif root == "get-live-matches":
-        summoners = json.loads(get_all_summoners(datastore_client).data)
-        return get_live_matches(datastore_client, summoners, path_segments)
     elif root == "delete-user":
         return delete_user(datastore_client, path_segments)
-    elif root == "mass-stats-refresh":
-        return mass_stats_refresh(datastore_client, path_segments)
+    elif root == "check_mastery":
+        return check_mastery(datastore_client, path_segments)
     else:
         return "invalid operation"

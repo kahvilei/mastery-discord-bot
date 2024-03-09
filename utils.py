@@ -1,7 +1,9 @@
 import json
 import os
 
-import openai
+from openai import OpenAI
+
+client = OpenAI(api_key=os.getenv("CHATGPT_TOKEN"))
 
 
 # For an individual player,
@@ -47,7 +49,7 @@ def generate_notable_game_notification(new_match, player_name, champion_data):
 
     prompt += "\n".join(notable_game_info)
 
-    champ_blurb = get_champion_info(champion_data, champion_name)
+    champ_blurb = get_champion_info(champion_data)
     if champ_blurb:
         # add the blurb as extra prompt context about the champion
         prompt += champ_blurb
@@ -166,13 +168,12 @@ def call_gpt(prompt):
     prompt = ". ".join(prompt)
 
     # get token from envvar
-    openai.api_key = os.getenv("CHATGPT_TOKEN")
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-4",  # Specify the model/engine to use
         messages=[{"role": "system", "content": prompt}],
         max_tokens=1000,  # Set the maximum length of the generated response
         n=1,  # Generate a single response
-        stop=None,  # Define a custom stop sequence if needed
+        stop=None,
     )
 
     # Retrieve the generated response
@@ -210,7 +211,7 @@ def generate_mastery_notification(
         "The message should be succinct. It should not be too long. Try to keep it short",
         "Creative formatting is encouraged — utilize bolds, italics, strikethroughs, "
         "underlines, and newlines to make the message more interesting. ",
-        "it is very important that the message is short, it should be almost instantly readable"
+        "it is very important that the message is short, it should be almost instantly readable",
     ]
 
     default_prompt = [

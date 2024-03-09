@@ -1,542 +1,1004 @@
 {
+  "Jax": {
+    "tokensEarned": "0",
+    "champ_id": "24",
+    "championPointsSinceLastLevel": "643",
+    "mastery": "2"
+  },
+  "Tristana": {
+    "tokensEarned": "0",
+    "champ_id": "18",
+    "championPointsSinceLastLevel": "20088",
+    "mastery": "7"
+  },
   "Sona": {
-    "title": "Maven of the Strings",
-    "mastery": 6,
-    "tokensEarned": 3
-  },
-  "Nami": {
-    "title": "the Tidecaller",
-    "mastery": 6,
-    "tokensEarned": 3
-  },
-  "Diana": {
-    "title": "Scorn of the Moon",
-    "mastery": 5,
-    "tokensEarned": 0
-  },
-  "Zed": {
-    "title": "the Master of Shadows",
-    "mastery": 5,
-    "tokensEarned": 0
-  },
-  "LeeSin": {
-    "title": "the Blind Monk",
-    "mastery": 7,
-    "tokensEarned": 0
-  },
-  "Akali": {
-    "title": "the Rogue Assassin",
-    "mastery": 7,
-    "tokensEarned": 0
-  },
-  "Janna": {
-    "title": "the Storm's Fury",
-    "mastery": 5,
-    "tokensEarned": 0
-  },
-  "Evelynn": {
-    "title": "Agony's Embrace",
-    "mastery": 5,
-    "tokensEarned": 0
-  },
-  "Karma": {
-    "title": "the Enlightened One",
-    "mastery": 5,
-    "tokensEarned": 0
-  },
-  "Ashe": {
-    "title": "the Frost Archer",
-    "mastery": 4,
-    "tokensEarned": 0
-  },
-  "Poppy": {
-    "title": "Keeper of the Hammer",
-    "mastery": 4,
-    "tokensEarned": 0
-  },
-  "Soraka": {
-    "title": "the Starchild",
-    "mastery": 4,
-    "tokensEarned": 0
-  },
-  "Quinn": {
-    "title": "Demacia's Wings",
-    "mastery": 4,
-    "tokensEarned": 0
-  },
-  "Chogath": {
-    "title": "the Terror of the Void",
-    "mastery": 3,
-    "tokensEarned": 0
-  },
-  "Morgana": {
-    "title": "the Fallen",
-    "mastery": 3,
-    "tokensEarned": 0
-  },
-  "Brand": {
-    "title": "the Burning Vengeance",
-    "mastery": 3,
-    "tokensEarned": 0
-  },
-  "Lulu": {
-    "title": "the Fae Sorceress",
-    "mastery": 3,
-    "tokensEarned": 0
-  },
-  "Nunu": {
-    "title": "the Boy and His Yeti",
-    "mastery": 3,
-    "tokensEarned": 0
-  },
-  "Vladimir": {
-    "title": "the Crimson Reaper",
-    "mastery": 3,
-    "tokensEarned": 0
-  },
-  "Ahri": {
-    "title": "the Nine-Tailed Fox",
-    "mastery": 3,
-    "tokensEarned": 0
-  },
-  "Ryze": {
-    "title": "the Rune Mage",
-    "mastery": 3,
-    "tokensEarned": 0
-  },
-  "Sivir": {
-    "title": "the Battle Mistress",
-    "mastery": 3,
-    "tokensEarned": 0
-  },
-  "Orianna": {
-    "title": "the Lady of Clockwork",
-    "mastery": 3,
-    "tokensEarned": 0
+    "tokensEarned": "0",
+    "champ_id": "37",
+    "championPointsSinceLastLevel": "5698",
+    "mastery": "3"
   },
   "Yuumi": {
-    "title": "the Magical Cat",
-    "mastery": 3,
-    "tokensEarned": 0
-  },
-  "Lux": {
-    "title": "the Lady of Luminosity",
-    "mastery": 3,
-    "tokensEarned": 0
-  },
-  "Karthus": {
-    "title": "the Deathsinger",
-    "mastery": 3,
-    "tokensEarned": 0
-  },
-  "Annie": {
-    "title": "the Dark Child",
-    "mastery": 3,
-    "tokensEarned": 0
-  },
-  "Malphite": {
-    "title": "Shard of the Monolith",
-    "mastery": 3,
-    "tokensEarned": 0
-  },
-  "Velkoz": {
-    "title": "the Eye of the Void",
-    "mastery": 3,
-    "tokensEarned": 0
-  },
-  "Leona": {
-    "title": "the Radiant Dawn",
-    "mastery": 3,
-    "tokensEarned": 0
-  },
-  "Zyra": {
-    "title": "Rise of the Thorns",
-    "mastery": 3,
-    "tokensEarned": 0
-  },
-  "Braum": {
-    "title": "the Heart of the Freljord",
-    "mastery": 3,
-    "tokensEarned": 0
-  },
-  "MasterYi": {
-    "title": "the Wuju Bladesman",
-    "mastery": 3,
-    "tokensEarned": 0
-  },
-  "Khazix": {
-    "title": "the Voidreaver",
-    "mastery": 3,
-    "tokensEarned": 0
-  },
-  "MissFortune": {
-    "title": "the Bounty Hunter",
-    "mastery": 3,
-    "tokensEarned": 0
-  },
-  "Riven": {
-    "title": "the Exile",
-    "mastery": 3,
-    "tokensEarned": 0
-  },
-  "Maokai": {
-    "title": "the Twisted Treant",
-    "mastery": 2,
-    "tokensEarned": 0
-  },
-  "Pantheon": {
-    "title": "the Unbreakable Spear",
-    "mastery": 2,
-    "tokensEarned": 0
-  },
-  "Veigar": {
-    "title": "the Tiny Master of Evil",
-    "mastery": 2,
-    "tokensEarned": 0
-  },
-  "Corki": {
-    "title": "the Daring Bombardier",
-    "mastery": 2,
-    "tokensEarned": 0
-  },
-  "Lucian": {
-    "title": "the Purifier",
-    "mastery": 2,
-    "tokensEarned": 0
-  },
-  "Aatrox": {
-    "title": "the Darkin Blade",
-    "mastery": 2,
-    "tokensEarned": 0
-  },
-  "Darius": {
-    "title": "the Hand of Noxus",
-    "mastery": 2,
-    "tokensEarned": 0
-  },
-  "Jax": {
-    "title": "Grandmaster at Arms",
-    "mastery": 2,
-    "tokensEarned": 0
-  },
-  "Nidalee": {
-    "title": "the Bestial Huntress",
-    "mastery": 2,
-    "tokensEarned": 0
-  },
-  "Kayle": {
-    "title": "the Righteous",
-    "mastery": 2,
-    "tokensEarned": 0
-  },
-  "Nasus": {
-    "title": "the Curator of the Sands",
-    "mastery": 2,
-    "tokensEarned": 0
-  },
-  "Twitch": {
-    "title": "the Plague Rat",
-    "mastery": 2,
-    "tokensEarned": 0
+    "tokensEarned": "0",
+    "champ_id": "350",
+    "championPointsSinceLastLevel": "1441",
+    "mastery": "2"
   },
   "Seraphine": {
-    "title": "the Starry-Eyed Songstress",
-    "mastery": 2,
-    "tokensEarned": 0
-  },
-  "Draven": {
-    "title": "the Glorious Executioner",
-    "mastery": 2,
-    "tokensEarned": 0
-  },
-  "Ezreal": {
-    "title": "the Prodigal Explorer",
-    "mastery": 2,
-    "tokensEarned": 0
-  },
-  "Jinx": {
-    "title": "the Loose Cannon",
-    "mastery": 2,
-    "tokensEarned": 0
-  },
-  "Gnar": {
-    "title": "the Missing Link",
-    "mastery": 2,
-    "tokensEarned": 0
-  },
-  "Vayne": {
-    "title": "the Night Hunter",
-    "mastery": 2,
-    "tokensEarned": 0
-  },
-  "Warwick": {
-    "title": "the Uncaged Wrath of Zaun",
-    "mastery": 2,
-    "tokensEarned": 0
-  },
-  "Taric": {
-    "title": "the Shield of Valoran",
-    "mastery": 2,
-    "tokensEarned": 0
-  },
-  "Nautilus": {
-    "title": "the Titan of the Depths",
-    "mastery": 2,
-    "tokensEarned": 0
-  },
-  "Caitlyn": {
-    "title": "the Sheriff of Piltover",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "TwistedFate": {
-    "title": "the Card Master",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Jhin": {
-    "title": "the Virtuoso",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Alistar": {
-    "title": "the Minotaur",
-    "mastery": 1,
-    "tokensEarned": 0
+    "tokensEarned": "0",
+    "champ_id": "147",
+    "championPointsSinceLastLevel": "559",
+    "mastery": "3"
   },
   "Varus": {
-    "title": "the Arrow of Retribution",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Rengar": {
-    "title": "the Pridestalker",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Garen": {
-    "title": "The Might of Demacia",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Syndra": {
-    "title": "the Dark Sovereign",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Galio": {
-    "title": "the Colossus",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "DrMundo": {
-    "title": "the Madman of Zaun",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Zilean": {
-    "title": "the Chronokeeper",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Jayce": {
-    "title": "the Defender of Tomorrow",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Pyke": {
-    "title": "the Bloodharbor Ripper",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Leblanc": {
-    "title": "the Deceiver",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Irelia": {
-    "title": "the Blade Dancer",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Vi": {
-    "title": "the Piltover Enforcer",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Heimerdinger": {
-    "title": "the Revered Inventor",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Neeko": {
-    "title": "the Curious Chameleon",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Ornn": {
-    "title": "The Fire below the Mountain",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Renata": {
-    "title": "the Chem-Baroness",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Xayah": {
-    "title": "the Rebel",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Teemo": {
-    "title": "the Swift Scout",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Ziggs": {
-    "title": "the Hexplosives Expert",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Shyvana": {
-    "title": "the Half-Dragon",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Katarina": {
-    "title": "the Sinister Blade",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Shaco": {
-    "title": "the Demon Jester",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Elise": {
-    "title": "the Spider Queen",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Qiyana": {
-    "title": "Empress of the Elements",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "KogMaw": {
-    "title": "the Mouth of the Abyss",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Olaf": {
-    "title": "the Berserker",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Thresh": {
-    "title": "the Chain Warden",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Talon": {
-    "title": "the Blade's Shadow",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Graves": {
-    "title": "the Outlaw",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Singed": {
-    "title": "the Mad Chemist",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Sion": {
-    "title": "The Undead Juggernaut",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Shen": {
-    "title": "the Eye of Twilight",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Tryndamere": {
-    "title": "the Barbarian King",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Rumble": {
-    "title": "the Mechanized Menace",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Renekton": {
-    "title": "the Butcher of the Sands",
-    "mastery": 1,
-    "tokensEarned": 0
-  },
-  "Skarner": {
-    "title": "the Crystal Vanguard",
-    "mastery": 1,
-    "tokensEarned": 0
+    "tokensEarned": "0",
+    "champ_id": "110",
+    "championPointsSinceLastLevel": "4339",
+    "mastery": "3"
   },
   "Kaisa": {
-    "title": "Daughter of the Void",
-    "mastery": 1,
-    "tokensEarned": 0
+    "tokensEarned": "0",
+    "champ_id": "145",
+    "championPointsSinceLastLevel": "17139",
+    "mastery": "6"
   },
   "Fiora": {
-    "title": "the Grand Duelist",
-    "mastery": 1,
-    "tokensEarned": 0
+    "tokensEarned": "0",
+    "champ_id": "114",
+    "championPointsSinceLastLevel": "1459",
+    "mastery": "1"
   },
-  "Bard": {
-    "title": "the Wandering Caretaker",
-    "mastery": 1,
-    "tokensEarned": 0
+  "Singed": {
+    "tokensEarned": "0",
+    "champ_id": "27",
+    "championPointsSinceLastLevel": "6705",
+    "mastery": "4"
   },
-  "AurelionSol": {
-    "title": "The Star Forger",
-    "mastery": 1,
-    "tokensEarned": 0
+  "Samira": {
+    "tokensEarned": "0",
+    "champ_id": "360",
+    "championPointsSinceLastLevel": "1387",
+    "mastery": "2"
   },
-  "Rammus": {
-    "title": "the Armordillo",
-    "mastery": 1,
-    "tokensEarned": 0
+  "TahmKench": {
+    "tokensEarned": "0",
+    "champ_id": "223",
+    "championPointsSinceLastLevel": "19625",
+    "mastery": "7"
+  },
+  "Thresh": {
+    "tokensEarned": "0",
+    "champ_id": "412",
+    "championPointsSinceLastLevel": "39260",
+    "mastery": "7"
+  },
+  "Leblanc": {
+    "tokensEarned": "0",
+    "champ_id": "7",
+    "championPointsSinceLastLevel": "473",
+    "mastery": "2"
+  },
+  "Naafiri": {
+    "tokensEarned": "0",
+    "champ_id": "950",
+    "championPointsSinceLastLevel": "219",
+    "mastery": "1"
+  },
+  "Karma": {
+    "tokensEarned": "0",
+    "champ_id": "43",
+    "championPointsSinceLastLevel": "2626",
+    "mastery": "2"
+  },
+  "Lillia": {
+    "tokensEarned": "1",
+    "champ_id": "876",
+    "championPointsSinceLastLevel": "6283",
+    "mastery": "5"
+  },
+  "Jhin": {
+    "tokensEarned": "2",
+    "champ_id": "202",
+    "championPointsSinceLastLevel": "48118",
+    "mastery": "6"
+  },
+  "Udyr": {
+    "tokensEarned": "0",
+    "champ_id": "77",
+    "championPointsSinceLastLevel": "1672",
+    "mastery": "2"
+  },
+  "Rumble": {
+    "tokensEarned": "0",
+    "champ_id": "68",
+    "championPointsSinceLastLevel": "646",
+    "mastery": "1"
+  },
+  "LeeSin": {
+    "tokensEarned": "0",
+    "champ_id": "64",
+    "championPointsSinceLastLevel": "1129",
+    "mastery": "1"
+  },
+  "Yorick": {
+    "tokensEarned": "0",
+    "champ_id": "83",
+    "championPointsSinceLastLevel": "29910",
+    "mastery": "7"
+  },
+  "Ornn": {
+    "tokensEarned": "0",
+    "champ_id": "516",
+    "championPointsSinceLastLevel": "6563",
+    "mastery": "4"
+  },
+  "Neeko": {
+    "tokensEarned": "0",
+    "champ_id": "518",
+    "championPointsSinceLastLevel": "293326",
+    "mastery": "7"
+  },
+  "Kayn": {
+    "tokensEarned": "0",
+    "champ_id": "141",
+    "championPointsSinceLastLevel": "909",
+    "mastery": "1"
+  },
+  "Sivir": {
+    "tokensEarned": "0",
+    "champ_id": "15",
+    "championPointsSinceLastLevel": "1520",
+    "mastery": "4"
+  },
+  "Kassadin": {
+    "tokensEarned": "0",
+    "champ_id": "38",
+    "championPointsSinceLastLevel": "361",
+    "mastery": "2"
+  },
+  "MissFortune": {
+    "tokensEarned": "0",
+    "champ_id": "21",
+    "championPointsSinceLastLevel": "50633",
+    "mastery": "7"
+  },
+  "Senna": {
+    "tokensEarned": "0",
+    "champ_id": "235",
+    "championPointsSinceLastLevel": "11878",
+    "mastery": "6"
+  },
+  "Smolder": {
+    "tokensEarned": "0",
+    "champ_id": "901",
+    "championPointsSinceLastLevel": "928",
+    "mastery": "2"
+  },
+  "Draven": {
+    "tokensEarned": "1",
+    "champ_id": "119",
+    "championPointsSinceLastLevel": "18218",
+    "mastery": "5"
+  },
+  "Yasuo": {
+    "tokensEarned": "0",
+    "champ_id": "157",
+    "championPointsSinceLastLevel": "290",
+    "mastery": "3"
+  },
+  "Hwei": {
+    "tokensEarned": "0",
+    "champ_id": "910",
+    "championPointsSinceLastLevel": "106",
+    "mastery": "2"
+  },
+  "Kayle": {
+    "tokensEarned": "1",
+    "champ_id": "10",
+    "championPointsSinceLastLevel": "26734",
+    "mastery": "5"
+  },
+  "Rell": {
+    "tokensEarned": "0",
+    "champ_id": "526",
+    "championPointsSinceLastLevel": "546",
+    "mastery": "2"
+  },
+  "Milio": {
+    "tokensEarned": "0",
+    "champ_id": "902",
+    "championPointsSinceLastLevel": "997",
+    "mastery": "1"
+  },
+  "Shaco": {
+    "tokensEarned": "0",
+    "champ_id": "35",
+    "championPointsSinceLastLevel": "1736",
+    "mastery": "3"
+  },
+  "Briar": {
+    "tokensEarned": "0",
+    "champ_id": "233",
+    "championPointsSinceLastLevel": "242",
+    "mastery": "2"
+  },
+  "Renekton": {
+    "tokensEarned": "0",
+    "champ_id": "58",
+    "championPointsSinceLastLevel": "1180",
+    "mastery": "1"
+  },
+  "Hecarim": {
+    "tokensEarned": "0",
+    "champ_id": "120",
+    "championPointsSinceLastLevel": "1173",
+    "mastery": "1"
+  },
+  "Fizz": {
+    "tokensEarned": "0",
+    "champ_id": "105",
+    "championPointsSinceLastLevel": "199",
+    "mastery": "2"
+  },
+  "KogMaw": {
+    "tokensEarned": "1",
+    "champ_id": "96",
+    "championPointsSinceLastLevel": "3768",
+    "mastery": "5"
+  },
+  "Yone": {
+    "tokensEarned": "0",
+    "champ_id": "777",
+    "championPointsSinceLastLevel": "6129",
+    "mastery": "3"
+  },
+  "Maokai": {
+    "tokensEarned": "0",
+    "champ_id": "57",
+    "championPointsSinceLastLevel": "2468",
+    "mastery": "3"
+  },
+  "Lissandra": {
+    "tokensEarned": "0",
+    "champ_id": "127",
+    "championPointsSinceLastLevel": "690",
+    "mastery": "2"
+  },
+  "Jinx": {
+    "tokensEarned": "0",
+    "champ_id": "222",
+    "championPointsSinceLastLevel": "13252",
+    "mastery": "6"
+  },
+  "Urgot": {
+    "tokensEarned": "0",
+    "champ_id": "6",
+    "championPointsSinceLastLevel": "2637",
+    "mastery": "3"
+  },
+  "Galio": {
+    "tokensEarned": "0",
+    "champ_id": "3",
+    "championPointsSinceLastLevel": "1167",
+    "mastery": "1"
+  },
+  "Pantheon": {
+    "tokensEarned": "0",
+    "champ_id": "80",
+    "championPointsSinceLastLevel": "3917",
+    "mastery": "3"
+  },
+  "Talon": {
+    "tokensEarned": "0",
+    "champ_id": "91",
+    "championPointsSinceLastLevel": "695",
+    "mastery": "3"
+  },
+  "Sett": {
+    "tokensEarned": "0",
+    "champ_id": "875",
+    "championPointsSinceLastLevel": "2374",
+    "mastery": "2"
+  },
+  "Gangplank": {
+    "tokensEarned": "0",
+    "champ_id": "41",
+    "championPointsSinceLastLevel": "1146",
+    "mastery": "2"
+  },
+  "Ezreal": {
+    "tokensEarned": "0",
+    "champ_id": "81",
+    "championPointsSinceLastLevel": "37320",
+    "mastery": "6"
+  },
+  "Teemo": {
+    "tokensEarned": "2",
+    "champ_id": "17",
+    "championPointsSinceLastLevel": "33190",
+    "mastery": "6"
+  },
+  "Gnar": {
+    "tokensEarned": "0",
+    "champ_id": "150",
+    "championPointsSinceLastLevel": "1234",
+    "mastery": "2"
+  },
+  "Annie": {
+    "tokensEarned": "0",
+    "champ_id": "1",
+    "championPointsSinceLastLevel": "2089",
+    "mastery": "3"
+  },
+  "Mordekaiser": {
+    "tokensEarned": "0",
+    "champ_id": "82",
+    "championPointsSinceLastLevel": "1545",
+    "mastery": "4"
+  },
+  "Azir": {
+    "tokensEarned": "0",
+    "champ_id": "268",
+    "championPointsSinceLastLevel": "3584",
+    "mastery": "2"
   },
   "Kennen": {
-    "title": "the Heart of the Tempest",
-    "mastery": 1,
-    "tokensEarned": 0
+    "tokensEarned": "0",
+    "champ_id": "85",
+    "championPointsSinceLastLevel": "1595",
+    "mastery": "1"
   },
-  "Gragas": {
-    "title": "the Rabble Rouser",
-    "mastery": 1,
-    "tokensEarned": 0
+  "Riven": {
+    "tokensEarned": "0",
+    "champ_id": "92",
+    "championPointsSinceLastLevel": "1072",
+    "mastery": "1"
   },
-  "Ivern": {
-    "title": "the Green Father",
-    "mastery": 1,
-    "tokensEarned": 0
+  "Chogath": {
+    "tokensEarned": "0",
+    "champ_id": "31",
+    "championPointsSinceLastLevel": "84560",
+    "mastery": "7"
   },
-  "Volibear": {
-    "title": "the Relentless Storm",
-    "mastery": 1,
-    "tokensEarned": 0
+  "Aatrox": {
+    "tokensEarned": "0",
+    "champ_id": "266",
+    "championPointsSinceLastLevel": "3736",
+    "mastery": "2"
   },
-  "Fiddlesticks": {
-    "title": "the Ancient Fear",
-    "mastery": 1,
-    "tokensEarned": 0
+  "Poppy": {
+    "tokensEarned": "0",
+    "champ_id": "78",
+    "championPointsSinceLastLevel": "3052",
+    "mastery": "3"
+  },
+  "Taliyah": {
+    "tokensEarned": "0",
+    "champ_id": "163",
+    "championPointsSinceLastLevel": "585",
+    "mastery": "2"
   },
   "Illaoi": {
-    "title": "the Kraken Priestess",
-    "mastery": 1,
-    "tokensEarned": 0
+    "tokensEarned": "0",
+    "champ_id": "420",
+    "championPointsSinceLastLevel": "233680",
+    "mastery": "7"
+  },
+  "Pyke": {
+    "tokensEarned": "0",
+    "champ_id": "555",
+    "championPointsSinceLastLevel": "18883",
+    "mastery": "7"
+  },
+  "Heimerdinger": {
+    "tokensEarned": "0",
+    "champ_id": "74",
+    "championPointsSinceLastLevel": "324",
+    "mastery": "2"
+  },
+  "Alistar": {
+    "tokensEarned": "0",
+    "champ_id": "12",
+    "championPointsSinceLastLevel": "1066",
+    "mastery": "1"
+  },
+  "XinZhao": {
+    "tokensEarned": "0",
+    "champ_id": "5",
+    "championPointsSinceLastLevel": "886",
+    "mastery": "1"
+  },
+  "Lucian": {
+    "tokensEarned": "0",
+    "champ_id": "236",
+    "championPointsSinceLastLevel": "1150",
+    "mastery": "4"
+  },
+  "Volibear": {
+    "tokensEarned": "0",
+    "champ_id": "106",
+    "championPointsSinceLastLevel": "1981",
+    "mastery": "2"
+  },
+  "Sejuani": {
+    "tokensEarned": "0",
+    "champ_id": "113",
+    "championPointsSinceLastLevel": "1187",
+    "mastery": "1"
+  },
+  "Nidalee": {
+    "tokensEarned": "0",
+    "champ_id": "76",
+    "championPointsSinceLastLevel": "6933",
+    "mastery": "4"
+  },
+  "Garen": {
+    "tokensEarned": "0",
+    "champ_id": "86",
+    "championPointsSinceLastLevel": "4480",
+    "mastery": "3"
+  },
+  "Leona": {
+    "tokensEarned": "0",
+    "champ_id": "89",
+    "championPointsSinceLastLevel": "2908",
+    "mastery": "2"
+  },
+  "Zed": {
+    "tokensEarned": "0",
+    "champ_id": "238",
+    "championPointsSinceLastLevel": "1296",
+    "mastery": "1"
+  },
+  "Blitzcrank": {
+    "tokensEarned": "0",
+    "champ_id": "53",
+    "championPointsSinceLastLevel": "12823",
+    "mastery": "7"
+  },
+  "Rammus": {
+    "tokensEarned": "0",
+    "champ_id": "33",
+    "championPointsSinceLastLevel": "1203",
+    "mastery": "1"
+  },
+  "Velkoz": {
+    "tokensEarned": "0",
+    "champ_id": "161",
+    "championPointsSinceLastLevel": "7446",
+    "mastery": "4"
+  },
+  "KSante": {
+    "tokensEarned": "0",
+    "champ_id": "897",
+    "championPointsSinceLastLevel": "2311",
+    "mastery": "2"
+  },
+  "Caitlyn": {
+    "tokensEarned": "1",
+    "champ_id": "51",
+    "championPointsSinceLastLevel": "37388",
+    "mastery": "6"
+  },
+  "Trundle": {
+    "tokensEarned": "0",
+    "champ_id": "48",
+    "championPointsSinceLastLevel": "998",
+    "mastery": "1"
+  },
+  "Kindred": {
+    "tokensEarned": "0",
+    "champ_id": "203",
+    "championPointsSinceLastLevel": "8731",
+    "mastery": "7"
+  },
+  "Renata": {
+    "tokensEarned": "0",
+    "champ_id": "888",
+    "championPointsSinceLastLevel": "1400",
+    "mastery": "4"
+  },
+  "Akshan": {
+    "tokensEarned": "0",
+    "champ_id": "166",
+    "championPointsSinceLastLevel": "6370",
+    "mastery": "7"
+  },
+  "Vex": {
+    "tokensEarned": "0",
+    "champ_id": "711",
+    "championPointsSinceLastLevel": "8151",
+    "mastery": "4"
+  },
+  "Quinn": {
+    "tokensEarned": "0",
+    "champ_id": "133",
+    "championPointsSinceLastLevel": "3752",
+    "mastery": "2"
+  },
+  "FiddleSticks": {
+    "tokensEarned": "0",
+    "champ_id": "9",
+    "championPointsSinceLastLevel": "1447",
+    "mastery": "2"
+  },
+  "Ekko": {
+    "tokensEarned": "0",
+    "champ_id": "245",
+    "championPointsSinceLastLevel": "220",
+    "mastery": "2"
+  },
+  "Swain": {
+    "tokensEarned": "1",
+    "champ_id": "50",
+    "championPointsSinceLastLevel": "6035",
+    "mastery": "5"
+  },
+  "Nami": {
+    "tokensEarned": "0",
+    "champ_id": "267",
+    "championPointsSinceLastLevel": "2430",
+    "mastery": "2"
+  },
+  "Aphelios": {
+    "tokensEarned": "0",
+    "champ_id": "523",
+    "championPointsSinceLastLevel": "5937",
+    "mastery": "3"
+  },
+  "Belveth": {
+    "tokensEarned": "0",
+    "champ_id": "200",
+    "championPointsSinceLastLevel": "11431",
+    "mastery": "7"
+  },
+  "Sylas": {
+    "tokensEarned": "0",
+    "champ_id": "517",
+    "championPointsSinceLastLevel": "27110",
+    "mastery": "7"
+  },
+  "Taric": {
+    "tokensEarned": "0",
+    "champ_id": "44",
+    "championPointsSinceLastLevel": "458",
+    "mastery": "2"
+  },
+  "Syndra": {
+    "tokensEarned": "0",
+    "champ_id": "134",
+    "championPointsSinceLastLevel": "426",
+    "mastery": "2"
+  },
+  "Rakan": {
+    "tokensEarned": "0",
+    "champ_id": "497",
+    "championPointsSinceLastLevel": "1003",
+    "mastery": "1"
+  },
+  "Skarner": {
+    "tokensEarned": "0",
+    "champ_id": "72",
+    "championPointsSinceLastLevel": "1342",
+    "mastery": "1"
+  },
+  "Gwen": {
+    "tokensEarned": "0",
+    "champ_id": "887",
+    "championPointsSinceLastLevel": "1861",
+    "mastery": "2"
+  },
+  "Braum": {
+    "tokensEarned": "0",
+    "champ_id": "201",
+    "championPointsSinceLastLevel": "1619",
+    "mastery": "2"
+  },
+  "Veigar": {
+    "tokensEarned": "0",
+    "champ_id": "45",
+    "championPointsSinceLastLevel": "57840",
+    "mastery": "7"
+  },
+  "Xerath": {
+    "tokensEarned": "0",
+    "champ_id": "101",
+    "championPointsSinceLastLevel": "10028",
+    "mastery": "7"
+  },
+  "Corki": {
+    "tokensEarned": "0",
+    "champ_id": "42",
+    "championPointsSinceLastLevel": "1167",
+    "mastery": "2"
+  },
+  "Nautilus": {
+    "tokensEarned": "0",
+    "champ_id": "111",
+    "championPointsSinceLastLevel": "1598",
+    "mastery": "1"
+  },
+  "Ahri": {
+    "tokensEarned": "0",
+    "champ_id": "103",
+    "championPointsSinceLastLevel": "8657",
+    "mastery": "4"
+  },
+  "Jayce": {
+    "tokensEarned": "0",
+    "champ_id": "126",
+    "championPointsSinceLastLevel": "1279",
+    "mastery": "1"
+  },
+  "Nilah": {
+    "tokensEarned": "0",
+    "champ_id": "895",
+    "championPointsSinceLastLevel": "718",
+    "mastery": "1"
+  },
+  "Darius": {
+    "tokensEarned": "0",
+    "champ_id": "122",
+    "championPointsSinceLastLevel": "1753",
+    "mastery": "5"
+  },
+  "Tryndamere": {
+    "tokensEarned": "0",
+    "champ_id": "23",
+    "championPointsSinceLastLevel": "456",
+    "mastery": "4"
+  },
+  "Janna": {
+    "tokensEarned": "0",
+    "champ_id": "40",
+    "championPointsSinceLastLevel": "1468",
+    "mastery": "3"
+  },
+  "Elise": {
+    "tokensEarned": "0",
+    "champ_id": "60",
+    "championPointsSinceLastLevel": "1571",
+    "mastery": "1"
+  },
+  "Vayne": {
+    "tokensEarned": "0",
+    "champ_id": "67",
+    "championPointsSinceLastLevel": "3945",
+    "mastery": "4"
+  },
+  "Brand": {
+    "tokensEarned": "0",
+    "champ_id": "63",
+    "championPointsSinceLastLevel": "5568",
+    "mastery": "4"
+  },
+  "Zoe": {
+    "tokensEarned": "2",
+    "champ_id": "142",
+    "championPointsSinceLastLevel": "31561",
+    "mastery": "6"
+  },
+  "Graves": {
+    "tokensEarned": "0",
+    "champ_id": "104",
+    "championPointsSinceLastLevel": "2973",
+    "mastery": "4"
+  },
+  "Xayah": {
+    "tokensEarned": "0",
+    "champ_id": "498",
+    "championPointsSinceLastLevel": "1579",
+    "mastery": "2"
+  },
+  "Soraka": {
+    "tokensEarned": "0",
+    "champ_id": "16",
+    "championPointsSinceLastLevel": "362",
+    "mastery": "2"
+  },
+  "Viego": {
+    "tokensEarned": "2",
+    "champ_id": "234",
+    "championPointsSinceLastLevel": "14808",
+    "mastery": "6"
+  },
+  "Karthus": {
+    "tokensEarned": "1",
+    "champ_id": "30",
+    "championPointsSinceLastLevel": "10576",
+    "mastery": "6"
+  },
+  "Vladimir": {
+    "tokensEarned": "0",
+    "champ_id": "8",
+    "championPointsSinceLastLevel": "35",
+    "mastery": "2"
+  },
+  "Zilean": {
+    "tokensEarned": "0",
+    "champ_id": "26",
+    "championPointsSinceLastLevel": "3653",
+    "mastery": "4"
+  },
+  "Katarina": {
+    "tokensEarned": "0",
+    "champ_id": "55",
+    "championPointsSinceLastLevel": "418",
+    "mastery": "2"
+  },
+  "Shyvana": {
+    "tokensEarned": "0",
+    "champ_id": "102",
+    "championPointsSinceLastLevel": "1380",
+    "mastery": "2"
+  },
+  "Warwick": {
+    "tokensEarned": "0",
+    "champ_id": "19",
+    "championPointsSinceLastLevel": "1467",
+    "mastery": "3"
+  },
+  "Ziggs": {
+    "tokensEarned": "0",
+    "champ_id": "115",
+    "championPointsSinceLastLevel": "4039",
+    "mastery": "6"
+  },
+  "Kled": {
+    "tokensEarned": "0",
+    "champ_id": "240",
+    "championPointsSinceLastLevel": "151",
+    "mastery": "2"
+  },
+  "TwistedFate": {
+    "tokensEarned": "1",
+    "champ_id": "4",
+    "championPointsSinceLastLevel": "38161",
+    "mastery": "6"
+  },
+  "Olaf": {
+    "tokensEarned": "0",
+    "champ_id": "2",
+    "championPointsSinceLastLevel": "988",
+    "mastery": "2"
+  },
+  "Khazix": {
+    "tokensEarned": "0",
+    "champ_id": "121",
+    "championPointsSinceLastLevel": "1494",
+    "mastery": "1"
+  },
+  "Nunu": {
+    "tokensEarned": "0",
+    "champ_id": "20",
+    "championPointsSinceLastLevel": "1037",
+    "mastery": "1"
+  },
+  "Qiyana": {
+    "tokensEarned": "0",
+    "champ_id": "246",
+    "championPointsSinceLastLevel": "799",
+    "mastery": "1"
+  },
+  "Rengar": {
+    "tokensEarned": "0",
+    "champ_id": "107",
+    "championPointsSinceLastLevel": "1210",
+    "mastery": "1"
+  },
+  "Bard": {
+    "tokensEarned": "0",
+    "champ_id": "432",
+    "championPointsSinceLastLevel": "7760",
+    "mastery": "4"
+  },
+  "Ivern": {
+    "tokensEarned": "0",
+    "champ_id": "427",
+    "championPointsSinceLastLevel": "5015",
+    "mastery": "4"
+  },
+  "MonkeyKing": {
+    "tokensEarned": "0",
+    "champ_id": "62",
+    "championPointsSinceLastLevel": "168",
+    "mastery": "3"
+  },
+  "Irelia": {
+    "tokensEarned": "0",
+    "champ_id": "39",
+    "championPointsSinceLastLevel": "46",
+    "mastery": "2"
+  },
+  "Ashe": {
+    "tokensEarned": "0",
+    "champ_id": "22",
+    "championPointsSinceLastLevel": "8288",
+    "mastery": "6"
+  },
+  "Kalista": {
+    "tokensEarned": "1",
+    "champ_id": "429",
+    "championPointsSinceLastLevel": "19184",
+    "mastery": "6"
+  },
+  "Akali": {
+    "tokensEarned": "0",
+    "champ_id": "84",
+    "championPointsSinceLastLevel": "1575",
+    "mastery": "1"
+  },
+  "Vi": {
+    "tokensEarned": "0",
+    "champ_id": "254",
+    "championPointsSinceLastLevel": "1219",
+    "mastery": "1"
+  },
+  "Amumu": {
+    "tokensEarned": "0",
+    "champ_id": "32",
+    "championPointsSinceLastLevel": "334",
+    "mastery": "3"
+  },
+  "Lulu": {
+    "tokensEarned": "0",
+    "champ_id": "117",
+    "championPointsSinceLastLevel": "998",
+    "mastery": "2"
+  },
+  "Morgana": {
+    "tokensEarned": "0",
+    "champ_id": "25",
+    "championPointsSinceLastLevel": "4412",
+    "mastery": "3"
+  },
+  "Nocturne": {
+    "tokensEarned": "0",
+    "champ_id": "56",
+    "championPointsSinceLastLevel": "3593",
+    "mastery": "2"
+  },
+  "Diana": {
+    "tokensEarned": "0",
+    "champ_id": "131",
+    "championPointsSinceLastLevel": "317",
+    "mastery": "2"
+  },
+  "AurelionSol": {
+    "tokensEarned": "0",
+    "champ_id": "136",
+    "championPointsSinceLastLevel": "2496",
+    "mastery": "6"
+  },
+  "Zyra": {
+    "tokensEarned": "0",
+    "champ_id": "143",
+    "championPointsSinceLastLevel": "2128",
+    "mastery": "3"
+  },
+  "Viktor": {
+    "tokensEarned": "0",
+    "champ_id": "112",
+    "championPointsSinceLastLevel": "5656",
+    "mastery": "3"
+  },
+  "Nasus": {
+    "tokensEarned": "1",
+    "champ_id": "75",
+    "championPointsSinceLastLevel": "19223",
+    "mastery": "5"
+  },
+  "Twitch": {
+    "tokensEarned": "0",
+    "champ_id": "29",
+    "championPointsSinceLastLevel": "6286",
+    "mastery": "4"
+  },
+  "Cassiopeia": {
+    "tokensEarned": "0",
+    "champ_id": "69",
+    "championPointsSinceLastLevel": "1267",
+    "mastery": "2"
+  },
+  "DrMundo": {
+    "tokensEarned": "1",
+    "champ_id": "36",
+    "championPointsSinceLastLevel": "6150",
+    "mastery": "6"
+  },
+  "Zeri": {
+    "tokensEarned": "2",
+    "champ_id": "221",
+    "championPointsSinceLastLevel": "14050",
+    "mastery": "6"
+  },
+  "Orianna": {
+    "tokensEarned": "0",
+    "champ_id": "61",
+    "championPointsSinceLastLevel": "1515",
+    "mastery": "1"
+  },
+  "Evelynn": {
+    "tokensEarned": "0",
+    "champ_id": "28",
+    "championPointsSinceLastLevel": "900",
+    "mastery": "2"
+  },
+  "RekSai": {
+    "tokensEarned": "0",
+    "champ_id": "421",
+    "championPointsSinceLastLevel": "1111",
+    "mastery": "1"
+  },
+  "Lux": {
+    "tokensEarned": "1",
+    "champ_id": "99",
+    "championPointsSinceLastLevel": "6265",
+    "mastery": "6"
+  },
+  "Sion": {
+    "tokensEarned": "0",
+    "champ_id": "14",
+    "championPointsSinceLastLevel": "677",
+    "mastery": "2"
+  },
+  "Camille": {
+    "tokensEarned": "0",
+    "champ_id": "164",
+    "championPointsSinceLastLevel": "874",
+    "mastery": "1"
+  },
+  "MasterYi": {
+    "tokensEarned": "0",
+    "champ_id": "11",
+    "championPointsSinceLastLevel": "1603",
+    "mastery": "2"
+  },
+  "Ryze": {
+    "tokensEarned": "0",
+    "champ_id": "13",
+    "championPointsSinceLastLevel": "2970",
+    "mastery": "3"
+  },
+  "Malphite": {
+    "tokensEarned": "0",
+    "champ_id": "54",
+    "championPointsSinceLastLevel": "2781",
+    "mastery": "2"
+  },
+  "Anivia": {
+    "tokensEarned": "0",
+    "champ_id": "34",
+    "championPointsSinceLastLevel": "2955",
+    "mastery": "2"
+  },
+  "Shen": {
+    "tokensEarned": "0",
+    "champ_id": "98",
+    "championPointsSinceLastLevel": "730",
+    "mastery": "1"
+  },
+  "Zac": {
+    "tokensEarned": "0",
+    "champ_id": "154",
+    "championPointsSinceLastLevel": "15648",
+    "mastery": "7"
+  },
+  "Malzahar": {
+    "tokensEarned": "0",
+    "champ_id": "90",
+    "championPointsSinceLastLevel": "377",
+    "mastery": "2"
+  },
+  "JarvanIV": {
+    "tokensEarned": "0",
+    "champ_id": "59",
+    "championPointsSinceLastLevel": "64",
+    "mastery": "2"
+  },
+  "Gragas": {
+    "tokensEarned": "0",
+    "champ_id": "79",
+    "championPointsSinceLastLevel": "3483",
+    "mastery": "2"
   }
 }

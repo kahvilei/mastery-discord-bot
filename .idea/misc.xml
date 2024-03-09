@@ -3,9 +3,11 @@
   <component name="Black">
     <option name="enabledOnReformat" value="true" />
     <option name="enabledOnSave" value="true" />
-    <option name="sdkName" value="Python 3.10 (cloud-gamers)" />
+    <option name="executionMode" value="BINARY" />
+    <option name="pathToExecutable" value="/opt/homebrew/bin/black" />
+    <option name="sdkName" value="Python 3.11 (cloudGamers)" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.10 (cloud-gamers)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.11 (cloudGamers)" project-jdk-type="Python SDK" />
   <component name="PyCharmProfessionalAdvertiser">
     <option name="shown" value="true" />
   </component>

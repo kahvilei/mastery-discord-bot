@@ -92,9 +92,9 @@ def get_champion_data(current_version):
 
 
 # Makes the call to get a specific matches information
-def get_match_data(puuid, region, match):
+def get_match_data(puuid, region, match_id):
     region = _match_region_correction(region)
-    path = f"https://{region}.api.riotgames.com/lol/match/v5/matches/{match}"
+    path = f"https://{region}.api.riotgames.com/lol/match/v5/matches/{match_id}"
     response = requests.get(path, headers=headers)
 
     match_info = json.loads(response.text)
@@ -104,10 +104,10 @@ def get_match_data(puuid, region, match):
 
     summoner_index = match_info["metadata"]["participants"].index(puuid)
 
-    filtered_match_info = {}
-
-    filtered_match_info["gameStartTimestamp"] = match_info["info"]["gameStartTimestamp"]
-    filtered_match_info["gameMode"] = match_info["info"]["gameMode"]
+    filtered_match_info = {
+        "gameStartTimestamp": match_info["info"]["gameStartTimestamp"],
+        "gameMode": match_info["info"]["gameMode"],
+    }
 
     filtered_match_info = (
         filtered_match_info | match_info["info"]["participants"][summoner_index]
@@ -116,23 +116,17 @@ def get_match_data(puuid, region, match):
     return filtered_match_info
 
 
-# Gets the list of recent matches a user has played with a ts to limit getting too old data
-def get_user_matches(puuid, region, last_ts):
-    params = (
-        {"startTime": int(last_ts), "count": 10}
-        if last_ts is not None
-        else {"count": 10}
-    )
+def get_most_recent_match_id(puuid, region):
+    params = {"count": 1}
     region = _match_region_correction(region)
 
     path = (
         f"https://{region}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids"
     )
     response = requests.get(path, headers=headers, params=params)
-    return response.json()
+    return response.json()[0]
 
 
-# Gets the list of recent matches a user has played with a ts to limit getting too old data
 def get_user_mastery(puuid, region, champion_data):
     path = f"https://{region}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/{puuid}"
 
@@ -155,42 +149,3 @@ def get_user_mastery(puuid, region, champion_data):
             }
             cleaned_new_user_mastery[champ_name] = new_val
     return cleaned_new_user_mastery
-
-
-# Gets the list of live matches for every user in the system, does not store data
-def get_live_matches(datastore_client, summoners, args):
-    summoner_dict = [summoner for summoner in summoners]
-    match_list = {}
-    for summoner in summoner_dict:
-        region = summoner["region"]
-        id = summoner["id"]
-        path = f"https://{region}.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/{id}"
-        response = requests.get(path, headers=headers)
-        if response.status_code == 200:
-            match_json = json.loads(response.text)
-            if "gameId" in match_json and match_json["gameId"] not in match_list:
-                match_list[match_json["gameId"]] = match_json
-            # Mark our summoners as isKey
-            for participant_index in range(
-                0, len(match_list[match_json["gameId"]]["participants"])
-            ):
-                if (
-                    match_list[match_json["gameId"]]["participants"][participant_index][
-                        "summonerId"
-                    ]
-                    == id
-                ):
-                    match_list[match_json["gameId"]]["participants"][participant_index][
-                        "isKey"
-                    ] = "true"
-
-        else:
-            logging.info(f"no match going on for {id}")
-
-    match_array = [match for match in match_list.values()]
-
-    match_json = json.dumps(match_array, indent=4)
-    resp = flask.Response(match_json)
-    resp.headers["Access-Control-Allow-Origin"] = "*"
-    resp.headers["Access-Control-Allow-Credentials"] = True
-    return resp

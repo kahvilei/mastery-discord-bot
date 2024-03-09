@@ -1,16 +1,9 @@
 import json
 import os
-from unittest import TestCase
 
 import responses
 
 from riot_functions import get_champion_data, get_match_data
-
-
-class Test(TestCase):
-    def test_get_champion_data(self):
-        data = get_champion_data()
-        assert len(data) > 100
 
 
 @responses.activate
@@ -43,6 +36,7 @@ def test_get_champion_data():
         "title": "the Darkin Blade",
         "blurb": "Hailing from a long lost tribe of vastaya, Neeko can blend into any crowd by borrowing the appearances of others, even absorbing something of their emotional state to tell friend from foe in an instant. No one is ever sure where—or who—Neeko might be, but those who intend to do her harm will soon witness her true colors revealed, and feel the full power of her primordial spirit magic unleashed upon them.",
         "alias": "Neeko",
+        "name": "Neeko",
         "spells": [
             "Inherent Glamour: Neeko can look like an ally champion. Taking damage from enemy Champions or casting damaging spells breaks the disguise.",
             "Blooming Burst: Neeko throws a seed dealing magic damage. The seed blooms again on hitting champions or killing units.",

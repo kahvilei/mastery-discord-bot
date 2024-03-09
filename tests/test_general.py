@@ -70,12 +70,14 @@ class FakeDataStore:
 
 
 @responses.activate
-def test_mass_stats_refresh():
+def test_check_mastery():
     # get parent dir path
     parent_dir = (
         os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)) + "/tests"
     )
     champions_data = open(f"{parent_dir}/champions.json", "r").read()
+    match_data = open(f"{parent_dir}/most_recent_match_response.json", "r").read()
+    match_data = json.loads(match_data)
     responses.add(
         responses.GET,
         "http://ddragon.leagueoflegends.com/cdn/14.3.1/data/en_US/champion.json",
@@ -85,7 +87,7 @@ def test_mass_stats_refresh():
     responses.add(
         responses.GET,
         "https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/"
-        "FwbehkpR_zjpKu10OsPeJIXKJyy0grKEmdoZd0TvUVmx2ygWJk1056pUD1uEv7kyDsLaHF6EDkLlnw/ids?count=10",
+        "FwbehkpR_zjpKu10OsPeJIXKJyy0grKEmdoZd0TvUVmx2ygWJk1056pUD1uEv7kyDsLaHF6EDkLlnw/ids?count=1",
         body=open(f"{parent_dir}/uuid_matches.json", "r").read(),
         status=200,
     )
@@ -123,17 +125,25 @@ def test_mass_stats_refresh():
     discord_response = responses.add(
         responses.POST, "http://test/", body="Great", status=200
     )
-    with patch.object(google.cloud.logging, "Client") as logging, patch.object(
-        google.cloud.datastore, "Client"
-    ) as datastore, patch(
-        "utils.call_gpt", return_value="This is a test notification"
-    ) as mock_call_gpt:
+    with (
+        patch.object(google.cloud.logging, "Client") as logging,
+        patch.object(google.cloud.storage, "Client") as storage,
+        patch.object(google.cloud.datastore, "Client") as datastore,
+        patch("main.get_or_update_match_data", return_value=match_data),
+        patch("utils.call_gpt", return_value="Test notification"),
+    ):
         logging.return_value = MagicMock()
         datastore.return_value = FakeDataStore()
 
+        storage.return_value.get_bucket.return_value.list_blobs.return_value = [":)"]
+        # then mock so that the get bucket's response has a mocked blob method and a mocked download_as_string method
+        storage.return_value.get_bucket.return_value.blob.return_value.download_as_string.return_value = open(
+            f"{parent_dir}/1.11.1.json", "r"
+        ).read()
+
         request = flask.Request({"request": "test"})
-        request.path = "/mass-stats-refresh/"
+        request.path = "/check_mastery/"
         response = entrypoint(request)
         assert response.status_code == 200
 
-        assert discord_response.call_count == 3
+        assert discord_response.call_count == 1
