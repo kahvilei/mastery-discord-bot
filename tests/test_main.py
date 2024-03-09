@@ -6,6 +6,7 @@ import responses
 
 from main import (
     update_user_mastery,
+    get_or_update_champion_data,
 )
 
 
@@ -52,7 +53,7 @@ def test_update_user_mastery():
 def test_get_or_update_champion_data():
 
     # TODO put some mocks here
-    # champ_data = get_or_update_champion_data()
+    champ_data = get_or_update_champion_data()
 
     print()
 

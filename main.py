@@ -39,16 +39,17 @@ def get_or_update_champion_data():
     bucket = storage_client.get_bucket("summon-cloud-cache")
 
     # Check if our bucket has the latest version as a folder
-    blobs = bucket.list_blobs(prefix=f"champion_data/{latest_version}.json")
+    file_path = f"champion_data/{latest_version}.json"
+    blobs = bucket.list_blobs(prefix=file_path)
     blobs = [thing for thing in blobs]
     if len(list(blobs)) == 0:
         # If not, download the latest version and upload it
         champion_data = get_champion_data(latest_version)
-        blob = bucket.blob(latest_version + ".json")
+        blob = bucket.blob(file_path)
         blob.upload_from_string(json.dumps(champion_data))
     else:
         # If so, download it
-        blob = bucket.blob(latest_version + ".json")
+        blob = bucket.blob(file_path)
         champion_data = json.loads(blob.download_as_string())
 
     return champion_data
@@ -97,10 +98,6 @@ def check_mastery(datastore_client, args):
 
         print(f'mastery update started for {summoner.get("name", "Unknown")}')
 
-        match_id = get_most_recent_match_id(puuid, region)
-
-        match_data = get_or_update_match_data(puuid, region, match_id)
-
         # Second, update the user's mastery
         user_mastery = get_user_mastery(puuid, region, champion_data)
         mastery_updates = update_user_mastery(
@@ -113,6 +110,10 @@ def check_mastery(datastore_client, args):
         # Third, generate any needed notifications
         notifications = []
         if mastery_updates is not None:
+
+            match_id = get_most_recent_match_id(puuid, region)
+            match_data = get_or_update_match_data(puuid, region, match_id)
+
             for update in mastery_updates:
                 notifications.append(
                     generate_notification(
