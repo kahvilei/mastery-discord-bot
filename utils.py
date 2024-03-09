@@ -192,6 +192,8 @@ def generate_mastery_notification(
         f"do not send the message as a congratulation, but as a notification"
         f" to everyone else that the player got a token. ",
     ]
+
+    combined_tokens = False
     # First match as the champ
     if int(mastery_updates.get("mastery")) == 1:
         prompt = prompt + first_time_prompt
@@ -225,8 +227,11 @@ def generate_mastery_notification(
             )
     # Got a mastery level
     else:
+        mastery = mastery_updates.get("mastery")
+
+        combined_tokens = mastery in [6, 7]
         prompt = prompt + default_prompt
-        if mastery_updates.get("mastery") == 7:
+        if mastery == 7:
             title = mastery_updates.get("title")
             prompt.append(
                 f"Make sure to note that in getting to mastery 7, "
@@ -239,11 +244,12 @@ def generate_mastery_notification(
                 f"now mastered {m7_count(mastery_data)} champions"
             )
 
-    if match_data is not None and match_data.get("championId") == champ_id:
-        # Add the notable game information to the prompt
-        additional_info = generate_notable_game_information(match_data)
-        for fact in additional_info:
-            prompt.append(fact)
+    if match_data is not None:
+        if not combined_tokens and match_data.get("championId") == champ_id:
+            # Add the notable game information to the prompt
+            additional_info = generate_notable_game_information(match_data)
+            for fact in additional_info:
+                prompt.append(fact)
 
     info = get_champion_info(champion_data[champ.get("key")])
     if info:
