@@ -74,7 +74,7 @@ def check_mastery(datastore_client, args):
 
         print(f'mastery update started for {summoner.get("name", "Unknown")}')
 
-        # Second, update the user's mastery
+        # Get the user's mastery
         user_mastery = get_user_mastery(puuid, region, champion_data)
         mastery_updates = update_user_mastery(
             datastore_client,
@@ -83,7 +83,7 @@ def check_mastery(datastore_client, args):
             mastery_data=user_mastery,
         )
 
-        # Third, generate any needed notifications
+        # Generate any needed notifications
         notifications = []
         if mastery_updates is not None:
 

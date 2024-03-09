@@ -85,14 +85,6 @@ def generate_notable_game_information(new_match):
     return game_info
 
 
-def combine_names(name1, name2):
-    for letter1_index, letter1 in enumerate(name1[1:-1]):
-        for letter2_index, letter2 in enumerate(name2[1:-1]):
-            if str(letter1).lower() == str(letter2).lower():
-                new_name = name1[0 : letter1_index + 1] + name2[letter2_index + 1 :]
-                return new_name
-
-
 # Returns the blurb about a champion with the extra text so it can be used in a prompt
 def get_champion_info(champ_data):
 
