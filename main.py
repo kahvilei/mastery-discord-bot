@@ -2,6 +2,7 @@ import json
 import os
 
 import flask
+import google.cloud.logging
 import requests
 from google.cloud import storage, datastore
 
@@ -194,6 +195,8 @@ def add_user(datastore_client, user_data):
 
 
 def entrypoint(request):
+    client = google.cloud.logging.Client()
+    client.setup_logging()
 
     request_path = request.path
 
