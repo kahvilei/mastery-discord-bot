@@ -141,7 +141,8 @@ def generate_mastery_notification(
     mastery_updates, match_data, summoner_name, champion_data, mastery_data=None
 ):
     print(f"{mastery_updates=}")
-    champ = champion_data.get(str(mastery_updates.get("champ_id")))
+    champ_id = mastery_updates.get("champ_id")
+    champ = champion_data.get(str(champ_id))
     champ_name = champ.get("name")
 
     new_mastery = mastery_updates.get("mastery")
@@ -238,7 +239,7 @@ def generate_mastery_notification(
                 f"now mastered {m7_count(mastery_data)} champions"
             )
 
-    if match_data is not None and match_data.get("championName") == champ_name:
+    if match_data is not None and match_data.get("championId") == champ_id:
         # Add the notable game information to the prompt
         additional_info = generate_notable_game_information(match_data)
         for fact in additional_info:
