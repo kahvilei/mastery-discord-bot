@@ -79,10 +79,17 @@ def get_or_update_match_data(puuid, region, match_id):
 
 
 def check_mastery(datastore_client, args):
+
+    print("Getting summoners")
     summoner_dict = get_summoner_dict(datastore_client)
+    print("Got summoners")
+
     results = []
 
+    print("Getting champion data")
     champion_data = get_or_update_champion_data()
+    print("Got champion data")
+
     for summoner in summoner_dict:
         puuid = summoner["puuid"]
         name = summoner.get("name")
