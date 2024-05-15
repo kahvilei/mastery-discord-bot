@@ -158,7 +158,7 @@ def generate_mastery_notification(
     default_prompt = [
         f"Write an announcement message pertaining to the following scenario:",
         f'The player "{summoner_name}" just finished a match, and got to'
-        f' mastery {new_mastery}/7 on the champion "{champ_name}" in league of legends',
+        f' mastery {new_mastery} on the champion "{champ_name}" in league of legends',
         f"The message must contain the mastery level",
         f"Write a message that alerts a chat channel that this happened",
         f"The message should have a joke based on {champ_name}'s identity or"
@@ -226,7 +226,7 @@ def generate_mastery_notification(
         if mastery == 7:
             prompt.append(
                 f"Make sure to note that in getting to mastery 7, "
-                f"the player has mastered that champion. Note that this is not the maximum."
+                f"the player has mastered that champion. (This is not the maximum, but more of a big goal)"
             )
             prompt.append(
                 f"Also, be sure to note that {summoner_name} has "
