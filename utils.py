@@ -224,12 +224,9 @@ def generate_mastery_notification(
         combined_tokens = mastery in [6, 7]
         prompt = prompt + default_prompt
         if mastery == 7:
-            title = mastery_updates.get("title")
             prompt.append(
                 f"Make sure to note that in getting to mastery 7, "
-                f"the player has mastered that champion, "
-                f"and {summoner_name} can now be referred to as"
-                f" {title}."
+                f"the player has mastered that champion. Note that this is not the maximum."
             )
             prompt.append(
                 f"Also, be sure to note that {summoner_name} has "
@@ -255,7 +252,7 @@ def m7_count(mastery_data):
     counter = 0
 
     for champ in mastery_data.values():
-        if str(champ["mastery"]) == "7":
+        if int(champ["mastery"]) >= 7:
             counter += 1
 
     return counter
