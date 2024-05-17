@@ -225,10 +225,9 @@ def generate_mastery_notification(
         prompt.append("Here is the bio for the champion: ")
         prompt.append(info)
 
-    # ai_response = call_gpt(prompt)
+    ai_response = call_gpt(prompt)
     print(f"This is what we'd send to the ai: {prompt=}")
-    # TODO revert this to ai response
-    return "notification "
+    return ai_response
 
 
 def mastered_count(mastery_data, level):
