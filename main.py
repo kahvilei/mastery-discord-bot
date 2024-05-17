@@ -146,7 +146,7 @@ def update_user_mastery(datastore_client, puuid, summoner_name, mastery_data):
             # - mastery increases
             old_mastery = historic_user_mastery.get(champ_name, {}).get("mastery", 0)
             mastery_diff = int(new_mastery["mastery"]) - int(old_mastery)
-            old_milestone = old_mastery["championSeasonMilestone"]
+            old_milestone = historic_user_mastery["championSeasonMilestone"]
             new_milestone = new_mastery["championSeasonMilestone"]
 
             milestone_increase = new_milestone > old_milestone
@@ -156,13 +156,13 @@ def update_user_mastery(datastore_client, puuid, summoner_name, mastery_data):
 
             # - milestone gets its first S-,S, or S+ added
             elif s_in_grades(new_mastery["milestoneGrades"]):
-                if not s_in_grades(old_mastery["milestoneGrades"]):
+                if not s_in_grades(historic_user_mastery["milestoneGrades"]):
                     needs_update = True
                     update_reason = "milestone s"
 
             # - milestone increases to 3 or 4, and we never saw an S-,S, or S+ previously
             elif (milestone_increase and new_milestone in [3, 4]) and not s_in_grades(
-                old_mastery["milestoneGrades"]
+                historic_user_mastery["milestoneGrades"]
             ):
                 needs_update = True
                 update_reason = "milestone s"
