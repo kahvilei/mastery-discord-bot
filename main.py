@@ -138,7 +138,7 @@ def update_user_mastery(datastore_client, puuid, summoner_name, mastery_data):
             ):
                 updates.append(
                     {
-                        "champ_id": new_mastery["championId"],
+                        "champ_id": new_mastery["champ_id"],
                         "championPointsSinceLastLevel": new_mastery[
                             "championPointsSinceLastLevel"
                         ],
