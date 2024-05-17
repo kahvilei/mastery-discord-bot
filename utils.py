@@ -154,7 +154,6 @@ def generate_mastery_notification(
         f"Write an announcement message pertaining to the following scenario:",
         f'The player "{summoner_name}" just finished a match on the champion '
         f'"{champ_name}" in league of legends',
-        f"The message must contain the mastery level",
         f"Write a message that alerts a chat channel that this happened",
         f"The message should have a joke based on {champ_name}'s identity or"
         f" abilities in league of legends",
