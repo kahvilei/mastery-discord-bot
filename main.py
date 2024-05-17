@@ -154,7 +154,7 @@ def update_user_mastery(datastore_client, puuid, summoner_name, mastery_data):
             write_dict_to_datastore(
                 datastore_client, puuid, mastery_data, "summoner_mastery"
             )
-        return [] # temp, so we don't send notifications as we update
+        return []  # temp, so we don't send notifications as we update
 
 
 def add_tracked_user(datastore_client, args):
