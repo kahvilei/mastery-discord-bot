@@ -146,6 +146,8 @@ def get_user_mastery(puuid, region, champion_data):
                 "championPointsSinceLastLevel": val["championPointsSinceLastLevel"],
                 "mastery": val["championLevel"],
                 "tokensEarned": val["tokensEarned"],
+                "championSeasonMilestone": val["championSeasonMilestone"],
+                "milestoneGrades": val.get("milestoneGrades", [])
             }
             cleaned_new_user_mastery[champ_name] = new_val
     return cleaned_new_user_mastery

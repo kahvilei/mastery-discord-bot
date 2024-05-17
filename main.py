@@ -134,12 +134,16 @@ def update_user_mastery(datastore_client, puuid, summoner_name, mastery_data):
             if token_diff > 0 or mastery_diff > 0:
                 updates.append(
                     {
-                        "champ_id": new_mastery["champ_id"],
-                        "mastery": new_mastery["mastery"],
-                        "tokensEarned": new_mastery["tokensEarned"],
+                        "champ_id": new_mastery["championId"],
                         "championPointsSinceLastLevel": new_mastery[
                             "championPointsSinceLastLevel"
                         ],
+                        "mastery": new_mastery["championLevel"],
+                        "tokensEarned": new_mastery["tokensEarned"],
+                        "championSeasonMilestone": new_mastery[
+                            "championSeasonMilestone"
+                        ],
+                        "milestoneGrades": new_mastery.get("milestoneGrades", []),
                     }
                 )
         if len(updates) > 0:
