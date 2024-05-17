@@ -137,8 +137,6 @@ def generate_mastery_notification(
     champ = champion_data.get(str(champ_id))
     champ_name = champ.get("name")
 
-    new_mastery = mastery_updates.get("mastery")
-
     prompt = [
         "You are a discord bot that sends notifications to a channel when a player has "
         "a notable game, increases their mastery level on a champion, or earns a token "
@@ -153,88 +151,70 @@ def generate_mastery_notification(
         "Creative formatting is encouraged — utilize bolds, italics, strikethroughs, "
         "underlines, and newlines to make the message more interesting. ",
         "it is very important that the message is short, it should be almost instantly readable",
-    ]
-
-    default_prompt = [
         f"Write an announcement message pertaining to the following scenario:",
-        f'The player "{summoner_name}" just finished a match, and got to'
-        f' mastery {new_mastery} on the champion "{champ_name}" in league of legends',
+        f'The player "{summoner_name}" just finished a match on the champion '
+        f'"{champ_name}" in league of legends',
         f"The message must contain the mastery level",
         f"Write a message that alerts a chat channel that this happened",
         f"The message should have a joke based on {champ_name}'s identity or"
         f" abilities in league of legends",
     ]
 
-    first_time_prompt = [
-        f'Write a message saying "{summoner_name}" just played AS the champion'
-        f' "{champ_name}" for the first time',
-        f"Have the message be creative and make jokes with {champ_name}'s identity"
-        f" or abilities in the message",
-    ]
-    got_token_prompt = [
-        f'Write a message saying the "{summoner_name}" just earned a token for'
-        f' the champion "{champ_name}" while playing {champ_name}',
-        f"anyone seeing this message will already know this, so no need to"
-        f" repeat it, but a token is a mark that means that"
-        f" player did well in a game",
-        f"don't specify that they were playing league of legends, but make sure"
-        f" to specify {summoner_name} and {champ_name}",
-        f"remember that {summoner_name} is the one that earned the token,"
-        f" {champ_name} was the champion they were playing as",
-        f"do not send the message as a congratulation, but as a notification"
-        f" to everyone else that the player got a token. ",
-    ]
+    # Switch cases for the different possible update reasons
+    match mastery_updates.get("update_reason"):
+        case "mastery increased":
+            mastery = mastery_updates.get("mastery")
+            prompt.append(
+                f"The main focus of the message is that{summoner_name} has "
+                f"increased their mastery level on "
+                f"{champ_name} to {mastery}"
+            )
+            # First match as the champ
+            if int(mastery) == 1:
+                prompt.extend(
+                    [
+                        f'It is important to note "{summoner_name}" just played AS the champion'
+                        f' "{champ_name}" for the very first time',
+                    ]
+                )
 
-    combined_tokens = False
-    # First match as the champ
-    if int(mastery_updates.get("mastery")) == 1:
-        prompt = prompt + first_time_prompt
-    # Got a token
-    elif int(mastery_updates.get("tokensEarned", 0)) > 0:
-        prompt = prompt + got_token_prompt
-        tokens_earned = int(mastery_updates.get("tokensEarned"))
-        if int(mastery_updates.get("mastery")) == 5 and tokens_earned == 1:
-            prompt.append("This is their first token for this champion")
-        elif int(mastery_updates.get("mastery")) == 5 and tokens_earned == 2:
-            prompt.append(
-                "This is their second token for this champion, and they now "
-                "have the ability to combine their tokens to get to mastery 6"
-            )
-        elif int(mastery_updates.get("mastery")) == 6 and tokens_earned == 1:
-            prompt.append(
-                "This is their first token for this champion at mastery level "
-                "6, but they need to earn 2 more to complete the mastery "
-                "of the champion"
-            )
-        elif int(mastery_updates.get("mastery")) == 6 and tokens_earned == 2:
-            prompt.append(
-                "This is their second token for this champion, now they need to"
-                " have one more game where they get a grade of a S or an S+ to"
-                " get the final token and complete the mastery of the champion"
-            )
-        elif int(mastery_updates.get("mastery")) == 6 and tokens_earned == 3:
-            prompt.append(
-                "This is their final token for this champion, now all they "
-                "have to do is combine their 3 tokens"
-            )
-    # Got a mastery level
-    else:
-        mastery = mastery_updates.get("mastery")
+            if mastery == 7 or mastery == 10:
+                prompt.append(
+                    f"Make sure to note that in getting to mastery {mastery}, "
+                    f"the player has mastered that champion. (This is not the maximum, but more of a major goal)"
+                )
 
-        combined_tokens = mastery in [6, 7]
-        prompt = prompt + default_prompt
-        if mastery == 7:
+                prompt.append(
+                    f"Also, be sure to note that {summoner_name} has "
+                    f"now gotten to that level on {mastered_count(mastery_data, {mastery})} champions"
+                )
+        case "milestone s":
             prompt.append(
-                f"Make sure to note that in getting to mastery 7, "
-                f"the player has mastered that champion. (This is not the maximum, but more of a big goal)"
+                f"The main focus of the message is that {summoner_name} "
+                f"has just achieved their required milestone S grade while playing {champ_name}"
             )
+            if int(mastery_updates.get("championSeasonMilestone")) == 0:
+                prompt.append(
+                    f"Technically a B- or higher was all that was needed, but the player got an S"
+                )
+            elif int(mastery_updates.get("championSeasonMilestone")) == 1:
+                prompt.append(
+                    f"Technically a A- or higher was all that was needed, but the player got an S"
+                )
+        case "milestone 5+":
+            milestone = int(mastery_updates.get("championSeasonMilestone")) + 1
             prompt.append(
-                f"Also, be sure to note that {summoner_name} has "
-                f"now mastered {m7_count(mastery_data)} champions"
+                [
+                    f"The main focus of the message is that {summoner_name} "
+                    f'Just made it to "milestone {milestone} '
+                    f'for {champ_name} this split"',
+                    f"This means the player just earned an S grade, "
+                    f"marking their seventh one for milestone {milestone-1}",
+                ]
             )
 
     if match_data is not None:
-        if not combined_tokens and match_data.get("championId") == champ_id:
+        if match_data.get("championId") == champ_id:
             # Add the notable game information to the prompt
             additional_info = generate_notable_game_information(match_data)
             for fact in additional_info:
@@ -245,14 +225,17 @@ def generate_mastery_notification(
         prompt.append("Here is the bio for the champion: ")
         prompt.append(info)
 
-    return call_gpt(prompt)
+    # ai_response = call_gpt(prompt)
+    print(f"This is what we'd send to the ai: {prompt=}")
+    # TODO revert this to ai response
+    return "notification "
 
 
-def m7_count(mastery_data):
+def mastered_count(mastery_data, level):
     counter = 0
 
     for champ in mastery_data.values():
-        if int(champ["mastery"]) >= 7:
+        if int(champ["mastery"]) >= level:
             counter += 1
 
     return counter

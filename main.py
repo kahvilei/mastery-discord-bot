@@ -111,6 +111,10 @@ def check_mastery(datastore_client, args):
     return flask.Response("\n".join(results))
 
 
+def s_in_grades(grades):
+    return any([grade in ["S-", "S", "S+"] for grade in grades])
+
+
 def update_user_mastery(datastore_client, puuid, summoner_name, mastery_data):
     print(f"Getting historic user data for {summoner_name}")
     historic_user_mastery = db_mastery(datastore_client, puuid)
@@ -124,18 +128,58 @@ def update_user_mastery(datastore_client, puuid, summoner_name, mastery_data):
         return
     else:
         updates = []
+        quiet_write = False
         for champ_name, new_mastery in mastery_data.items():
-            old_tokens = historic_user_mastery.get(champ_name, {}).get(
-                "tokensEarned", 0
-            )
+
+            # The possibilities for sending a notification
+            # Note these aren't technically mutually exclusive,
+            # however we'll treat them as such, and
+            # only send one event based on the priority below
+            # - mastery increases
+            # - milestone gets its first S-,S, or S+ added
+            # - milestone increases to 3 or 4, and we never saw an S-,S, or S+ previously
+            # - milestone increases to 5+
+
+            needs_update = False
+            update_reason = "no update needed"
+
+            # - mastery increases
             old_mastery = historic_user_mastery.get(champ_name, {}).get("mastery", 0)
-            token_diff = int(new_mastery["tokensEarned"]) - int(old_tokens)
             mastery_diff = int(new_mastery["mastery"]) - int(old_mastery)
-            if (
-                token_diff > 0
-                or mastery_diff > 0
-                or "milestoneGrades" not in historic_user_mastery
+            old_milestone = old_mastery["championSeasonMilestone"]
+            new_milestone = new_mastery["championSeasonMilestone"]
+
+            milestone_increase = new_milestone > old_milestone
+            if mastery_diff > 0:
+                needs_update = True
+                update_reason = "mastery increased"
+
+            # - milestone gets its first S-,S, or S+ added
+            elif s_in_grades(new_mastery["milestoneGrades"]):
+                if not s_in_grades(old_mastery["milestoneGrades"]):
+                    needs_update = True
+                    update_reason = "milestone s"
+
+            # - milestone increases to 3 or 4, and we never saw an S-,S, or S+ previously
+            elif (milestone_increase and new_milestone in [3, 4]) and not s_in_grades(
+                old_mastery["milestoneGrades"]
             ):
+                needs_update = True
+                update_reason = "milestone s"
+
+            # - milestone increases to 5+
+            elif milestone_increase and new_mastery["championSeasonMilestone"] >= 5:
+                needs_update = True
+                update_reason = "milestone 5+"
+
+            # if championSeasonMilestone resets, we need to update the datastore, but not return updates
+            if 0 == new_milestone < old_milestone:
+                quiet_write = True
+
+            if needs_update:
+
+                # This data doesn't actually make it to the datastore, and is just used
+                # to generate notifications
                 updates.append(
                     {
                         "champ_id": new_mastery["champ_id"],
@@ -148,13 +192,19 @@ def update_user_mastery(datastore_client, puuid, summoner_name, mastery_data):
                             "championSeasonMilestone"
                         ],
                         "milestoneGrades": new_mastery.get("milestoneGrades", []),
+                        "update_reason": update_reason,
                     }
                 )
-        if len(updates) > 0:
+
+        if len(updates) > 0 or quiet_write:
             write_dict_to_datastore(
                 datastore_client, puuid, mastery_data, "summoner_mastery"
             )
-        return []  # temp, so we don't send notifications as we update
+
+        if quiet_write:
+            return []
+
+        return updates
 
 
 def add_tracked_user(datastore_client, args):
