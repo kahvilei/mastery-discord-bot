@@ -142,7 +142,7 @@ def update_user_mastery(datastore_client, puuid, summoner_name, mastery_data):
                         "championPointsSinceLastLevel": new_mastery[
                             "championPointsSinceLastLevel"
                         ],
-                        "mastery": new_mastery["championLevel"],
+                        "mastery": new_mastery["mastery"],
                         "tokensEarned": new_mastery["tokensEarned"],
                         "championSeasonMilestone": new_mastery[
                             "championSeasonMilestone"
