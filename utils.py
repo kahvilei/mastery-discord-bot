@@ -186,7 +186,7 @@ def generate_mastery_notification(
 
                 prompt.append(
                     f"Also, be sure to note that {summoner_name} has "
-                    f"now gotten to that level on {mastered_count(mastery_data, {mastery})} champions"
+                    f"now gotten to that level on {mastered_count(mastery_data, mastery)} champions"
                 )
         case "milestone s":
             prompt.append(
