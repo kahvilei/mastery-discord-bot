@@ -131,7 +131,11 @@ def update_user_mastery(datastore_client, puuid, summoner_name, mastery_data):
             old_mastery = historic_user_mastery.get(champ_name, {}).get("mastery", 0)
             token_diff = int(new_mastery["tokensEarned"]) - int(old_tokens)
             mastery_diff = int(new_mastery["mastery"]) - int(old_mastery)
-            if token_diff > 0 or mastery_diff > 0:
+            if (
+                token_diff > 0
+                or mastery_diff > 0
+                or "milestoneGrades" not in historic_user_mastery
+            ):
                 updates.append(
                     {
                         "champ_id": new_mastery["championId"],
