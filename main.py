@@ -147,8 +147,8 @@ def update_user_mastery(datastore_client, puuid, summoner_name, mastery_data):
             old_champ_mastery = historic_user_mastery.get(champ_name, {})
             old_mastery = old_champ_mastery.get("mastery", 0)
             mastery_diff = int(new_mastery["mastery"]) - int(old_mastery)
-            old_milestone = old_champ_mastery["championSeasonMilestone"]
-            new_milestone = new_mastery["championSeasonMilestone"]
+            old_milestone = int(old_champ_mastery["championSeasonMilestone"])
+            new_milestone = int(new_mastery["championSeasonMilestone"])
 
             milestone_increase = new_milestone > old_milestone
             if mastery_diff > 0:
