@@ -192,14 +192,6 @@ def generate_mastery_notification(
                 f"The main focus of the message is that {summoner_name} "
                 f"has just achieved their required milestone S grade while playing {champ_name}"
             )
-            if int(mastery_updates.get("championSeasonMilestone")) == 0:
-                prompt.append(
-                    f"Technically a B- or higher was all that was needed, but the player got an S"
-                )
-            elif int(mastery_updates.get("championSeasonMilestone")) == 1:
-                prompt.append(
-                    f"Technically a A- or higher was all that was needed, but the player got an S"
-                )
         case "milestone 5+":
             milestone = int(mastery_updates.get("championSeasonMilestone")) + 1
             prompt.append(
