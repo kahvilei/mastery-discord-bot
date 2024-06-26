@@ -104,8 +104,12 @@ def check_mastery(datastore_client, args):
         for notification in notifications:
             discord_webhook = os.environ.get("Discord_Web_Hook", "http://test/")
             payload = {"content": notification}
-            requests.request("POST", discord_webhook, data=payload)
-            print(f"Sent {notification}")
+            response = requests.request("POST", discord_webhook, data=payload)
+            if response.status_code == 200:
+                print(f"Sent {notification}")
+            else:
+                print(f"Failed to send notification {notification}")
+                print(f"Response: {response.text}")
 
         results.append(f"Finished {puuid}")
     return flask.Response("\n".join(results))
