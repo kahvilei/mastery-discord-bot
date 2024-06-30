@@ -180,6 +180,9 @@ def update_user_mastery(datastore_client, puuid, summoner_name, mastery_data):
             # if championSeasonMilestone resets, we need to update the datastore, but not return updates
             if 0 == new_milestone < old_milestone:
                 quiet_write = True
+            # Also don't send notifications too often for someone's evergreen champions
+            if mastery_diff > 10 and mastery_diff % 5 != 0:
+                quiet_write = True
 
             if needs_update:
 
