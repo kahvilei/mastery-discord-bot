@@ -109,7 +109,7 @@ def call_gpt(prompt):
     # get token from envvar
     client = OpenAI(api_key=os.getenv("CHATGPT_TOKEN"))
     response = client.chat.completions.create(
-        model="gpt-3.5-turbo",  # Specify the model/engine to use
+        model="gpt-4",  # Specify the model/engine to use
         messages=[{"role": "system", "content": prompt}],
         max_tokens=1000,  # Set the maximum length of the generated response
         n=1,  # Generate a single response
