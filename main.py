@@ -181,7 +181,7 @@ def update_user_mastery(datastore_client, puuid, summoner_name, mastery_data):
             if 0 == new_milestone < old_milestone:
                 quiet_write = True
             # Also don't send notifications too often for someone's evergreen champions
-            if new_mastery > 10 and new_mastery % 5 != 0:
+            if new_mastery['mastery'] > 10 and new_mastery['mastery'] % 5 != 0:
                 quiet_write = True
 
             if needs_update:
